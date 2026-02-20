@@ -1,0 +1,2391 @@
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Field Experience — Batavia High School</title>
+
+  <!-- Fonts: Montserrat + Open Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Open+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Tailwind Play CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            // BHS Brand Palette
+            crimson: {
+              50: '#fef2f2',
+              100: '#fee2e2',
+              200: '#fdcbcb',
+              300: '#fba5a6',
+              400: '#f56d6f',
+              500: '#eb4044',
+              600: '#d72429',
+              700: '#b91c22',
+              800: '#AC161D', // Primary BHS Red
+              900: '#851519',
+              950: '#490808',
+            },
+            navy: {
+              50: '#f5f5f5',
+              100: '#e5e5e5',
+              200: '#D9D9D9', // BHS Light Gray
+              300: '#b3b3b3',
+              400: '#8a8a8a',
+              500: '#5D5D5D', // BHS Dark Gray
+              600: '#4a4a4a',
+              700: '#333333',
+              800: '#1a1a1a',
+              900: '#000000', // BHS Black
+              950: '#000000',
+            },
+            gold: {
+              50: '#fffde6',
+              100: '#fffabd',
+              200: '#fff48a',
+              300: '#ffe94d',
+              400: '#fde020',
+              500: '#FBCD07', // BHS Gold
+              600: '#DAB107', // BHS Dark Gold
+              700: '#9a7305',
+              800: '#7d5c0b',
+              900: '#66490f',
+              950: '#3b2706',
+            },
+            teal: {
+              50: '#f0fdfa',
+              100: '#ccfbef',
+              200: '#9af5df',
+              300: '#5fe9cc',
+              400: '#2dd4b4',
+              500: '#14b89c',
+              600: '#5D5D5D', // Innovation Teal
+              700: '#0f766e',
+              800: '#115e59',
+              900: '#134e4a',
+              950: '#042f2e',
+            },
+          },
+          fontFamily: {
+            heading: ['Montserrat', 'system-ui', 'sans-serif'],
+            body: ['Open Sans', 'system-ui', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Open Sans', system-ui, sans-serif;
+      background: #ffffff;
+      color: #000000;
+      overflow-x: hidden;
+    }
+    .font-heading { font-family: 'Montserrat', system-ui, sans-serif; }
+    .font-body { font-family: 'Open Sans', system-ui, sans-serif; }
+
+    /* Custom selection */
+    ::selection {
+      background: #AC161D;
+      color: #ffffff;
+    }
+
+    /* Smooth scroll */
+    html { scroll-behavior: smooth; }
+
+    /* Logo mark */
+    .logo-mark {
+      position: relative;
+      display: inline-flex;
+      align-items: flex-end;
+      gap: 2px;
+    }
+    .logo-step {
+      background: currentColor;
+      width: 4px;
+    }
+    .logo-step:nth-child(1) { height: 8px; }
+    .logo-step:nth-child(2) { height: 14px; }
+    .logo-step:nth-child(3) { height: 20px; }
+    .logo-star {
+      position: absolute;
+      top: -4px;
+      right: -6px;
+      width: 8px;
+      height: 8px;
+      background: #FBCD07;
+      border-radius: 50%;
+      box-shadow: 0 0 8px #FBCD07;
+    }
+
+    /* Modal backdrop */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.95);
+      z-index: 100;
+      display: none;
+      opacity: 0;
+      transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .modal-backdrop.active {
+      display: flex;
+      opacity: 1;
+    }
+
+    /* Modal content */
+    .modal-content {
+      transform: translateY(40px);
+      opacity: 0;
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      transition-delay: 0.1s;
+    }
+    .modal-backdrop.active .modal-content {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* Card hover */
+    .theme-card {
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .theme-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px -12px rgba(172, 22, 29, 0.15);
+    }
+
+    /* Career cluster icons */
+    .cluster-icon {
+      transition: all 0.3s ease;
+    }
+    .cluster-icon:hover {
+      transform: scale(1.1);
+      color: #5D5D5D;
+    }
+
+    /* Stagger animation */
+    @keyframes fadeSlideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .animate-in {
+      animation: fadeSlideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    .delay-1 { animation-delay: 0.1s; }
+    .delay-2 { animation-delay: 0.2s; }
+    .delay-3 { animation-delay: 0.3s; }
+    .delay-4 { animation-delay: 0.4s; }
+
+    /* Path/continuum line */
+    .continuum-line {
+      position: relative;
+    }
+    .continuum-line::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, #AC161D, #5D5D5D, #FBCD07);
+      transform: translateY(-50%);
+      z-index: -1;
+    }
+
+    /* Pillar cards */
+    .pillar-card {
+      position: relative;
+      overflow: hidden;
+    }
+    .pillar-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, #AC161D, #FBCD07);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s ease;
+    }
+    .pillar-card:hover::after {
+      transform: scaleX(1);
+    }
+
+    /* Custom audio player styling */
+    audio::-webkit-media-controls-panel {
+      background: rgba(0, 0, 0, 0.8);
+    }
+    audio::-webkit-media-controls-play-button {
+      background-color: #AC161D;
+      border-radius: 50%;
+    }
+    audio::-webkit-media-controls-current-time-display,
+    audio::-webkit-media-controls-time-remaining-display {
+      color: #FBCD07;
+    }
+
+    /* Pulse animation for audio icon */
+    @keyframes pulse-ring {
+      0% {
+        transform: scale(1);
+        opacity: 0.3;
+      }
+      100% {
+        transform: scale(1.3);
+        opacity: 0;
+      }
+    }
+    .animate-ping {
+      animation: pulse-ring 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+    }
+
+    /* Line clamp for video descriptions */
+    .line-clamp-2 {
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    /* Video card hover effect */
+    .group:hover .video-overlay {
+      background: rgba(0, 0, 0, 0.3);
+    }
+
+    /* Video container styling */
+    video {
+      background: #000;
+    }
+  </style>
+</head>
+
+<body class="bg-white text-navy-900 antialiased">
+
+  <!-- Navigation -->
+  <nav class="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-navy-100">
+    <div class="max-w-7xl mx-auto px-6 md:px-8 py-4 flex justify-between items-center">
+      <!-- Logo -->
+      <a href="#" class="flex items-center gap-3">
+        <img
+          src="https://res.cloudinary.com/dsbllwpbh/image/upload/v1770990807/field-study-logo-trans_kewube.png"
+          alt="BHS Field Experience"
+          class="h-10 md:h-12 w-auto"
+        />
+        <div class="hidden sm:block">
+          <p class="font-heading font-bold text-navy-900 text-sm md:text-base leading-tight">BHS Field Experience</p>
+          <p class="text-[10px] md:text-xs text-navy-500 uppercase tracking-wider">Work-Based Learning Opportunities</p>
+        </div>
+      </a>
+
+      <!-- Desktop Nav -->
+      <div class="hidden md:flex items-center gap-8">
+        <a href="#program" class="text-navy-600 hover:text-crimson-800 text-sm font-medium transition-colors">Program</a>
+        <a href="#pathways" class="text-navy-600 hover:text-crimson-800 text-sm font-medium transition-colors">Career Pathways</a>
+        <a href="#business" class="text-navy-600 hover:text-crimson-800 text-sm font-medium transition-colors">For Business</a>
+        <a href="#business" class="bg-crimson-800 text-white px-6 py-2.5 text-sm font-semibold hover:bg-crimson-700 transition-colors">
+          Partner With Us
+        </a>
+      </div>
+
+      <!-- Mobile Menu Button -->
+      <button class="md:hidden text-navy-900" onclick="toggleMobileMenu()">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="min-h-screen relative flex items-center pt-20 overflow-hidden">
+
+    <!-- Hero Background Image -->
+    <div class="absolute inset-0 -z-10">
+      <img
+        src="https://res.cloudinary.com/dsbllwpbh/image/upload/v1770320194/bhs-field-experiences-hero-student-classroom-work-trans_fbnbxe.jpg"
+        alt="BHS Field Experience student working"
+        class="w-full h-full object-cover object-center"
+      />
+    </div>
+
+    <div class="max-w-7xl mx-auto px-6 md:px-8 py-24 md:py-32 lg:py-40">
+      <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+
+        <!-- Left: Content with blur backdrop -->
+        <div class="lg:max-w-xl bg-white/40 backdrop-blur-md p-8 md:p-10 lg:p-12 rounded-2xl shadow-2xl shadow-black/10">
+          <!-- Eyebrow -->
+          <div class="flex items-center gap-3 mb-6 opacity-0 animate-in">
+            <div class="w-12 h-0.5 bg-crimson-800"></div>
+            <p class="text-sm uppercase tracking-widest text-crimson-800 font-semibold">
+              Batavia High School
+            </p>
+          </div>
+
+          <!-- Main headline -->
+          <h1 class="font-heading text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.1] text-navy-900 mb-6 opacity-0 animate-in delay-1">
+            Know your path<br>
+            <span class="text-crimson-800">before</span> you<br>
+            pay for it.
+          </h1>
+
+          <!-- Subhead -->
+          <p class="text-lg md:text-xl leading-relaxed text-navy-600 mb-10 max-w-lg opacity-0 animate-in delay-2">
+            Real workplace experience. Professional connections you build yourself.
+            Certainty about your future—while there's still time to change your mind.
+          </p>
+
+          <!-- CTAs -->
+          <div class="flex flex-col sm:flex-row gap-4 opacity-0 animate-in delay-3">
+            <button onclick="openModal('partner-form')" class="bg-crimson-800 text-white px-8 py-4 text-sm font-semibold uppercase tracking-wider hover:bg-crimson-700 transition-colors text-center">
+              Become a Partner
+            </button>
+            <a href="#pathways" class="border-2 border-navy-900 text-navy-900 px-8 py-4 text-sm font-semibold uppercase tracking-wider hover:bg-navy-900 hover:text-white transition-colors text-center">
+              Explore Pathways
+            </a>
+          </div>
+
+          <!-- Three Pillars - inline badges -->
+          <div class="flex flex-wrap gap-3 mt-8 pt-6 border-t border-navy-200/50 opacity-0 animate-in delay-4">
+            <div class="flex items-center gap-2 bg-crimson-100/80 text-crimson-800 px-4 py-2 rounded-full">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+              </svg>
+              <span class="text-sm font-semibold">Internships</span>
+            </div>
+            <div class="flex items-center gap-2 bg-teal-100/80 text-teal-700 px-4 py-2 rounded-full">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+              </svg>
+              <span class="text-sm font-semibold">School-Based</span>
+            </div>
+            <div class="flex items-center gap-2 bg-gold-100/80 text-gold-700 px-4 py-2 rounded-full">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+              </svg>
+              <span class="text-sm font-semibold">Student-Led</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Empty spacer to let image show through -->
+        <div class="hidden lg:block"></div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Audio Overview Section -->
+  <section class="py-16 md:py-20 px-6 md:px-8 bg-gradient-to-r from-navy-900 to-navy-950">
+    <div class="max-w-4xl mx-auto">
+
+      <div class="flex flex-col md:flex-row items-center gap-8 md:gap-12">
+
+        <!-- Play Icon / Visual -->
+        <div class="flex-shrink-0">
+          <div class="w-24 h-24 md:w-32 md:h-32 rounded-full bg-crimson-800 flex items-center justify-center shadow-2xl shadow-crimson-800/30 relative">
+            <svg class="w-10 h-10 md:w-12 md:h-12 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M8 5v14l11-7z"/>
+            </svg>
+            <!-- Pulse ring -->
+            <div class="absolute inset-0 rounded-full border-2 border-crimson-400 animate-ping opacity-20"></div>
+          </div>
+        </div>
+
+        <!-- Content -->
+        <div class="flex-1 text-center md:text-left">
+          <p class="text-sm uppercase tracking-widest text-gold-500 font-semibold mb-2">Program Overview</p>
+          <h2 class="font-heading text-2xl md:text-3xl font-bold text-white mb-3">
+            Hear the Full Story
+          </h2>
+          <p class="text-navy-300 mb-6 leading-relaxed">
+            18-minute audio overview of Field Experience — the vision, the structure, and how it transforms high school internships into real work.
+          </p>
+
+          <!-- Audio Player -->
+          <div class="bg-navy-800/50 backdrop-blur rounded-lg p-4 border border-navy-700">
+            <audio
+              controls
+              class="w-full h-12 audio-player"
+              preload="metadata"
+              style="filter: sepia(20%) saturate(70%) grayscale(0) brightness(1.1) hue-rotate(350deg);"
+            >
+              <source src="https://res.cloudinary.com/dsbllwpbh/video/upload/v1770316764/Transforming_High_School_Internships_Into_Real_Work_cb5hst.mp4" type="video/mp4">
+              Your browser does not support the audio element.
+            </audio>
+            <div class="flex items-center justify-between mt-3 text-sm">
+              <span class="text-navy-400">Transforming High School Internships Into Real Work</span>
+              <span class="text-navy-500">18:00</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Stats Bar -->
+  <section class="bg-navy-900 text-white py-12">
+    <div class="max-w-7xl mx-auto px-6 md:px-8">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
+
+        <div class="text-center md:text-left">
+          <p class="font-heading text-4xl md:text-5xl font-bold text-gold-500 mb-1">60+</p>
+          <p class="text-sm uppercase tracking-widest text-navy-300">Hours Minimum</p>
+        </div>
+
+        <div class="text-center md:text-left">
+          <p class="font-heading text-4xl md:text-5xl font-bold text-gold-500 mb-1">7</p>
+          <p class="text-sm uppercase tracking-widest text-navy-300">Career Clusters</p>
+        </div>
+
+        <div class="text-center md:text-left">
+          <p class="font-heading text-4xl md:text-5xl font-bold text-gold-500 mb-1">10</p>
+          <p class="text-sm uppercase tracking-widest text-navy-300">Essential Skills</p>
+        </div>
+
+        <div class="text-center md:text-left">
+          <p class="font-heading text-4xl md:text-5xl font-bold text-gold-500 mb-1">1</p>
+          <p class="text-sm uppercase tracking-widest text-navy-300">Semester</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Three Pathways Section -->
+  <section id="pathways-overview" class="py-24 md:py-32 px-6 md:px-8">
+    <div class="max-w-7xl mx-auto">
+
+      <div class="text-center mb-16">
+        <p class="text-sm uppercase tracking-widest text-crimson-800 font-semibold mb-4">Three Ways to Get Experience</p>
+        <h2 class="font-heading text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-navy-900 mb-4">
+          Choose Your Path
+        </h2>
+        <p class="text-lg text-navy-600 max-w-2xl mx-auto">
+          From skilled trades to media production to launching your own venture — there's a pathway for every ambition.
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-8">
+
+        <!-- Pathway 1: Internships / Trades -->
+        <div class="group relative bg-navy-900 overflow-hidden rounded-lg">
+          <div class="absolute inset-0 bg-gradient-to-b from-navy-900/40 to-navy-900/90 z-10"></div>
+          <!-- Placeholder for trades imagery -->
+          <div class="absolute inset-0 bg-navy-800"></div>
+          <div class="relative z-20 p-8 md:p-10 flex flex-col min-h-[420px]">
+            <div class="flex items-center gap-2 mb-6">
+              <div class="w-12 h-12 rounded-lg bg-crimson-800 text-white flex items-center justify-center">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                </svg>
+              </div>
+              <span class="bg-gold-500 text-navy-900 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Trades Included</span>
+            </div>
+            <h3 class="font-heading text-2xl md:text-3xl font-bold text-white mb-4">Internships</h3>
+            <p class="text-navy-200 leading-relaxed mb-6 flex-1">
+              60+ hours of hands-on experience across all industries — healthcare, IT, finance, and more. <strong class="text-gold-400">Skilled trades like electrical, HVAC, welding, and construction are front and center.</strong>
+            </p>
+            <div class="flex flex-wrap gap-2 mt-auto">
+              <span class="bg-white/10 text-white/80 text-xs px-3 py-1.5 rounded-full">Electrician</span>
+              <span class="bg-white/10 text-white/80 text-xs px-3 py-1.5 rounded-full">HVAC</span>
+              <span class="bg-white/10 text-white/80 text-xs px-3 py-1.5 rounded-full">Welding</span>
+              <span class="bg-white/10 text-white/80 text-xs px-3 py-1.5 rounded-full">Construction</span>
+              <span class="bg-white/10 text-white/80 text-xs px-3 py-1.5 rounded-full">Healthcare</span>
+              <span class="bg-white/10 text-white/80 text-xs px-3 py-1.5 rounded-full">IT</span>
+              <span class="bg-white/10 text-white/80 text-xs px-3 py-1.5 rounded-full">Finance</span>
+              <span class="bg-white/10 text-white/80 text-xs px-3 py-1.5 rounded-full">+ More</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pathway 2: School-Based Enterprises -->
+        <div class="group relative bg-navy-900 overflow-hidden rounded-lg">
+          <div class="absolute inset-0 bg-gradient-to-b from-navy-900/40 to-navy-900/90 z-10"></div>
+          <div class="absolute inset-0 bg-navy-800"></div>
+          <div class="relative z-20 p-8 md:p-10 flex flex-col min-h-[420px]">
+            <div class="mb-6">
+              <div class="w-12 h-12 rounded-lg bg-teal-600 text-white flex items-center justify-center">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                </svg>
+              </div>
+            </div>
+            <h3 class="font-heading text-2xl md:text-3xl font-bold text-white mb-4">School-Based Enterprises</h3>
+            <p class="text-navy-200 leading-relaxed mb-6 flex-1">
+              Run real operations inside the school. <strong class="text-teal-300">Bulldog Media Team</strong> produces video content, covers school events, and builds professional media skills — all as a functioning student enterprise.
+            </p>
+            <!-- Placeholder for Bulldog Media content -->
+            <div class="bg-white/5 border border-white/10 rounded-lg p-6 text-center">
+              <svg class="w-10 h-10 text-white/30 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+              </svg>
+              <p class="text-white/40 text-sm">Bulldog Media Team videos coming soon</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pathway 3: Student-Led Businesses -->
+        <div class="group relative bg-navy-900 overflow-hidden rounded-lg">
+          <div class="absolute inset-0 bg-gradient-to-b from-navy-900/40 to-navy-900/90 z-10"></div>
+          <div class="absolute inset-0 bg-navy-800"></div>
+          <div class="relative z-20 p-8 md:p-10 flex flex-col min-h-[420px]">
+            <div class="mb-6">
+              <div class="w-12 h-12 rounded-lg bg-gold-500 text-navy-900 flex items-center justify-center">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                </svg>
+              </div>
+            </div>
+            <h3 class="font-heading text-2xl md:text-3xl font-bold text-white mb-4">Student-Led Businesses</h3>
+            <p class="text-navy-200 leading-relaxed mb-6 flex-1">
+              Students from the <strong class="text-gold-400">incubator program</strong> launch and run their own businesses. Real customers, real revenue, real entrepreneurship — while still in high school.
+            </p>
+            <!-- Placeholder for student-led business content -->
+            <div class="bg-white/5 border border-white/10 rounded-lg p-6 text-center">
+              <svg class="w-10 h-10 text-white/30 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+              </svg>
+              <p class="text-white/40 text-sm">Student business videos coming soon</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Promise / Equity Section -->
+  <section class="py-24 md:py-32 px-6 md:px-8">
+    <div class="max-w-7xl mx-auto">
+
+      <div class="grid lg:grid-cols-12 gap-12 lg:gap-16">
+
+        <div class="lg:col-span-5">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-8 h-0.5 bg-crimson-800"></div>
+            <p class="text-sm uppercase tracking-widest text-crimson-800 font-semibold">Our Promise</p>
+          </div>
+          <h2 class="font-heading text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-navy-900 mb-6">
+            Every student deserves <span class="text-crimson-800">equitable access</span> to opportunity.
+          </h2>
+        </div>
+
+        <div class="lg:col-span-6 lg:col-start-7">
+          <p class="text-xl leading-relaxed text-navy-700 mb-6">
+            The old system rewarded students with connections—parents who owned businesses,
+            family friends in the right industries. If you didn't have those networks,
+            you didn't get the experience.
+          </p>
+          <p class="text-lg leading-relaxed text-navy-500 mb-8">
+            Field Experience changes that equation. We build the partnerships.
+            We provide the coaching. We create pathways that don't depend on
+            who your parents know.
+          </p>
+          <div class="flex items-center gap-4">
+            <div class="w-12 h-12 rounded-full bg-teal-600 text-white flex items-center justify-center">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+              </svg>
+            </div>
+            <p class="font-medium text-navy-900">State-aligned, growth-oriented, and transparent</p>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Secondary Themes / Cards Section -->
+  <section id="program" class="py-24 md:py-32 px-6 md:px-8 bg-navy-50">
+    <div class="max-w-7xl mx-auto">
+
+      <div class="text-center mb-16">
+        <p class="text-sm uppercase tracking-widest text-crimson-800 font-semibold mb-4">What Makes This Different</p>
+        <h2 class="font-heading text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-navy-900">
+          Built for the real world.
+        </h2>
+      </div>
+
+      <!-- Cards Grid -->
+      <div class="grid md:grid-cols-2 gap-6">
+
+        <!-- Card 1: Student Ownership -->
+        <div class="theme-card group cursor-pointer relative overflow-hidden rounded-lg border-l-4 border-crimson-800" onclick="openModal('ownership')">
+          <img src="https://res.cloudinary.com/dsbllwpbh/image/upload/v1770345156/panel-student-ownership_emzmhx.jpg" alt="" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+          <div class="absolute inset-0 bg-white/85 group-hover:bg-white/75 transition-all duration-500"></div>
+          <div class="relative z-10 p-8 md:p-10">
+            <div class="flex justify-between items-start mb-6">
+              <div class="w-14 h-14 rounded-lg bg-crimson-100 text-crimson-800 flex items-center justify-center">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                </svg>
+              </div>
+              <span class="w-10 h-10 rounded-full border border-navy-200 flex items-center justify-center group-hover:border-crimson-800 group-hover:bg-crimson-800 transition-all">
+                <svg class="w-4 h-4 text-navy-400 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                </svg>
+              </span>
+            </div>
+            <h3 class="font-heading text-xl md:text-2xl font-bold text-navy-900 mb-3">Student Ownership</h3>
+            <p class="text-navy-600 leading-relaxed">
+              You apply. You interview. You earn your placement. Just like the real world.
+            </p>
+          </div>
+        </div>
+
+        <!-- Card 2: Business Partnership -->
+        <div class="theme-card group cursor-pointer relative overflow-hidden rounded-lg border-l-4 border-teal-600" onclick="openModal('business')">
+          <img src="https://res.cloudinary.com/dsbllwpbh/image/upload/v1770345155/panel-business-partnership_zmkni5.jpg" alt="" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+          <div class="absolute inset-0 bg-white/85 group-hover:bg-white/75 transition-all duration-500"></div>
+          <div class="relative z-10 p-8 md:p-10">
+            <div class="flex justify-between items-start mb-6">
+              <div class="w-14 h-14 rounded-lg bg-teal-100 text-teal-600 flex items-center justify-center">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                </svg>
+              </div>
+              <span class="w-10 h-10 rounded-full border border-navy-200 flex items-center justify-center group-hover:border-teal-600 group-hover:bg-teal-600 transition-all">
+                <svg class="w-4 h-4 text-navy-400 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                </svg>
+              </span>
+            </div>
+            <h3 class="font-heading text-xl md:text-2xl font-bold text-navy-900 mb-3">Business Partnership</h3>
+            <p class="text-navy-600 leading-relaxed">
+              This isn't charity. Partners get motivated talent, fresh ideas, and a pipeline to future hires.
+            </p>
+          </div>
+        </div>
+
+        <!-- Card 3: Structured Coaching -->
+        <div class="theme-card group cursor-pointer relative overflow-hidden rounded-lg border-l-4 border-gold-500" onclick="openModal('structure')">
+          <img src="https://res.cloudinary.com/dsbllwpbh/image/upload/v1770345156/panel-structured-coaching_wn7bwu.jpg" alt="" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+          <div class="absolute inset-0 bg-white/85 group-hover:bg-white/75 transition-all duration-500"></div>
+          <div class="relative z-10 p-8 md:p-10">
+            <div class="flex justify-between items-start mb-6">
+              <div class="w-14 h-14 rounded-lg bg-gold-100 text-gold-600 flex items-center justify-center">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
+                </svg>
+              </div>
+              <span class="w-10 h-10 rounded-full border border-navy-200 flex items-center justify-center group-hover:border-gold-500 group-hover:bg-gold-500 transition-all">
+                <svg class="w-4 h-4 text-navy-400 group-hover:text-navy-900 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                </svg>
+              </span>
+            </div>
+            <h3 class="font-heading text-xl md:text-2xl font-bold text-navy-900 mb-3">Structured Coaching</h3>
+            <p class="text-navy-600 leading-relaxed">
+              Bootcamp, ongoing coaching, accountability, and a capstone. Not just "go somewhere."
+            </p>
+          </div>
+        </div>
+
+        <!-- Card 4: Safe Exploration -->
+        <div class="theme-card group cursor-pointer relative overflow-hidden rounded-lg border-l-4 border-navy-900" onclick="openModal('exploration')">
+          <img src="https://res.cloudinary.com/dsbllwpbh/image/upload/v1770345155/panel-safe-exploration_esaatf.jpg" alt="" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+          <div class="absolute inset-0 bg-white/85 group-hover:bg-white/75 transition-all duration-500"></div>
+          <div class="relative z-10 p-8 md:p-10">
+            <div class="flex justify-between items-start mb-6">
+              <div class="w-14 h-14 rounded-lg bg-navy-100 text-navy-900 flex items-center justify-center">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                </svg>
+              </div>
+              <span class="w-10 h-10 rounded-full border border-navy-200 flex items-center justify-center group-hover:border-navy-900 group-hover:bg-navy-900 transition-all">
+                <svg class="w-4 h-4 text-navy-400 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                </svg>
+              </span>
+            </div>
+            <h3 class="font-heading text-xl md:text-2xl font-bold text-navy-900 mb-3">Safe Exploration</h3>
+            <p class="text-navy-600 leading-relaxed">
+              High school is the perfect time to try, learn, and grow—with support.
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- TikTok-Style Video Section -->
+  <section class="py-24 md:py-32 px-6 md:px-8 bg-navy-950 overflow-hidden">
+    <div class="max-w-7xl mx-auto">
+
+      <div class="text-center mb-12 md:mb-16">
+        <p class="text-sm uppercase tracking-widest text-gold-500 font-semibold mb-4">Quick Takes</p>
+        <h2 class="font-heading text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-white mb-4">
+          See It In Action
+        </h2>
+        <p class="text-lg text-navy-300 max-w-2xl mx-auto">
+          Quick videos for students, businesses, and parents—everything you need to know in under a minute.
+        </p>
+      </div>
+
+      <!-- Video Grid -->
+      <div class="grid md:grid-cols-3 gap-6 md:gap-8">
+
+        <!-- Video 1: Students -->
+        <div class="group">
+          <div class="relative bg-black rounded-2xl overflow-hidden shadow-2xl" style="aspect-ratio: 9/16;">
+            <!-- Video -->
+            <video
+              class="w-full h-full object-cover"
+              playsinline
+              loop
+              muted
+              preload="metadata"
+              poster=""
+              onclick="this.paused ? this.play() : this.pause()"
+            >
+              <source src="https://res.cloudinary.com/dsbllwpbh/video/upload/v1770319517/BHS_Field_Experience_Student_Career_Upgrade_ddglwx.mp4" type="video/mp4">
+            </video>
+
+            <!-- Play Button Overlay -->
+            <div class="video-overlay absolute inset-0 bg-black/40 flex items-center justify-center transition-opacity duration-300 cursor-pointer" onclick="playVideo(this)">
+              <div class="w-16 h-16 rounded-full bg-white/20 backdrop-blur flex items-center justify-center border-2 border-white/50 group-hover:scale-110 transition-transform">
+                <svg class="w-8 h-8 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M8 5v14l11-7z"/>
+                </svg>
+              </div>
+            </div>
+
+            <!-- Top Badge -->
+            <div class="absolute top-4 left-4 right-4 flex justify-between items-start pointer-events-none">
+              <span class="bg-crimson-800 text-white text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wider">
+                For Students
+              </span>
+              <div class="flex items-center gap-1 bg-black/50 backdrop-blur px-2 py-1 rounded-full">
+                <svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                </svg>
+                <span class="text-white text-xs font-medium">0:45</span>
+              </div>
+            </div>
+
+            <!-- Bottom Info -->
+            <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent pointer-events-none">
+              <p class="text-white font-heading font-bold text-sm mb-1">Career Upgrade</p>
+              <p class="text-white/70 text-xs leading-relaxed line-clamp-2">
+                Level up from LINK to Field Experience—60+ hours of real-world career experience.
+              </p>
+            </div>
+          </div>
+
+          <!-- Caption Below -->
+          <div class="mt-4 text-center">
+            <h3 class="font-heading font-bold text-white mb-1">Students</h3>
+            <p class="text-navy-400 text-sm">Bootcamp → Placement → Capstone</p>
+          </div>
+        </div>
+
+        <!-- Video 2: Business -->
+        <div class="group">
+          <div class="relative bg-black rounded-2xl overflow-hidden shadow-2xl" style="aspect-ratio: 9/16;">
+            <!-- Video -->
+            <video
+              class="w-full h-full object-cover"
+              playsinline
+              loop
+              muted
+              preload="metadata"
+              poster=""
+              onclick="this.paused ? this.play() : this.pause()"
+            >
+              <source src="https://res.cloudinary.com/dsbllwpbh/video/upload/v1770319517/BHS_WBL_Batavia_Business_Talent_Pipeline_fwoywo.mp4" type="video/mp4">
+            </video>
+
+            <!-- Play Button Overlay -->
+            <div class="video-overlay absolute inset-0 bg-black/40 flex items-center justify-center transition-opacity duration-300 cursor-pointer" onclick="playVideo(this)">
+              <div class="w-16 h-16 rounded-full bg-white/20 backdrop-blur flex items-center justify-center border-2 border-white/50 group-hover:scale-110 transition-transform">
+                <svg class="w-8 h-8 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M8 5v14l11-7z"/>
+                </svg>
+              </div>
+            </div>
+
+            <!-- Top Badge -->
+            <div class="absolute top-4 left-4 right-4 flex justify-between items-start pointer-events-none">
+              <span class="bg-teal-600 text-white text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wider">
+                For Business
+              </span>
+              <div class="flex items-center gap-1 bg-black/50 backdrop-blur px-2 py-1 rounded-full">
+                <svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                </svg>
+                <span class="text-white text-xs font-medium">0:52</span>
+              </div>
+            </div>
+
+            <!-- Bottom Info -->
+            <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent pointer-events-none">
+              <p class="text-white font-heading font-bold text-sm mb-1">Talent Pipeline</p>
+              <p class="text-white/70 text-xs leading-relaxed line-clamp-2">
+                Build your workforce—4 ways to partner with pre-screened, motivated students.
+              </p>
+            </div>
+          </div>
+
+          <!-- Caption Below -->
+          <div class="mt-4 text-center">
+            <h3 class="font-heading font-bold text-white mb-1">Business Partners</h3>
+            <p class="text-navy-400 text-sm">Shadow → Speak → Mentor → Host</p>
+          </div>
+        </div>
+
+        <!-- Video 3: Parents -->
+        <div class="group">
+          <div class="relative bg-black rounded-2xl overflow-hidden shadow-2xl" style="aspect-ratio: 9/16;">
+            <!-- Video -->
+            <video
+              class="w-full h-full object-cover"
+              playsinline
+              loop
+              muted
+              preload="metadata"
+              poster=""
+              onclick="this.paused ? this.play() : this.pause()"
+            >
+              <source src="https://res.cloudinary.com/dsbllwpbh/video/upload/v1770319517/BHS_WBL_Parent_Info_Career_Readiness_o9zlce.mp4" type="video/mp4">
+            </video>
+
+            <!-- Play Button Overlay -->
+            <div class="video-overlay absolute inset-0 bg-black/40 flex items-center justify-center transition-opacity duration-300 cursor-pointer" onclick="playVideo(this)">
+              <div class="w-16 h-16 rounded-full bg-white/20 backdrop-blur flex items-center justify-center border-2 border-white/50 group-hover:scale-110 transition-transform">
+                <svg class="w-8 h-8 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M8 5v14l11-7z"/>
+                </svg>
+              </div>
+            </div>
+
+            <!-- Top Badge -->
+            <div class="absolute top-4 left-4 right-4 flex justify-between items-start pointer-events-none">
+              <span class="bg-gold-500 text-navy-900 text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wider">
+                For Parents
+              </span>
+              <div class="flex items-center gap-1 bg-black/50 backdrop-blur px-2 py-1 rounded-full">
+                <svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                </svg>
+                <span class="text-white text-xs font-medium">0:48</span>
+              </div>
+            </div>
+
+            <!-- Bottom Info -->
+            <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent pointer-events-none">
+              <p class="text-white font-heading font-bold text-sm mb-1">Future-Proof Plan</p>
+              <p class="text-white/70 text-xs leading-relaxed line-clamp-2">
+                Help your student save money and find their path before college.
+              </p>
+            </div>
+          </div>
+
+          <!-- Caption Below -->
+          <div class="mt-4 text-center">
+            <h3 class="font-heading font-bold text-white mb-1">Parents</h3>
+            <p class="text-navy-400 text-sm">10 Skills → Capstone → Career Ready</p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Social Follow CTA -->
+      <div class="mt-12 text-center">
+        <p class="text-navy-400 text-sm mb-4">Follow us for more updates</p>
+        <div class="flex justify-center gap-4">
+          <a href="#" class="w-10 h-10 rounded-full bg-navy-800 hover:bg-crimson-800 text-white flex items-center justify-center transition-colors">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005 20.1a6.34 6.34 0 0010.86-4.43v-7a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1-.1z"/>
+            </svg>
+          </a>
+          <a href="#" class="w-10 h-10 rounded-full bg-navy-800 hover:bg-crimson-800 text-white flex items-center justify-center transition-colors">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+            </svg>
+          </a>
+          <a href="#" class="w-10 h-10 rounded-full bg-navy-800 hover:bg-crimson-800 text-white flex items-center justify-center transition-colors">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 7 Career Clusters Section -->
+  <section id="pathways" class="py-24 md:py-32 px-6 md:px-8">
+    <div class="max-w-7xl mx-auto">
+
+      <div class="text-center mb-16">
+        <p class="text-sm uppercase tracking-widest text-teal-600 font-semibold mb-4">Career Pathways</p>
+        <h2 class="font-heading text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-navy-900 mb-4">
+          7 Career Clusters
+        </h2>
+        <p class="text-lg text-navy-600 max-w-2xl mx-auto">
+          Explore pathways aligned to Illinois career development standards. Each cluster has specific technical competencies you'll develop.
+        </p>
+      </div>
+
+      <!-- Career Cluster Icons Grid -->
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-6">
+
+        <!-- Agriculture -->
+        <div class="cluster-icon flex flex-col items-center p-6 bg-white border border-navy-100 rounded-lg hover:border-teal-600 cursor-pointer transition-all" onclick="openClusterModal('agriculture')">
+          <div class="w-16 h-16 rounded-full bg-teal-50 text-teal-600 flex items-center justify-center mb-4">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+          </div>
+          <p class="font-heading font-semibold text-sm text-navy-900 text-center">Agriculture & Natural Resources</p>
+        </div>
+
+        <!-- Arts -->
+        <div class="cluster-icon flex flex-col items-center p-6 bg-white border border-navy-100 rounded-lg hover:border-teal-600 cursor-pointer transition-all" onclick="openClusterModal('arts')">
+          <div class="w-16 h-16 rounded-full bg-teal-50 text-teal-600 flex items-center justify-center mb-4">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z"/>
+            </svg>
+          </div>
+          <p class="font-heading font-semibold text-sm text-navy-900 text-center">Arts & Communication</p>
+        </div>
+
+        <!-- Finance -->
+        <div class="cluster-icon flex flex-col items-center p-6 bg-white border border-navy-100 rounded-lg hover:border-teal-600 cursor-pointer transition-all" onclick="openClusterModal('finance')">
+          <div class="w-16 h-16 rounded-full bg-teal-50 text-teal-600 flex items-center justify-center mb-4">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+          </div>
+          <p class="font-heading font-semibold text-sm text-navy-900 text-center">Finance & Business</p>
+        </div>
+
+        <!-- Health -->
+        <div class="cluster-icon flex flex-col items-center p-6 bg-white border border-navy-100 rounded-lg hover:border-teal-600 cursor-pointer transition-all" onclick="openClusterModal('health')">
+          <div class="w-16 h-16 rounded-full bg-teal-50 text-teal-600 flex items-center justify-center mb-4">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+            </svg>
+          </div>
+          <p class="font-heading font-semibold text-sm text-navy-900 text-center">Health Sciences</p>
+        </div>
+
+        <!-- Human Services -->
+        <div class="cluster-icon flex flex-col items-center p-6 bg-white border border-navy-100 rounded-lg hover:border-teal-600 cursor-pointer transition-all" onclick="openClusterModal('human')">
+          <div class="w-16 h-16 rounded-full bg-teal-50 text-teal-600 flex items-center justify-center mb-4">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
+            </svg>
+          </div>
+          <p class="font-heading font-semibold text-sm text-navy-900 text-center">Human & Public Services</p>
+        </div>
+
+        <!-- IT -->
+        <div class="cluster-icon flex flex-col items-center p-6 bg-white border border-navy-100 rounded-lg hover:border-teal-600 cursor-pointer transition-all" onclick="openClusterModal('it')">
+          <div class="w-16 h-16 rounded-full bg-teal-50 text-teal-600 flex items-center justify-center mb-4">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>
+            </svg>
+          </div>
+          <p class="font-heading font-semibold text-sm text-navy-900 text-center">Information Technology</p>
+        </div>
+
+        <!-- Manufacturing -->
+        <div class="cluster-icon flex flex-col items-center p-6 bg-white border border-navy-100 rounded-lg hover:border-teal-600 cursor-pointer transition-all" onclick="openClusterModal('manufacturing')">
+          <div class="w-16 h-16 rounded-full bg-teal-50 text-teal-600 flex items-center justify-center mb-4">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+            </svg>
+          </div>
+          <p class="font-heading font-semibold text-sm text-navy-900 text-center">Manufacturing & Engineering</p>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Essential Employability Skills Section -->
+  <section class="py-24 md:py-32 px-6 md:px-8 bg-crimson-800 text-white">
+    <div class="max-w-7xl mx-auto">
+
+      <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+
+        <div>
+          <p class="text-sm uppercase tracking-widest text-crimson-300 font-semibold mb-4">Cross-Sector Competencies</p>
+          <h2 class="font-heading text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mb-6">
+            10 Essential Employability Skills
+          </h2>
+          <p class="text-lg text-crimson-100 leading-relaxed mb-8">
+            These aren't "soft skills"—they're the cross-sector competencies that every employer values, regardless of industry.
+            You'll develop and demonstrate these throughout your Field Experience.
+          </p>
+          <a href="#apply" class="inline-flex items-center gap-3 bg-white text-crimson-800 px-8 py-4 text-sm font-semibold uppercase tracking-wider hover:bg-gold-500 hover:text-navy-900 transition-colors">
+            <span>Start Building Skills</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+            </svg>
+          </a>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div class="bg-white/10 backdrop-blur p-4 rounded-lg cursor-pointer hover:bg-white/20 transition-colors group" onclick="openSkillModal('teamwork')">
+            <div class="flex items-center justify-between">
+              <p class="font-heading font-semibold">Teamwork & Conflict Resolution</p>
+              <svg class="w-4 h-4 text-white/50 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+            </div>
+          </div>
+          <div class="bg-white/10 backdrop-blur p-4 rounded-lg cursor-pointer hover:bg-white/20 transition-colors group" onclick="openSkillModal('communication')">
+            <div class="flex items-center justify-between">
+              <p class="font-heading font-semibold">Communication</p>
+              <svg class="w-4 h-4 text-white/50 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+            </div>
+          </div>
+          <div class="bg-white/10 backdrop-blur p-4 rounded-lg cursor-pointer hover:bg-white/20 transition-colors group" onclick="openSkillModal('problem-solving')">
+            <div class="flex items-center justify-between">
+              <p class="font-heading font-semibold">Problem Solving</p>
+              <svg class="w-4 h-4 text-white/50 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+            </div>
+          </div>
+          <div class="bg-white/10 backdrop-blur p-4 rounded-lg cursor-pointer hover:bg-white/20 transition-colors group" onclick="openSkillModal('decision-making')">
+            <div class="flex items-center justify-between">
+              <p class="font-heading font-semibold">Decision Making</p>
+              <svg class="w-4 h-4 text-white/50 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+            </div>
+          </div>
+          <div class="bg-white/10 backdrop-blur p-4 rounded-lg cursor-pointer hover:bg-white/20 transition-colors group" onclick="openSkillModal('critical-thinking')">
+            <div class="flex items-center justify-between">
+              <p class="font-heading font-semibold">Critical Thinking</p>
+              <svg class="w-4 h-4 text-white/50 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+            </div>
+          </div>
+          <div class="bg-white/10 backdrop-blur p-4 rounded-lg cursor-pointer hover:bg-white/20 transition-colors group" onclick="openSkillModal('adaptability')">
+            <div class="flex items-center justify-between">
+              <p class="font-heading font-semibold">Adaptability & Flexibility</p>
+              <svg class="w-4 h-4 text-white/50 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+            </div>
+          </div>
+          <div class="bg-white/10 backdrop-blur p-4 rounded-lg cursor-pointer hover:bg-white/20 transition-colors group" onclick="openSkillModal('initiative')">
+            <div class="flex items-center justify-between">
+              <p class="font-heading font-semibold">Initiative & Self-Drive</p>
+              <svg class="w-4 h-4 text-white/50 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+            </div>
+          </div>
+          <div class="bg-white/10 backdrop-blur p-4 rounded-lg cursor-pointer hover:bg-white/20 transition-colors group" onclick="openSkillModal('reliability')">
+            <div class="flex items-center justify-between">
+              <p class="font-heading font-semibold">Reliability & Accountability</p>
+              <svg class="w-4 h-4 text-white/50 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+            </div>
+          </div>
+          <div class="bg-white/10 backdrop-blur p-4 rounded-lg cursor-pointer hover:bg-white/20 transition-colors group" onclick="openSkillModal('cultural')">
+            <div class="flex items-center justify-between">
+              <p class="font-heading font-semibold">Cultural Competence</p>
+              <svg class="w-4 h-4 text-white/50 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+            </div>
+          </div>
+          <div class="bg-gold-500 text-navy-900 p-4 rounded-lg cursor-pointer hover:bg-gold-400 transition-colors group" onclick="openSkillModal('planning')">
+            <div class="flex items-center justify-between">
+              <p class="font-heading font-semibold">Planning & Organizing</p>
+              <svg class="w-4 h-4 text-navy-900/50 group-hover:text-navy-900 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- For Business Section -->
+  <section id="business" class="py-24 md:py-32 px-6 md:px-8">
+    <div class="max-w-7xl mx-auto">
+
+      <div class="grid lg:grid-cols-2 gap-16 lg:gap-24">
+
+        <div>
+          <p class="text-sm uppercase tracking-widest text-teal-600 font-semibold mb-4">For Business Partners</p>
+          <h2 class="font-heading text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-navy-900 mb-6">
+            Build your future workforce.
+          </h2>
+          <p class="text-lg text-navy-600 leading-relaxed mb-8">
+            Partner with Batavia High School to access motivated, coachable talent.
+            Preview potential future employees. Get fresh ideas and support on the
+            projects you've never had time to tackle.
+          </p>
+
+          <div class="space-y-4 mb-10">
+            <div class="flex items-start gap-4">
+              <div class="w-6 h-6 rounded-full bg-teal-600 text-white flex items-center justify-center flex-shrink-0 mt-0.5">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                </svg>
+              </div>
+              <p class="text-navy-700">Access to pre-screened, motivated students</p>
+            </div>
+            <div class="flex items-start gap-4">
+              <div class="w-6 h-6 rounded-full bg-teal-600 text-white flex items-center justify-center flex-shrink-0 mt-0.5">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                </svg>
+              </div>
+              <p class="text-navy-700">Preview potential future employees before hiring</p>
+            </div>
+            <div class="flex items-start gap-4">
+              <div class="w-6 h-6 rounded-full bg-teal-600 text-white flex items-center justify-center flex-shrink-0 mt-0.5">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                </svg>
+              </div>
+              <p class="text-navy-700">Fresh ideas and tech-fluent support for daily tasks</p>
+            </div>
+            <div class="flex items-start gap-4">
+              <div class="w-6 h-6 rounded-full bg-teal-600 text-white flex items-center justify-center flex-shrink-0 mt-0.5">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                </svg>
+              </div>
+              <p class="text-navy-700">Strengthen your community partnership and reputation</p>
+            </div>
+          </div>
+
+          <button onclick="openModal('partner-form')" class="inline-flex items-center gap-3 bg-crimson-800 text-white px-8 py-4 text-sm font-semibold uppercase tracking-wider hover:bg-crimson-700 transition-colors">
+            <span>Interested? Fill Out the Partner Form</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+            </svg>
+          </button>
+          <p class="text-sm text-navy-500 mt-3">Select the ways you'd like to partner with Batavia High School.</p>
+
+          <!-- Coordinator Contact -->
+          <div class="mt-8 pt-6 border-t border-navy-200 flex items-center gap-4">
+            <div class="w-12 h-12 rounded-full bg-navy-100 text-navy-600 flex items-center justify-center">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+              </svg>
+            </div>
+            <div>
+              <p class="font-heading font-bold text-navy-900">Michael Theriault</p>
+              <p class="text-sm text-navy-500">Field Experience Coordinator</p>
+              <a href="mailto:michael@bps101.net" class="text-sm text-crimson-800 hover:text-crimson-700 font-medium">michael@bps101.net</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Partnership Tiers -->
+        <div class="space-y-6">
+
+          <div class="bg-navy-50 p-6 border-l-4 border-navy-300 hover:border-crimson-800 transition-colors">
+            <h3 class="font-heading font-bold text-lg text-navy-900 mb-2">Job Shadows</h3>
+            <p class="text-navy-600">Give students the opportunity to observe your workplace for a day or a few hours.</p>
+          </div>
+
+          <div class="bg-navy-50 p-6 border-l-4 border-navy-300 hover:border-crimson-800 transition-colors">
+            <h3 class="font-heading font-bold text-lg text-navy-900 mb-2">Guest Speaking</h3>
+            <p class="text-navy-600">Share your knowledge, career insights, and professional experience with students.</p>
+          </div>
+
+          <div class="bg-navy-50 p-6 border-l-4 border-navy-300 hover:border-crimson-800 transition-colors">
+            <h3 class="font-heading font-bold text-lg text-navy-900 mb-2">Mentorship</h3>
+            <p class="text-navy-600">Support students in classes through guidance, project mentorship, and industry expertise.</p>
+          </div>
+
+          <div class="bg-crimson-800 text-white p-6 border-l-4 border-gold-500">
+            <div class="flex items-center gap-2 mb-2">
+              <h3 class="font-heading font-bold text-lg">Field Experience Placement</h3>
+              <span class="bg-gold-500 text-navy-900 text-xs font-bold px-2 py-0.5 rounded">GOLD STANDARD</span>
+            </div>
+            <p class="text-crimson-100">Host and supervise hands-on placements where students gain 60+ hours of practical workplace experience.</p>
+          </div>
+
+          <!-- One-Pager Downloads -->
+          <div class="mt-8 bg-navy-50 p-6 rounded-lg">
+            <h4 class="font-heading font-bold text-navy-900 mb-1">What does each partnership look like?</h4>
+            <p class="text-sm text-navy-500 mb-4">Download our one-pagers for a quick overview of expectations for each partnership type.</p>
+            <div class="flex flex-wrap gap-3">
+              <a href="#" class="inline-flex items-center gap-2 bg-white border border-navy-200 text-navy-700 px-4 py-2.5 text-sm font-medium hover:border-crimson-800 hover:text-crimson-800 transition-colors rounded">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                </svg>
+                Field Experience
+              </a>
+              <a href="#" class="inline-flex items-center gap-2 bg-white border border-navy-200 text-navy-700 px-4 py-2.5 text-sm font-medium hover:border-crimson-800 hover:text-crimson-800 transition-colors rounded">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                </svg>
+                Job Shadowing
+              </a>
+              <a href="#" class="inline-flex items-center gap-2 bg-white border border-navy-200 text-navy-700 px-4 py-2.5 text-sm font-medium hover:border-crimson-800 hover:text-crimson-800 transition-colors rounded">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                </svg>
+                Mentorship
+              </a>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Partner Businesses Section -->
+  <section class="py-24 md:py-32 px-6 md:px-8 bg-navy-50">
+    <div class="max-w-7xl mx-auto">
+
+      <div class="text-center mb-16">
+        <p class="text-sm uppercase tracking-widest text-crimson-800 font-semibold mb-4">Our Partners</p>
+        <h2 class="font-heading text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-navy-900 mb-4">
+          Businesses Already On Board
+        </h2>
+        <p class="text-lg text-navy-600 max-w-2xl mx-auto">
+          These local businesses are investing in the next generation. Want to join them?
+        </p>
+      </div>
+
+      <!-- Partner Logo Grid (placeholder) -->
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 mb-16">
+        <!-- Placeholder partner slots -->
+        <div class="bg-white border border-navy-200 rounded-lg p-6 flex items-center justify-center min-h-[100px]">
+          <p class="text-navy-300 text-sm text-center font-medium">Partner Logo</p>
+        </div>
+        <div class="bg-white border border-navy-200 rounded-lg p-6 flex items-center justify-center min-h-[100px]">
+          <p class="text-navy-300 text-sm text-center font-medium">Partner Logo</p>
+        </div>
+        <div class="bg-white border border-navy-200 rounded-lg p-6 flex items-center justify-center min-h-[100px]">
+          <p class="text-navy-300 text-sm text-center font-medium">Partner Logo</p>
+        </div>
+        <div class="bg-white border border-navy-200 rounded-lg p-6 flex items-center justify-center min-h-[100px]">
+          <p class="text-navy-300 text-sm text-center font-medium">Partner Logo</p>
+        </div>
+        <div class="bg-white border border-navy-200 rounded-lg p-6 flex items-center justify-center min-h-[100px]">
+          <p class="text-navy-300 text-sm text-center font-medium">Partner Logo</p>
+        </div>
+        <div class="bg-white border border-navy-200 rounded-lg p-6 flex items-center justify-center min-h-[100px] border-dashed">
+          <a href="#business" class="text-crimson-800 text-sm text-center font-semibold hover:text-crimson-700 transition-colors">Your Business Here?</a>
+        </div>
+      </div>
+
+      <!-- Partner Testimonials -->
+      <div class="max-w-4xl mx-auto">
+        <h3 class="font-heading text-xl font-bold text-navy-900 mb-8 text-center">What Our Partners Say</h3>
+        <div class="grid md:grid-cols-2 gap-8">
+
+          <!-- Testimonial placeholder 1 -->
+          <div class="bg-white p-8 rounded-lg border border-navy-100">
+            <svg class="w-8 h-8 text-gold-500 mb-4" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
+            </svg>
+            <p class="text-navy-600 leading-relaxed italic mb-4">Partner testimonial coming soon — stories from businesses about how beneficial it was to host student interns.</p>
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-full bg-navy-100"></div>
+              <div>
+                <p class="font-heading font-bold text-navy-900 text-sm">Business Name</p>
+                <p class="text-navy-500 text-xs">Partner since 2026</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Testimonial placeholder 2 -->
+          <div class="bg-white p-8 rounded-lg border border-navy-100">
+            <svg class="w-8 h-8 text-gold-500 mb-4" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
+            </svg>
+            <p class="text-navy-600 leading-relaxed italic mb-4">Partner testimonial coming soon — stories about the bright, motivated students who contributed real value.</p>
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-full bg-navy-100"></div>
+              <div>
+                <p class="font-heading font-bold text-navy-900 text-sm">Business Name</p>
+                <p class="text-navy-500 text-xs">Partner since 2026</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Journey / Continuum Section -->
+  <section class="py-24 md:py-32 px-6 md:px-8 bg-navy-900 text-white">
+    <div class="max-w-7xl mx-auto">
+
+      <div class="text-center mb-16">
+        <p class="text-sm uppercase tracking-widest text-gold-500 font-semibold mb-4">The Continuum</p>
+        <h2 class="font-heading text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mb-4">
+          Your journey from awareness to experience.
+        </h2>
+      </div>
+
+      <!-- Timeline -->
+      <div class="grid md:grid-cols-4 gap-8">
+
+        <div class="relative">
+          <div class="w-12 h-12 rounded-full bg-navy-800 border-2 border-gold-500 text-gold-500 flex items-center justify-center mb-4 font-heading font-bold">1</div>
+          <h3 class="font-heading font-bold text-lg mb-2">Application</h3>
+          <p class="text-navy-300 text-sm leading-relaxed">Submit your application, attend the info meeting, and get a teacher reference.</p>
+        </div>
+
+        <div class="relative">
+          <div class="w-12 h-12 rounded-full bg-navy-800 border-2 border-gold-500 text-gold-500 flex items-center justify-center mb-4 font-heading font-bold">2</div>
+          <h3 class="font-heading font-bold text-lg mb-2">Bootcamp</h3>
+          <p class="text-navy-300 text-sm leading-relaxed">Two weeks of interview prep, workplace readiness, and essential employability skills coaching.</p>
+        </div>
+
+        <div class="relative">
+          <div class="w-12 h-12 rounded-full bg-navy-800 border-2 border-gold-500 text-gold-500 flex items-center justify-center mb-4 font-heading font-bold">3</div>
+          <h3 class="font-heading font-bold text-lg mb-2">Placement</h3>
+          <p class="text-navy-300 text-sm leading-relaxed">60+ hours of hands-on experience with ongoing coaching and weekly accountability.</p>
+        </div>
+
+        <div class="relative">
+          <div class="w-12 h-12 rounded-full bg-gold-500 text-navy-900 flex items-center justify-center mb-4">
+            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/>
+            </svg>
+          </div>
+          <h3 class="font-heading font-bold text-lg mb-2">Capstone</h3>
+          <p class="text-navy-300 text-sm leading-relaxed">Tell your story. Showcase your products, skills, and what you've learned.</p>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section id="apply" class="py-24 md:py-32 px-6 md:px-8">
+    <div class="max-w-4xl mx-auto text-center">
+
+      <div class="flex justify-center mb-8">
+        <div class="w-16 h-16 rounded-full bg-gold-500 text-navy-900 flex items-center justify-center shadow-lg shadow-gold-500/30">
+          <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/>
+          </svg>
+        </div>
+      </div>
+
+      <h2 class="font-heading text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-navy-900 mb-6">
+        Invest in the next generation.<br>
+        <span class="text-crimson-800">Partner with BHS.</span>
+      </h2>
+
+      <p class="text-lg md:text-xl text-navy-600 leading-relaxed mb-10 max-w-2xl mx-auto">
+        Whether you can host an intern, offer a job shadow, speak to a class, or mentor a student — there's a way for your business to make an impact.
+      </p>
+
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <button onclick="openModal('partner-form')" class="bg-crimson-800 text-white px-10 py-5 text-sm font-semibold uppercase tracking-wider hover:bg-crimson-700 transition-colors">
+          Fill Out the Partner Form
+        </button>
+        <button onclick="openModal('inquiry-form')" class="border-2 border-navy-900 text-navy-900 px-10 py-5 text-sm font-semibold uppercase tracking-wider hover:bg-navy-900 hover:text-white transition-colors">
+          General Inquiry
+        </button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="py-12 px-6 md:px-8 bg-navy-900 text-white">
+    <div class="max-w-7xl mx-auto">
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
+
+        <!-- Logo -->
+        <div class="flex flex-col gap-2">
+          <img
+            src="https://res.cloudinary.com/dsbllwpbh/image/upload/v1770990807/field-study-logo-trans_kewube.png"
+            alt="BHS Field Experience"
+            class="h-8 max-w-[200px] object-contain object-left brightness-0 invert opacity-90"
+          />
+          <p class="text-sm text-navy-400">BHS Field Experience — Work-Based Learning Opportunities</p>
+        </div>
+
+        <div class="flex flex-col md:flex-row items-start md:items-center gap-6 md:gap-12">
+          <a href="#business" class="text-navy-300 hover:text-white text-sm transition-colors">Partner With Us</a>
+          <a href="#pathways-overview" class="text-navy-300 hover:text-white text-sm transition-colors">Pathways</a>
+          <a href="#" onclick="openModal('inquiry-form'); return false;" class="text-navy-300 hover:text-white text-sm transition-colors">Contact</a>
+        </div>
+
+      </div>
+
+      <!-- Contact Info -->
+      <div class="border-t border-navy-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+        <div>
+          <p class="font-heading font-bold text-white text-sm">Michael Theriault</p>
+          <p class="text-navy-400 text-sm">Field Experience Coordinator</p>
+          <a href="mailto:michael@bps101.net" class="text-gold-500 hover:text-gold-400 text-sm font-medium transition-colors">michael@bps101.net</a>
+        </div>
+        <div class="text-right">
+          <p class="text-sm text-navy-400">&copy; 2026 Batavia CUSD 101. All rights reserved.</p>
+          <p class="text-sm text-navy-500">Preparing students for career success through equitable, quality experiences.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Modals -->
+
+  <!-- Modal: Student Ownership -->
+  <div id="modal-ownership" class="modal-backdrop items-center justify-center p-6">
+    <div class="modal-content bg-white w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+      <div class="p-8 md:p-12">
+        <div class="flex justify-between items-start mb-8">
+          <div class="w-14 h-14 rounded-lg bg-crimson-100 text-crimson-800 flex items-center justify-center">
+            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+            </svg>
+          </div>
+          <button onclick="closeModal('ownership')" class="w-10 h-10 rounded-full border border-navy-200 flex items-center justify-center hover:bg-crimson-800 hover:text-white hover:border-crimson-800 transition-all">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+          </button>
+        </div>
+        <h2 class="font-heading text-2xl md:text-3xl font-bold text-navy-900 mb-6">Student Ownership</h2>
+        <div class="space-y-4 text-navy-600 leading-relaxed">
+          <p class="text-lg text-navy-700">
+            You apply. You interview. You earn your placement. Just like the real world.
+          </p>
+          <p>
+            Some school districts find placements for students. They screen candidates and say "here's a kid for you."
+            But that puts the school's partnership with the business on the line every time.
+          </p>
+          <p>
+            Our approach is different. Yes, we screen students to make sure they're ready for the class. But then
+            <strong class="text-navy-900">you</strong> have to get the job. You reach out to businesses. You apply. You interview.
+            The business has to accept you.
+          </p>
+          <p>
+            This flips the dynamic in an important way. You're not being handed something—you're earning it.
+            That's exactly how it works in the real world, and that's exactly how we prepare you for it.
+          </p>
+          <p>
+            We provide the resources: one-page profiles of partner businesses, contact information, coaching
+            on interview skills. But the initiative comes from you.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Business Partnership -->
+  <div id="modal-business" class="modal-backdrop items-center justify-center p-6">
+    <div class="modal-content bg-white w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+      <div class="p-8 md:p-12">
+        <div class="flex justify-between items-start mb-8">
+          <div class="w-14 h-14 rounded-lg bg-teal-100 text-teal-600 flex items-center justify-center">
+            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+            </svg>
+          </div>
+          <button onclick="closeModal('business')" class="w-10 h-10 rounded-full border border-navy-200 flex items-center justify-center hover:bg-teal-600 hover:text-white hover:border-teal-600 transition-all">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+          </button>
+        </div>
+        <h2 class="font-heading text-2xl md:text-3xl font-bold text-navy-900 mb-6">Business Partnership</h2>
+        <div class="space-y-4 text-navy-600 leading-relaxed">
+          <p class="text-lg text-navy-700">
+            This isn't charity. Companies get real value from participating.
+          </p>
+          <p>
+            <strong class="text-navy-900">Access to motivated, coachable talent.</strong> These are students who
+            applied for a competitive program, went through screening, and earned their spot. They want to be there.
+          </p>
+          <p>
+            <strong class="text-navy-900">Preview potential future employees.</strong> You get a semester to see
+            how someone works, learns, and fits your culture—before you ever have to make a hiring decision.
+          </p>
+          <p>
+            <strong class="text-navy-900">Fresh ideas and support on daily tasks.</strong> That project you've
+            never had time for? That event you couldn't staff? These students can help—and they bring
+            energy, tech fluency, and new perspectives.
+          </p>
+          <p>
+            <strong class="text-navy-900">Build your workforce pipeline.</strong> If you do a good job,
+            students will want to work for you. You're not just filling an intern slot—you're building
+            relationships with the next generation of your industry.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Structured Coaching -->
+  <div id="modal-structure" class="modal-backdrop items-center justify-center p-6">
+    <div class="modal-content bg-white w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+      <div class="p-8 md:p-12">
+        <div class="flex justify-between items-start mb-8">
+          <div class="w-14 h-14 rounded-lg bg-gold-100 text-gold-600 flex items-center justify-center">
+            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
+            </svg>
+          </div>
+          <button onclick="closeModal('structure')" class="w-10 h-10 rounded-full border border-navy-200 flex items-center justify-center hover:bg-gold-500 hover:text-navy-900 hover:border-gold-500 transition-all">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+          </button>
+        </div>
+        <h2 class="font-heading text-2xl md:text-3xl font-bold text-navy-900 mb-6">Structured Coaching</h2>
+        <div class="space-y-4 text-navy-600 leading-relaxed">
+          <p class="text-lg text-navy-700">
+            This isn't the old "loosely do some timesheets" program. This is a real course with real expectations.
+          </p>
+          <p>
+            <strong class="text-navy-900">Bootcamp.</strong> Before you ever set foot in a workplace, you'll spend two weeks
+            preparing. Interview skills. Workplace readiness. Understanding the essential employability skills
+            that matter across every career.
+          </p>
+          <p>
+            <strong class="text-navy-900">Ongoing coaching.</strong> You'll meet with your instructor every couple weeks throughout
+            the semester. This isn't just "check the box"—it's continuous development of your professional competencies.
+          </p>
+          <p>
+            <strong class="text-navy-900">Weekly accountability.</strong> Calendar scheduling. Time sheets. Reflections on what
+            you've completed. You'll build the habits that successful professionals use.
+          </p>
+          <p>
+            <strong class="text-navy-900">Capstone project.</strong> At the end, you'll tell your story. What did you do? What did
+            you create? What did you learn? Whether you loved it or learned it's not for you—that's your story to tell.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Safe Exploration -->
+  <div id="modal-exploration" class="modal-backdrop items-center justify-center p-6">
+    <div class="modal-content bg-white w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+      <div class="p-8 md:p-12">
+        <div class="flex justify-between items-start mb-8">
+          <div class="w-14 h-14 rounded-lg bg-navy-100 text-navy-900 flex items-center justify-center">
+            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+            </svg>
+          </div>
+          <button onclick="closeModal('exploration')" class="w-10 h-10 rounded-full border border-navy-200 flex items-center justify-center hover:bg-navy-900 hover:text-white hover:border-navy-900 transition-all">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+          </button>
+        </div>
+        <h2 class="font-heading text-2xl md:text-3xl font-bold text-navy-900 mb-6">Safe Exploration</h2>
+        <div class="space-y-4 text-navy-600 leading-relaxed">
+          <p class="text-lg text-navy-700">
+            High school is the perfect time to discover what you want—and what you don't.
+          </p>
+          <p>
+            Some students will do Field Experience and fall in love with their industry. They'll say
+            "I learned so much about engineering—I definitely want to pursue this." That's a win.
+          </p>
+          <p>
+            Other students will learn the opposite. "I thought I wanted to be an electrician, but
+            after this experience, I realized it's not for me." <strong class="text-navy-900">That's also a win.</strong>
+          </p>
+          <p>
+            The alternative is spending years and tuition dollars before realizing you're on the wrong path.
+            That's the real failure this program prevents.
+          </p>
+          <p>
+            In Field Experience, you're supported. You have coaching. You have structure. You can try,
+            fail, learn, and grow—all while you're still in the safety net of high school.
+          </p>
+          <p>
+            Getting ahead in a competitive job market while having the freedom to explore?
+            That's what this program is designed to give you.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Employability Skill Modal -->
+  <div id="modal-skill" class="modal-backdrop items-center justify-center p-6">
+    <div class="modal-content bg-white w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-lg">
+      <div class="p-8">
+        <div class="flex justify-between items-start mb-4">
+          <div class="w-12 h-12 rounded-full bg-crimson-100 text-crimson-800 flex items-center justify-center">
+            <span id="skill-number" class="font-heading font-bold text-lg"></span>
+          </div>
+          <button onclick="closeSkillModal()" class="w-10 h-10 rounded-full border border-navy-200 flex items-center justify-center hover:bg-crimson-800 hover:text-white hover:border-crimson-800 transition-all">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+          </button>
+        </div>
+        <h2 id="skill-title" class="font-heading text-xl md:text-2xl font-bold text-navy-900 mb-4"></h2>
+        <p id="skill-description" class="text-navy-600 leading-relaxed mb-6"></p>
+
+        <div class="bg-navy-50 rounded-lg p-4">
+          <h3 class="font-heading font-bold text-navy-900 text-sm mb-3">In Practice</h3>
+          <ul id="skill-examples" class="space-y-2 text-sm text-navy-600">
+            <!-- Examples inserted by JS -->
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Career Cluster Modal -->
+  <div id="modal-cluster" class="modal-backdrop items-center justify-center p-6">
+    <div class="modal-content bg-white w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-lg">
+      <div class="p-8 md:p-10">
+        <div class="flex justify-between items-start mb-6">
+          <div id="cluster-icon" class="w-16 h-16 rounded-full bg-teal-100 text-teal-600 flex items-center justify-center">
+            <!-- Icon inserted by JS -->
+          </div>
+          <button onclick="closeClusterModal()" class="w-10 h-10 rounded-full border border-navy-200 flex items-center justify-center hover:bg-teal-600 hover:text-white hover:border-teal-600 transition-all">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+          </button>
+        </div>
+        <h2 id="cluster-title" class="font-heading text-2xl md:text-3xl font-bold text-navy-900 mb-2"></h2>
+        <p id="cluster-description" class="text-navy-600 mb-6"></p>
+
+        <div class="mb-6">
+          <h3 class="font-heading font-bold text-navy-900 mb-3 flex items-center gap-2">
+            <span class="w-6 h-6 rounded bg-teal-600 text-white flex items-center justify-center text-xs font-bold">TC</span>
+            Technical Competencies
+          </h3>
+          <ul id="cluster-competencies" class="space-y-2">
+            <!-- Competencies inserted by JS -->
+          </ul>
+        </div>
+
+        <div>
+          <h3 class="font-heading font-bold text-navy-900 mb-3 flex items-center gap-2">
+            <span class="w-6 h-6 rounded bg-crimson-800 text-white flex items-center justify-center text-xs font-bold">EX</span>
+            Example Careers
+          </h3>
+          <div id="cluster-careers" class="flex flex-wrap gap-2">
+            <!-- Careers inserted by JS -->
+          </div>
+        </div>
+
+        <div class="mt-8 pt-6 border-t border-navy-100">
+          <a href="#apply" onclick="closeClusterModal()" class="inline-flex items-center gap-2 bg-crimson-800 text-white px-6 py-3 text-sm font-semibold uppercase tracking-wider hover:bg-crimson-700 transition-colors">
+            <span>Explore This Pathway</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Partner Interest Form -->
+  <div id="modal-partner-form" class="modal-backdrop items-center justify-center p-6">
+    <div class="modal-content bg-white w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-lg">
+      <div class="p-8 md:p-10">
+        <div class="flex justify-between items-start mb-6">
+          <div>
+            <h2 class="font-heading text-2xl md:text-3xl font-bold text-navy-900">Become a Partner</h2>
+            <p class="text-navy-500 text-sm mt-1">Select how you'd like to partner with Batavia High School.</p>
+          </div>
+          <button onclick="closeModal('partner-form')" class="w-10 h-10 rounded-full border border-navy-200 flex items-center justify-center hover:bg-crimson-800 hover:text-white hover:border-crimson-800 transition-all flex-shrink-0 ml-4">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+          </button>
+        </div>
+
+        <form name="partner-interest" method="POST" data-netlify="true" onsubmit="handlePartnerSubmit(event)">
+          <input type="hidden" name="form-name" value="partner-interest" />
+
+          <div class="space-y-5">
+            <div>
+              <label class="block text-sm font-semibold text-navy-900 mb-1.5">Business Name <span class="text-crimson-800">*</span></label>
+              <input type="text" name="business-name" required class="w-full px-4 py-3 border border-navy-200 rounded text-navy-900 text-sm focus:outline-none focus:border-crimson-800 focus:ring-1 focus:ring-crimson-800 transition-colors" placeholder="Your business name" />
+            </div>
+
+            <div>
+              <label class="block text-sm font-semibold text-navy-900 mb-1.5">Contact Name <span class="text-crimson-800">*</span></label>
+              <input type="text" name="contact-name" required class="w-full px-4 py-3 border border-navy-200 rounded text-navy-900 text-sm focus:outline-none focus:border-crimson-800 focus:ring-1 focus:ring-crimson-800 transition-colors" placeholder="Your name" />
+            </div>
+
+            <div>
+              <label class="block text-sm font-semibold text-navy-900 mb-1.5">Email <span class="text-crimson-800">*</span></label>
+              <input type="email" name="email" required class="w-full px-4 py-3 border border-navy-200 rounded text-navy-900 text-sm focus:outline-none focus:border-crimson-800 focus:ring-1 focus:ring-crimson-800 transition-colors" placeholder="you@company.com" />
+            </div>
+
+            <div>
+              <label class="block text-sm font-semibold text-navy-900 mb-1.5">Phone</label>
+              <input type="tel" name="phone" class="w-full px-4 py-3 border border-navy-200 rounded text-navy-900 text-sm focus:outline-none focus:border-crimson-800 focus:ring-1 focus:ring-crimson-800 transition-colors" placeholder="(555) 555-5555" />
+            </div>
+
+            <div>
+              <label class="block text-sm font-semibold text-navy-900 mb-3">How would you like to partner? <span class="text-crimson-800">*</span></label>
+              <div class="space-y-3">
+                <label class="flex items-start gap-3 cursor-pointer group">
+                  <input type="checkbox" name="partnership-type[]" value="job-shadow" class="mt-1 w-4 h-4 rounded border-navy-300 text-crimson-800 focus:ring-crimson-800" />
+                  <div>
+                    <p class="text-sm font-medium text-navy-900 group-hover:text-crimson-800 transition-colors">Job Shadow</p>
+                    <p class="text-xs text-navy-500">Let students observe your workplace for a day</p>
+                  </div>
+                </label>
+                <label class="flex items-start gap-3 cursor-pointer group">
+                  <input type="checkbox" name="partnership-type[]" value="guest-speaking" class="mt-1 w-4 h-4 rounded border-navy-300 text-crimson-800 focus:ring-crimson-800" />
+                  <div>
+                    <p class="text-sm font-medium text-navy-900 group-hover:text-crimson-800 transition-colors">Guest Speaking</p>
+                    <p class="text-xs text-navy-500">Share your career insights with students</p>
+                  </div>
+                </label>
+                <label class="flex items-start gap-3 cursor-pointer group">
+                  <input type="checkbox" name="partnership-type[]" value="mentorship" class="mt-1 w-4 h-4 rounded border-navy-300 text-crimson-800 focus:ring-crimson-800" />
+                  <div>
+                    <p class="text-sm font-medium text-navy-900 group-hover:text-crimson-800 transition-colors">Mentorship</p>
+                    <p class="text-xs text-navy-500">Guide students through projects and career advice</p>
+                  </div>
+                </label>
+                <label class="flex items-start gap-3 cursor-pointer group">
+                  <input type="checkbox" name="partnership-type[]" value="field-experience" class="mt-1 w-4 h-4 rounded border-navy-300 text-crimson-800 focus:ring-crimson-800" />
+                  <div>
+                    <p class="text-sm font-medium text-navy-900 group-hover:text-crimson-800 transition-colors">Field Experience Placement</p>
+                    <p class="text-xs text-navy-500">Host a student for 60+ hours of hands-on experience</p>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-sm font-semibold text-navy-900 mb-1.5">Anything else we should know?</label>
+              <textarea name="message" rows="3" class="w-full px-4 py-3 border border-navy-200 rounded text-navy-900 text-sm focus:outline-none focus:border-crimson-800 focus:ring-1 focus:ring-crimson-800 transition-colors resize-none" placeholder="Industry, number of students you could host, preferred timeframe, etc."></textarea>
+            </div>
+
+            <button type="submit" class="w-full bg-crimson-800 text-white px-8 py-4 text-sm font-semibold uppercase tracking-wider hover:bg-crimson-700 transition-colors">
+              Submit Partner Interest
+            </button>
+          </div>
+        </form>
+
+        <!-- Success state (hidden by default) -->
+        <div id="partner-form-success" class="hidden text-center py-8">
+          <div class="w-16 h-16 rounded-full bg-teal-100 text-teal-600 flex items-center justify-center mx-auto mb-4">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+            </svg>
+          </div>
+          <h3 class="font-heading text-xl font-bold text-navy-900 mb-2">Thank you!</h3>
+          <p class="text-navy-600">We've received your interest. Michael Theriault will be in touch soon.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: General Inquiry Form -->
+  <div id="modal-inquiry-form" class="modal-backdrop items-center justify-center p-6">
+    <div class="modal-content bg-white w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-lg">
+      <div class="p-8 md:p-10">
+        <div class="flex justify-between items-start mb-6">
+          <div>
+            <h2 class="font-heading text-2xl md:text-3xl font-bold text-navy-900">Get in Touch</h2>
+            <p class="text-navy-500 text-sm mt-1">Questions about Field Experience? We'd love to hear from you.</p>
+          </div>
+          <button onclick="closeModal('inquiry-form')" class="w-10 h-10 rounded-full border border-navy-200 flex items-center justify-center hover:bg-crimson-800 hover:text-white hover:border-crimson-800 transition-all flex-shrink-0 ml-4">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+          </button>
+        </div>
+
+        <form name="general-inquiry" method="POST" data-netlify="true" onsubmit="handleInquirySubmit(event)">
+          <input type="hidden" name="form-name" value="general-inquiry" />
+
+          <div class="space-y-5">
+            <div>
+              <label class="block text-sm font-semibold text-navy-900 mb-1.5">Name <span class="text-crimson-800">*</span></label>
+              <input type="text" name="name" required class="w-full px-4 py-3 border border-navy-200 rounded text-navy-900 text-sm focus:outline-none focus:border-crimson-800 focus:ring-1 focus:ring-crimson-800 transition-colors" placeholder="Your name" />
+            </div>
+
+            <div>
+              <label class="block text-sm font-semibold text-navy-900 mb-1.5">Email <span class="text-crimson-800">*</span></label>
+              <input type="email" name="email" required class="w-full px-4 py-3 border border-navy-200 rounded text-navy-900 text-sm focus:outline-none focus:border-crimson-800 focus:ring-1 focus:ring-crimson-800 transition-colors" placeholder="you@email.com" />
+            </div>
+
+            <div>
+              <label class="block text-sm font-semibold text-navy-900 mb-1.5">I am a... <span class="text-crimson-800">*</span></label>
+              <select name="role" required class="w-full px-4 py-3 border border-navy-200 rounded text-navy-900 text-sm focus:outline-none focus:border-crimson-800 focus:ring-1 focus:ring-crimson-800 transition-colors bg-white">
+                <option value="" disabled selected>Select one</option>
+                <option value="business">Business / Employer</option>
+                <option value="parent">Parent / Guardian</option>
+                <option value="student">Student</option>
+                <option value="educator">Educator / Staff</option>
+                <option value="community">Community Member</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-sm font-semibold text-navy-900 mb-1.5">Message <span class="text-crimson-800">*</span></label>
+              <textarea name="message" rows="4" required class="w-full px-4 py-3 border border-navy-200 rounded text-navy-900 text-sm focus:outline-none focus:border-crimson-800 focus:ring-1 focus:ring-crimson-800 transition-colors resize-none" placeholder="How can we help?"></textarea>
+            </div>
+
+            <button type="submit" class="w-full bg-navy-900 text-white px-8 py-4 text-sm font-semibold uppercase tracking-wider hover:bg-crimson-800 transition-colors">
+              Send Message
+            </button>
+          </div>
+        </form>
+
+        <!-- Success state (hidden by default) -->
+        <div id="inquiry-form-success" class="hidden text-center py-8">
+          <div class="w-16 h-16 rounded-full bg-teal-100 text-teal-600 flex items-center justify-center mx-auto mb-4">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+            </svg>
+          </div>
+          <h3 class="font-heading text-xl font-bold text-navy-900 mb-2">Message sent!</h3>
+          <p class="text-navy-600">Thanks for reaching out. We'll get back to you shortly.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Modal Functions
+    function openModal(id) {
+      const modal = document.getElementById('modal-' + id);
+      document.body.style.overflow = 'hidden';
+      modal.style.display = 'flex';
+      modal.offsetHeight;
+      modal.classList.add('active');
+    }
+
+    function closeModal(id) {
+      const modal = document.getElementById('modal-' + id);
+      modal.classList.remove('active');
+      setTimeout(() => {
+        modal.style.display = 'none';
+        document.body.style.overflow = '';
+        if (id.includes('form')) resetFormModal(id);
+      }, 400);
+    }
+
+    // Close modal on backdrop click
+    document.querySelectorAll('.modal-backdrop').forEach(modal => {
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          const id = modal.id.replace('modal-', '');
+          closeModal(id);
+        }
+      });
+    });
+
+    // Close modal on Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        // Close skill modal if open
+        const skillModal = document.getElementById('modal-skill');
+        if (skillModal.classList.contains('active')) {
+          closeSkillModal();
+          return;
+        }
+        // Close cluster modal if open
+        const clusterModal = document.getElementById('modal-cluster');
+        if (clusterModal.classList.contains('active')) {
+          closeClusterModal();
+          return;
+        }
+        // Close other modals
+        document.querySelectorAll('.modal-backdrop.active').forEach(modal => {
+          const id = modal.id.replace('modal-', '');
+          if (id !== 'cluster' && id !== 'skill') {
+            closeModal(id);
+          }
+        });
+      }
+    });
+
+    // Form submission handlers
+    function handlePartnerSubmit(e) {
+      e.preventDefault();
+      const form = e.target;
+      const btn = form.querySelector('button[type="submit"]');
+      const formData = new FormData(form);
+
+      btn.disabled = true;
+      btn.textContent = 'Submitting...';
+
+      fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(formData).toString()
+      })
+      .then(res => {
+        if (!res.ok) throw new Error('Submission failed');
+        form.style.display = 'none';
+        document.getElementById('partner-form-success').classList.remove('hidden');
+      })
+      .catch(() => {
+        btn.disabled = false;
+        btn.textContent = 'Submit Partner Interest';
+        showFormError(form, 'Something went wrong. Please try again or email michael@bps101.net directly.');
+      });
+    }
+
+    function handleInquirySubmit(e) {
+      e.preventDefault();
+      const form = e.target;
+      const btn = form.querySelector('button[type="submit"]');
+      const formData = new FormData(form);
+
+      btn.disabled = true;
+      btn.textContent = 'Sending...';
+
+      fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(formData).toString()
+      })
+      .then(res => {
+        if (!res.ok) throw new Error('Submission failed');
+        form.style.display = 'none';
+        document.getElementById('inquiry-form-success').classList.remove('hidden');
+      })
+      .catch(() => {
+        btn.disabled = false;
+        btn.textContent = 'Send Message';
+        showFormError(form, 'Something went wrong. Please try again or email michael@bps101.net directly.');
+      });
+    }
+
+    function showFormError(form, message) {
+      let errorEl = form.querySelector('.form-error');
+      if (!errorEl) {
+        errorEl = document.createElement('p');
+        errorEl.className = 'form-error text-sm text-crimson-800 bg-crimson-50 border border-crimson-200 rounded px-4 py-3 mt-4';
+        form.appendChild(errorEl);
+      }
+      errorEl.textContent = message;
+    }
+
+    // Reset form modals when closed so they're ready next time
+    function resetFormModal(id) {
+      const modal = document.getElementById('modal-' + id);
+      const form = modal.querySelector('form');
+      const success = modal.querySelector('[id$="-success"]');
+      if (form) { form.style.display = ''; form.reset(); }
+      if (success) { success.classList.add('hidden'); }
+    }
+
+    // Mobile menu toggle
+    function toggleMobileMenu() {
+      alert('Mobile menu would open here');
+    }
+
+    // Video player function
+    function playVideo(overlay) {
+      const container = overlay.parentElement;
+      const video = container.querySelector('video');
+
+      // Hide overlay
+      overlay.style.opacity = '0';
+      overlay.style.pointerEvents = 'none';
+
+      // Unmute and play
+      video.muted = false;
+      video.play();
+
+      // Show overlay again when video ends or is paused
+      video.addEventListener('pause', function() {
+        overlay.style.opacity = '1';
+        overlay.style.pointerEvents = 'auto';
+      });
+
+      video.addEventListener('ended', function() {
+        overlay.style.opacity = '1';
+        overlay.style.pointerEvents = 'auto';
+      });
+    }
+
+    // Pause other videos when one plays
+    document.querySelectorAll('video').forEach(video => {
+      video.addEventListener('play', function() {
+        document.querySelectorAll('video').forEach(v => {
+          if (v !== video) {
+            v.pause();
+            v.muted = true;
+            const overlay = v.parentElement.querySelector('.video-overlay');
+            if (overlay) {
+              overlay.style.opacity = '1';
+              overlay.style.pointerEvents = 'auto';
+            }
+          }
+        });
+      });
+    });
+
+    // Employability Skills Data
+    const skillsData = {
+      'teamwork': {
+        number: '01',
+        title: 'Teamwork & Conflict Resolution',
+        description: 'The ability to work effectively with others toward a common goal, while navigating disagreements constructively and maintaining positive professional relationships.',
+        examples: [
+          'Collaborating with coworkers on group projects',
+          'Mediating disagreements between team members',
+          'Contributing ideas while respecting others\' input',
+          'Sharing responsibilities and meeting deadlines together'
+        ]
+      },
+      'communication': {
+        number: '02',
+        title: 'Communication',
+        description: 'Expressing ideas clearly through speaking, writing, and active listening. This includes adapting your communication style to different audiences and situations.',
+        examples: [
+          'Writing professional emails and reports',
+          'Presenting information to supervisors or clients',
+          'Listening actively and asking clarifying questions',
+          'Giving and receiving constructive feedback'
+        ]
+      },
+      'problem-solving': {
+        number: '03',
+        title: 'Problem Solving',
+        description: 'Identifying challenges, analyzing possible solutions, and implementing effective strategies to overcome obstacles in the workplace.',
+        examples: [
+          'Troubleshooting equipment or process issues',
+          'Finding creative solutions with limited resources',
+          'Breaking complex problems into manageable steps',
+          'Learning from mistakes to prevent future issues'
+        ]
+      },
+      'decision-making': {
+        number: '04',
+        title: 'Decision Making',
+        description: 'Evaluating options, considering consequences, and making informed choices in a timely manner—even under pressure or with incomplete information.',
+        examples: [
+          'Prioritizing tasks when everything feels urgent',
+          'Choosing between competing approaches to a project',
+          'Knowing when to ask for help vs. act independently',
+          'Weighing short-term and long-term impacts'
+        ]
+      },
+      'critical-thinking': {
+        number: '05',
+        title: 'Critical Thinking',
+        description: 'Analyzing information objectively, questioning assumptions, and forming reasoned judgments rather than accepting things at face value.',
+        examples: [
+          'Evaluating the credibility of information sources',
+          'Identifying patterns and drawing logical conclusions',
+          'Questioning "the way things have always been done"',
+          'Considering multiple perspectives before acting'
+        ]
+      },
+      'adaptability': {
+        number: '06',
+        title: 'Adaptability & Flexibility',
+        description: 'Adjusting to new situations, changing priorities, and unexpected challenges with a positive attitude and willingness to learn.',
+        examples: [
+          'Taking on new responsibilities outside your job description',
+          'Adjusting to schedule or priority changes',
+          'Learning new software, tools, or processes quickly',
+          'Staying calm and productive during uncertainty'
+        ]
+      },
+      'initiative': {
+        number: '07',
+        title: 'Initiative & Self-Drive',
+        description: 'Taking action without being asked, seeking out opportunities to contribute, and motivating yourself to achieve goals independently.',
+        examples: [
+          'Volunteering for projects or additional tasks',
+          'Identifying problems and proposing solutions proactively',
+          'Setting personal goals and working toward them',
+          'Continuing to work effectively without constant supervision'
+        ]
+      },
+      'reliability': {
+        number: '08',
+        title: 'Reliability & Accountability',
+        description: 'Being dependable, following through on commitments, showing up on time, and taking responsibility for your actions and their outcomes.',
+        examples: [
+          'Arriving on time and ready to work every day',
+          'Meeting deadlines consistently',
+          'Owning mistakes and working to fix them',
+          'Following through on promises to coworkers and supervisors'
+        ]
+      },
+      'cultural': {
+        number: '09',
+        title: 'Cultural Competence',
+        description: 'Working respectfully and effectively with people from diverse backgrounds, perspectives, and experiences.',
+        examples: [
+          'Respecting different communication styles and customs',
+          'Avoiding assumptions based on stereotypes',
+          'Learning about colleagues\' backgrounds and perspectives',
+          'Creating an inclusive environment for everyone'
+        ]
+      },
+      'planning': {
+        number: '10',
+        title: 'Planning & Organizing',
+        description: 'Setting goals, managing time effectively, prioritizing tasks, and creating systems to stay on track and meet objectives.',
+        examples: [
+          'Creating schedules and to-do lists',
+          'Breaking large projects into actionable steps',
+          'Managing multiple responsibilities simultaneously',
+          'Tracking progress and adjusting plans as needed'
+        ]
+      }
+    };
+
+    // Open skill modal
+    function openSkillModal(skillId) {
+      const data = skillsData[skillId];
+      if (!data) return;
+
+      document.getElementById('skill-number').textContent = data.number;
+      document.getElementById('skill-title').textContent = data.title;
+      document.getElementById('skill-description').textContent = data.description;
+
+      const examplesList = document.getElementById('skill-examples');
+      examplesList.innerHTML = data.examples.map(ex =>
+        `<li class="flex items-start gap-2">
+          <svg class="w-4 h-4 text-crimson-800 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4"/>
+          </svg>
+          <span>${ex}</span>
+        </li>`
+      ).join('');
+
+      const modal = document.getElementById('modal-skill');
+      document.body.style.overflow = 'hidden';
+      modal.style.display = 'flex';
+      modal.offsetHeight;
+      modal.classList.add('active');
+    }
+
+    // Close skill modal
+    function closeSkillModal() {
+      const modal = document.getElementById('modal-skill');
+      modal.classList.remove('active');
+      setTimeout(() => {
+        modal.style.display = 'none';
+        document.body.style.overflow = '';
+      }, 400);
+    }
+
+    // Close skill modal on backdrop click
+    document.getElementById('modal-skill').addEventListener('click', (e) => {
+      if (e.target.id === 'modal-skill') {
+        closeSkillModal();
+      }
+    });
+
+    // Career Cluster Data
+    const clusterData = {
+      agriculture: {
+        title: 'Agriculture, Food & Natural Resources',
+        description: 'Explore careers in farming, food production, environmental science, and natural resource management.',
+        icon: '<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>',
+        competencies: [
+          'Sustainable farming practices',
+          'Food safety & quality control',
+          'Environmental stewardship',
+          'Agricultural technology',
+          'Natural resource conservation'
+        ],
+        careers: ['Agricultural Scientist', 'Farm Manager', 'Food Inspector', 'Environmental Technician', 'Landscape Architect', 'Veterinary Assistant']
+      },
+      arts: {
+        title: 'Arts & Communication',
+        description: 'Creative careers in media, design, journalism, and the performing arts.',
+        icon: '<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z"/></svg>',
+        competencies: [
+          'Visual design principles',
+          'Digital media production',
+          'Written & verbal communication',
+          'Creative problem solving',
+          'Brand storytelling'
+        ],
+        careers: ['Graphic Designer', 'Video Producer', 'Social Media Manager', 'Journalist', 'Photographer', 'Marketing Coordinator']
+      },
+      finance: {
+        title: 'Finance & Business Services',
+        description: 'Careers in accounting, banking, entrepreneurship, and business management.',
+        icon: '<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>',
+        competencies: [
+          'Financial reporting & analysis',
+          'Project management',
+          'Principles of economics',
+          'Business operations',
+          'Customer relationship management'
+        ],
+        careers: ['Accountant', 'Financial Analyst', 'Bank Teller', 'Business Manager', 'Entrepreneur', 'Insurance Agent']
+      },
+      health: {
+        title: 'Health Sciences & Technology',
+        description: 'Careers in healthcare, medical technology, and wellness services.',
+        icon: '<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>',
+        competencies: [
+          'Patient care fundamentals',
+          'Medical terminology',
+          'Health information systems',
+          'Clinical procedures',
+          'Healthcare ethics & compliance'
+        ],
+        careers: ['Registered Nurse', 'Medical Assistant', 'Physical Therapist', 'Pharmacy Technician', 'EMT/Paramedic', 'Lab Technician']
+      },
+      human: {
+        title: 'Human & Public Services',
+        description: 'Careers serving communities through education, social work, government, and public safety.',
+        icon: '<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>',
+        competencies: [
+          'Community engagement',
+          'Counseling & guidance',
+          'Public policy awareness',
+          'Crisis intervention',
+          'Cultural competence'
+        ],
+        careers: ['Social Worker', 'Teacher', 'Police Officer', 'Firefighter', 'City Planner', 'Nonprofit Manager']
+      },
+      it: {
+        title: 'Information Technology',
+        description: 'Careers in software development, cybersecurity, networking, and data management.',
+        icon: '<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>',
+        competencies: [
+          'Programming & software development',
+          'Network administration',
+          'Cybersecurity fundamentals',
+          'Database management',
+          'Technical troubleshooting'
+        ],
+        careers: ['Software Developer', 'IT Support Specialist', 'Cybersecurity Analyst', 'Web Developer', 'Data Analyst', 'Network Administrator']
+      },
+      manufacturing: {
+        title: 'Manufacturing, Engineering & Trades',
+        description: 'Careers in production, engineering, construction, and skilled trades.',
+        icon: '<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>',
+        competencies: [
+          'Equipment safety & operation',
+          'Spatial reasoning & CAD',
+          'Quality control processes',
+          'Supply chain logistics',
+          'Technical documentation'
+        ],
+        careers: ['Mechanical Engineer', 'Electrician', 'CNC Machinist', 'Welder', 'HVAC Technician', 'Construction Manager']
+      }
+    };
+
+    // Open cluster modal
+    function openClusterModal(clusterId) {
+      const data = clusterData[clusterId];
+      if (!data) return;
+
+      // Populate modal
+      document.getElementById('cluster-icon').innerHTML = data.icon;
+      document.getElementById('cluster-title').textContent = data.title;
+      document.getElementById('cluster-description').textContent = data.description;
+
+      // Populate competencies
+      const competenciesList = document.getElementById('cluster-competencies');
+      competenciesList.innerHTML = data.competencies.map(c =>
+        `<li class="flex items-start gap-3">
+          <svg class="w-5 h-5 text-teal-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+          </svg>
+          <span class="text-navy-600">${c}</span>
+        </li>`
+      ).join('');
+
+      // Populate careers
+      const careersList = document.getElementById('cluster-careers');
+      careersList.innerHTML = data.careers.map(c =>
+        `<span class="bg-navy-100 text-navy-700 px-3 py-1.5 rounded-full text-sm font-medium">${c}</span>`
+      ).join('');
+
+      // Show modal
+      const modal = document.getElementById('modal-cluster');
+      document.body.style.overflow = 'hidden';
+      modal.style.display = 'flex';
+      modal.offsetHeight;
+      modal.classList.add('active');
+    }
+
+    // Close cluster modal
+    function closeClusterModal() {
+      const modal = document.getElementById('modal-cluster');
+      modal.classList.remove('active');
+      setTimeout(() => {
+        modal.style.display = 'none';
+        document.body.style.overflow = '';
+      }, 400);
+    }
+
+    // Close cluster modal on backdrop click
+    document.getElementById('modal-cluster').addEventListener('click', (e) => {
+      if (e.target.id === 'modal-cluster') {
+        closeClusterModal();
+      }
+    });
+
+    // Intersection Observer for scroll animations
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('.theme-card, .cluster-icon').forEach(el => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(20px)';
+      el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+      observer.observe(el);
+    });
+  </script>
+
