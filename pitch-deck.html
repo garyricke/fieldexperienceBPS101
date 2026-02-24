@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Field Experience — Cabinet Pitch Deck</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Open+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ── Reset & Base ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --crimson: #AC161D;
+      --crimson-dark: #851519;
+      --gold: #FBCD07;
+      --gold-dark: #DAB107;
+      --black: #000000;
+      --dark-gray: #5D5D5D;
+      --light-gray: #D9D9D9;
+      --off-white: #F7F7F5;
+      --white: #FFFFFF;
+    }
+
+    html, body {
+      height: 100%;
+      overflow: hidden;
+    }
+
+    body {
+      font-family: 'Open Sans', system-ui, sans-serif;
+      color: var(--black);
+      background: #111;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Montserrat', system-ui, sans-serif;
+    }
+
+    /* ── Presentation Container ── */
+    .deck {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+    }
+
+    /* ── Slide Frame ── */
+    .slide {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: var(--white);
+      overflow: hidden;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+
+    .slide.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* ── Print Setup ── */
+    @page {
+      size: 11in 8.5in;
+      margin: 0;
+    }
+
+    @media print {
+      html, body { overflow: visible; height: auto; }
+      .deck { position: static; width: auto; height: auto; }
+      .slide {
+        position: static !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+        width: 11in;
+        height: 8.5in;
+        page-break-after: always;
+        page-break-inside: avoid;
+      }
+      .slide:last-child { page-break-after: auto; }
+      .slide-nav, .slide-progress { display: none !important; }
+    }
+
+    /* ── Slide Logo (top-right corner) ── */
+    .slide-logo {
+      position: absolute;
+      top: 3vh;
+      right: 3vw;
+      height: 5vh;
+      z-index: 10;
+    }
+
+    /* ── Utility ── */
+    .slide-pad {
+      padding: 5.5vh 5vw;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .eyebrow {
+      font-family: 'Montserrat', sans-serif;
+      font-size: clamp(9px, 1.1vw, 13px);
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--crimson);
+      margin-bottom: 1.2vh;
+    }
+
+    .slide-title {
+      font-family: 'Montserrat', sans-serif;
+      font-size: clamp(24px, 3.5vw, 42px);
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -0.5px;
+      color: var(--black);
+      margin-bottom: 2.5vh;
+    }
+
+    .slide-title span.accent { color: var(--crimson); }
+
+    .slide-subtitle {
+      font-size: clamp(13px, 1.5vw, 18px);
+      color: var(--dark-gray);
+      line-height: 1.55;
+      max-width: 60vw;
+    }
+
+    .gold-bar {
+      width: 56px;
+      height: 4px;
+      background: var(--gold);
+      border-radius: 2px;
+      margin-bottom: 2vh;
+    }
+
+    .crimson-bar {
+      width: 56px;
+      height: 4px;
+      background: var(--crimson);
+      border-radius: 2px;
+      margin-bottom: 2vh;
+    }
+
+    .bottom-stripe {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 6px;
+      background: linear-gradient(90deg, var(--crimson) 0%, var(--crimson) 70%, var(--gold) 70%, var(--gold) 100%);
+    }
+
+    .bottom-stripe-alt {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 6px;
+      background: linear-gradient(90deg, var(--gold) 0%, var(--gold) 30%, var(--crimson) 30%, var(--crimson) 100%);
+    }
+
+    /* Bullet lists */
+    .bullet-list { list-style: none; padding: 0; }
+    .bullet-list li {
+      position: relative;
+      padding-left: 22px;
+      margin-bottom: 1.2vh;
+      font-size: clamp(12px, 1.35vw, 16px);
+      line-height: 1.5;
+      color: #333;
+    }
+    .bullet-list li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0.55em;
+      width: 8px;
+      height: 8px;
+      background: var(--crimson);
+      border-radius: 50%;
+    }
+
+    /* Two-column layout */
+    .two-col {
+      display: flex;
+      gap: 4vw;
+      flex: 1;
+    }
+    .two-col > * { flex: 1; }
+
+    /* Cards */
+    .info-card {
+      background: var(--off-white);
+      border-radius: 8px;
+      padding: 2.2vh 2vw;
+      border-left: 4px solid var(--crimson);
+    }
+
+    .info-card-gold {
+      border-left-color: var(--gold);
+    }
+
+    .info-card h4 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: clamp(12px, 1.3vw, 16px);
+      font-weight: 700;
+      margin-bottom: 0.8vh;
+      color: var(--black);
+    }
+
+    .info-card p, .info-card li {
+      font-size: clamp(11px, 1.2vw, 15px);
+      line-height: 1.5;
+      color: var(--dark-gray);
+    }
+
+    /* Grid layouts */
+    .grid-2x2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2vh 2vw;
+    }
+
+    /* Stat callout */
+    .stat-box {
+      text-align: center;
+      padding: 2vh 1vw;
+      background: var(--off-white);
+      border-radius: 8px;
+    }
+
+    .stat-box .num {
+      font-family: 'Montserrat', sans-serif;
+      font-size: clamp(22px, 2.8vw, 36px);
+      font-weight: 800;
+      color: var(--crimson);
+      line-height: 1;
+    }
+
+    .stat-box .label {
+      font-size: clamp(10px, 1vw, 13px);
+      color: var(--dark-gray);
+      margin-top: 0.5vh;
+      line-height: 1.35;
+    }
+
+    /* Timeline */
+    .timeline-row {
+      display: flex;
+      gap: 1.5vw;
+      align-items: stretch;
+    }
+
+    .timeline-item {
+      flex: 1;
+      border-top: 4px solid var(--crimson);
+      padding: 2vh 1.5vw;
+      background: var(--off-white);
+      border-radius: 0 0 8px 8px;
+    }
+
+    .timeline-item:nth-child(even) {
+      border-top-color: var(--gold);
+    }
+
+    .timeline-item h4 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: clamp(10px, 1.1vw, 14px);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 1vh;
+      color: var(--black);
+    }
+
+    .timeline-item li {
+      font-size: clamp(10px, 1.1vw, 14px);
+      line-height: 1.45;
+      color: var(--dark-gray);
+      margin-bottom: 0.5vh;
+    }
+
+    .timeline-item ul { list-style: disc; padding-left: 16px; }
+
+    /* Department grid */
+    .dept-tag {
+      display: inline-block;
+      background: var(--off-white);
+      border: 1px solid var(--light-gray);
+      border-radius: 6px;
+      padding: 1vh 1.2vw;
+      font-size: clamp(11px, 1.2vw, 15px);
+      font-weight: 600;
+      color: var(--black);
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .dept-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8vh 0.8vw;
+    }
+
+    /* ── Navigation Controls ── */
+    .slide-nav {
+      position: fixed;
+      bottom: 24px;
+      right: 32px;
+      display: flex;
+      gap: 8px;
+      z-index: 100;
+    }
+
+    .slide-nav button {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(0,0,0,0.6);
+      color: white;
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+      backdrop-filter: blur(8px);
+    }
+
+    .slide-nav button:hover {
+      background: rgba(0,0,0,0.85);
+    }
+
+    .slide-nav button:disabled {
+      opacity: 0.25;
+      cursor: default;
+    }
+
+    /* Progress bar */
+    .slide-progress {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      height: 3px;
+      background: var(--crimson);
+      transition: width 0.4s ease;
+      z-index: 100;
+    }
+
+    /* Slide counter */
+    .slide-counter {
+      position: fixed;
+      bottom: 32px;
+      left: 32px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.5);
+      z-index: 100;
+      letter-spacing: 1px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="deck">
+
+<!-- ════════════════════════════════════════════════════
+     SLIDE 1 — Title
+     ════════════════════════════════════════════════════ -->
+<div class="slide active" style="background: var(--black);">
+  <div style="position: absolute; top: 0; right: 0; width: 45%; height: 100%; background: var(--crimson); clip-path: polygon(15% 0, 100% 0, 100% 100%, 0% 100%);"></div>
+  <div style="position: absolute; top: 0; right: 0; width: 42%; height: 100%; background: var(--crimson-dark); clip-path: polygon(18% 0, 100% 0, 100% 100%, 3% 100%); opacity: 0.5;"></div>
+
+  <div style="position: absolute; top: 5.5vh; left: 5vw; z-index: 2;">
+    <img src="https://res.cloudinary.com/dsbllwpbh/image/upload/v1770990807/field-study-logo-trans_kewube.png" alt="BHS Field Experience" style="height: 7vh;">
+  </div>
+
+  <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 6px; background: var(--gold); z-index: 5;"></div>
+
+  <div style="position: relative; z-index: 2; padding: 0 5vw; display: flex; flex-direction: column; justify-content: center; height: 100%; max-width: 55%;">
+    <p style="font-family: 'Montserrat', sans-serif; font-size: clamp(10px, 1.1vw, 14px); font-weight: 700; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); margin-bottom: 2.5vh;">Batavia Public Schools &middot; District 101</p>
+    <h1 style="font-family: 'Montserrat', sans-serif; font-size: clamp(36px, 5vw, 64px); font-weight: 900; line-height: 1.05; color: white; letter-spacing: -1px; margin-bottom: 2.5vh;">
+      Field<br>Experience
+    </h1>
+    <p style="font-size: clamp(15px, 1.8vw, 22px); color: rgba(255,255,255,0.8); line-height: 1.5; margin-bottom: 5vh; max-width: 420px;">
+      Reimagining Work-Based Learning at BPS
+    </p>
+    <div style="display: flex; gap: 24px; align-items: center;">
+      <div style="width: 40px; height: 2px; background: var(--gold);"></div>
+      <p style="font-size: clamp(11px, 1.1vw, 14px); color: rgba(255,255,255,0.55); font-family: 'Montserrat', sans-serif; font-weight: 500;">
+        Mike Theriault &nbsp;&middot;&nbsp; Austun Harris &nbsp;&middot;&nbsp; Brian Caputo
+      </p>
+    </div>
+    <p style="font-size: clamp(10px, 1vw, 13px); color: rgba(255,255,255,0.35); margin-top: 1.2vh; font-family: 'Montserrat', sans-serif;">Cabinet Presentation &nbsp;&middot;&nbsp; 2025</p>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════════════════
+     SLIDE 2 — How We Got Here
+     ════════════════════════════════════════════════════ -->
+<div class="slide">
+  <img src="https://res.cloudinary.com/dsbllwpbh/image/upload/v1770990807/field-study-logo-trans_kewube.png" alt="" class="slide-logo">
+  <div class="bottom-stripe"></div>
+
+  <div class="slide-pad">
+    <div class="eyebrow">Background</div>
+    <h2 class="slide-title">How We <span class="accent">Got Here</span></h2>
+
+    <div class="two-col" style="flex: 1; align-items: flex-start;">
+      <div>
+        <div class="gold-bar"></div>
+        <p style="font-size: clamp(28px, 3.8vw, 48px); font-family: 'Montserrat', sans-serif; font-weight: 900; color: var(--crimson); line-height: 1; margin-bottom: 1.5vh;">3 Years</p>
+        <p style="font-size: clamp(13px, 1.5vw, 18px); color: var(--dark-gray); line-height: 1.6; margin-bottom: 3.5vh;">of studying the need to revamp Work-Based Learning at BPS — visiting districts, attending conferences, and building a plan.</p>
+
+        <div class="info-card" style="margin-bottom: 1.8vh;">
+          <h4>District Visits</h4>
+          <p>Lake Zurich &middot; Yorkville &middot; Naperville 203 &middot; West Aurora &middot; Wheaton (North & South)</p>
+        </div>
+
+        <div class="info-card info-card-gold">
+          <h4>Conferences & Research</h4>
+          <p>State & national conferences on career-connected education, WBL frameworks, and CCPE implementation</p>
+        </div>
+      </div>
+
+      <div style="display: flex; align-items: center; justify-content: center;">
+        <div style="background: var(--off-white); border-radius: 12px; padding: 3.5vh 3vw; text-align: center;">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2vh 2vw;">
+            <div class="stat-box">
+              <div class="num">6</div>
+              <div class="label">Districts<br>Visited</div>
+            </div>
+            <div class="stat-box">
+              <div class="num">3</div>
+              <div class="label">Years of<br>Research</div>
+            </div>
+            <div class="stat-box" style="grid-column: span 2;">
+              <div class="num" style="font-size: clamp(18px, 2.2vw, 28px);">State & National</div>
+              <div class="label">Conferences Attended</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════════════════
+     SLIDE 3 — Why Change? The Adult Reasons
+     ════════════════════════════════════════════════════ -->
+<div class="slide">
+  <img src="https://res.cloudinary.com/dsbllwpbh/image/upload/v1770990807/field-study-logo-trans_kewube.png" alt="" class="slide-logo">
+  <div class="bottom-stripe-alt"></div>
+
+  <div class="slide-pad">
+    <div class="eyebrow">The Case for Change</div>
+    <h2 class="slide-title">Why Change? — <span class="accent">The System</span></h2>
+
+    <div class="two-col" style="flex: 1;">
+      <div>
+        <div class="gold-bar"></div>
+        <h3 style="font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: clamp(14px, 1.6vw, 20px); margin-bottom: 1.8vh;">CCPE Endorsement Timeline</h3>
+        <p style="font-size: clamp(11px, 1.2vw, 15px); color: var(--dark-gray); margin-bottom: 2.2vh; line-height: 1.5;">The State of Illinois requires College & Career Pathway Endorsements on every diploma — with escalating requirements:</p>
+
+        <div style="display: flex; gap: 1vw; margin-bottom: 3vh;">
+          <div style="text-align: center; background: var(--crimson); color: white; border-radius: 8px; padding: 2vh 1.5vw; flex: 1;">
+            <div style="font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: clamp(20px, 2.5vw, 32px);">1</div>
+            <div style="font-size: clamp(9px, 0.9vw, 12px); text-transform: uppercase; letter-spacing: 1px; margin-top: 0.5vh; font-weight: 600;">Endorsement</div>
+            <div style="font-size: clamp(9px, 1vw, 13px); opacity: 0.8; margin-top: 0.5vh;">Class of 2027</div>
+          </div>
+          <div style="text-align: center; background: var(--crimson); color: white; border-radius: 8px; padding: 2vh 1.5vw; flex: 1;">
+            <div style="font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: clamp(20px, 2.5vw, 32px);">2</div>
+            <div style="font-size: clamp(9px, 0.9vw, 12px); text-transform: uppercase; letter-spacing: 1px; margin-top: 0.5vh; font-weight: 600;">Endorsements</div>
+            <div style="font-size: clamp(9px, 1vw, 13px); opacity: 0.8; margin-top: 0.5vh;">Class of 2029</div>
+          </div>
+          <div style="text-align: center; background: var(--crimson); color: white; border-radius: 8px; padding: 2vh 1.5vw; flex: 1;">
+            <div style="font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: clamp(20px, 2.5vw, 32px);">3</div>
+            <div style="font-size: clamp(9px, 0.9vw, 12px); text-transform: uppercase; letter-spacing: 1px; margin-top: 0.5vh; font-weight: 600;">Endorsements</div>
+            <div style="font-size: clamp(9px, 1vw, 13px); opacity: 0.8; margin-top: 0.5vh;">Class of 2031</div>
+          </div>
+        </div>
+
+        <p style="font-size: clamp(11px, 1.1vw, 14px); color: var(--dark-gray); line-height: 1.5; font-style: italic;">We need to back up 2 years from each state date for course development and implementation.</p>
+      </div>
+
+      <div>
+        <div class="crimson-bar"></div>
+        <h3 style="font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: clamp(14px, 1.6vw, 20px); margin-bottom: 1.8vh;">Additional Pressures</h3>
+        <ul class="bullet-list">
+          <li><strong>Outdated curriculum</strong> — The existing Link course is ~20 years old and not aligned with current state guidelines</li>
+          <li><strong>Staffing changes</strong> — Teacher transitions and upcoming retirements create a natural window for redesign</li>
+          <li><strong>State compliance</strong> — Current programming doesn't meet the 91-page ISBE WBL manual requirements</li>
+          <li><strong>Peer progress</strong> — Neighboring districts are already implementing modern WBL programs</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════════════════
+     SLIDE 4 — Why Change? The Student Reasons
+     ════════════════════════════════════════════════════ -->
+<div class="slide">
+  <img src="https://res.cloudinary.com/dsbllwpbh/image/upload/v1770990807/field-study-logo-trans_kewube.png" alt="" class="slide-logo">
+  <div class="bottom-stripe"></div>
+
+  <div class="slide-pad">
+    <div class="eyebrow">The Case for Change</div>
+    <h2 class="slide-title">Why Change? — <span class="accent">The Students</span></h2>
+
+    <div class="grid-2x2" style="flex: 1; align-content: start; margin-top: 1vh;">
+      <div class="info-card">
+        <h4 style="color: var(--crimson);">The World of Work Is Changing</h4>
+        <p>AI and automation are reshaping entire industries. Students need real-world exposure to understand what careers actually look like — not just what they imagine.</p>
+      </div>
+
+      <div class="info-card info-card-gold">
+        <h4 style="color: var(--gold-dark);">The Cost of Getting It Wrong</h4>
+        <p>Post-secondary education is expensive. Students can't afford career or major changes after investing years and tuition. A student who "loves engineering" may discover it's not the right fit — <strong>better to learn at 17 than at 22.</strong></p>
+      </div>
+
+      <div class="info-card info-card-gold">
+        <h4 style="color: var(--gold-dark);">Not Every Path Goes Through College</h4>
+        <p>For students where direct-to-college isn't the right path, work-based learning provides structured, meaningful alternatives with real credentials and experience.</p>
+      </div>
+
+      <div class="info-card">
+        <h4 style="color: var(--crimson);">Decisions Based on Minimal Experience</h4>
+        <p>Students are choosing life paths based on a class or two. Field Experience lets them <strong>try a career before committing</strong> — seeing if the day-to-day reality matches their expectations.</p>
+      </div>
+    </div>
+
+    <div style="margin-top: 2.5vh; text-align: center;">
+      <p style="font-family: 'Montserrat', sans-serif; font-size: clamp(14px, 1.6vw, 20px); font-weight: 700; color: var(--crimson);">"Try now to see if it's the right fit."</p>
+    </div>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════════════════
+     SLIDE 5 — WBL Continuum
+     ════════════════════════════════════════════════════ -->
+<div class="slide">
+  <img src="https://res.cloudinary.com/dsbllwpbh/image/upload/v1770990807/field-study-logo-trans_kewube.png" alt="" class="slide-logo">
+  <div class="bottom-stripe-alt"></div>
+
+  <div class="slide-pad">
+    <div class="eyebrow">Framework</div>
+    <h2 class="slide-title">The Work-Based Learning <span class="accent">Continuum</span></h2>
+
+    <p class="slide-subtitle" style="margin-bottom: 2.5vh;">Moving beyond the old "capstone course" model to a continuum of experiences embedded across middle school and high school — supported by teachers, counselors, administrators, community, and partners.</p>
+
+    <div style="display: flex; gap: 0; flex: 1; align-items: stretch; margin-bottom: 1vh;">
+      <!-- Awareness -->
+      <div style="flex: 1; background: #fef2f2; padding: 2.5vh 1.5vw; border-left: 4px solid var(--crimson);">
+        <h4 style="font-family: 'Montserrat', sans-serif; font-size: clamp(10px, 1.1vw, 14px); font-weight: 800; text-transform: uppercase; letter-spacing: 2px; color: var(--crimson); margin-bottom: 1.5vh;">Career Awareness</h4>
+        <p style="font-size: clamp(9px, 0.9vw, 12px); color: var(--dark-gray); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; margin-bottom: 1vh;">MS & HS Embedded</p>
+        <ul style="list-style: none; padding: 0;">
+          <li style="font-size: clamp(11px, 1.15vw, 14px); color: #333; margin-bottom: 0.7vh; padding-left: 14px; position: relative;"><span style="position: absolute; left: 0; color: var(--gold);">&#9654;</span> Career Days</li>
+          <li style="font-size: clamp(11px, 1.15vw, 14px); color: #333; margin-bottom: 0.7vh; padding-left: 14px; position: relative;"><span style="position: absolute; left: 0; color: var(--gold);">&#9654;</span> Lunch & Learn</li>
+          <li style="font-size: clamp(11px, 1.15vw, 14px); color: #333; margin-bottom: 0.7vh; padding-left: 14px; position: relative;"><span style="position: absolute; left: 0; color: var(--gold);">&#9654;</span> Guest Speakers</li>
+        </ul>
+      </div>
+
+      <div style="display: flex; align-items: center; font-size: clamp(16px, 2vw, 28px); color: var(--light-gray); padding: 0 0.3vw;">&#9654;</div>
+
+      <!-- Exploration -->
+      <div style="flex: 1; background: #fff9e6; padding: 2.5vh 1.5vw; border-left: 4px solid var(--gold);">
+        <h4 style="font-family: 'Montserrat', sans-serif; font-size: clamp(10px, 1.1vw, 14px); font-weight: 800; text-transform: uppercase; letter-spacing: 2px; color: var(--gold-dark); margin-bottom: 1.5vh;">Career Exploration</h4>
+        <p style="font-size: clamp(9px, 0.9vw, 12px); color: var(--dark-gray); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; margin-bottom: 1vh;">MS & HS Embedded</p>
+        <ul style="list-style: none; padding: 0;">
+          <li style="font-size: clamp(11px, 1.15vw, 14px); color: #333; margin-bottom: 0.7vh; padding-left: 14px; position: relative;"><span style="position: absolute; left: 0; color: var(--crimson);">&#9654;</span> Career Fairs</li>
+          <li style="font-size: clamp(11px, 1.15vw, 14px); color: #333; margin-bottom: 0.7vh; padding-left: 14px; position: relative;"><span style="position: absolute; left: 0; color: var(--crimson);">&#9654;</span> Job Shadowing</li>
+          <li style="font-size: clamp(11px, 1.15vw, 14px); color: #333; margin-bottom: 0.7vh; padding-left: 14px; position: relative;"><span style="position: absolute; left: 0; color: var(--crimson);">&#9654;</span> Mentorship</li>
+        </ul>
+      </div>
+
+      <div style="display: flex; align-items: center; font-size: clamp(16px, 2vw, 28px); color: var(--light-gray); padding: 0 0.3vw;">&#9654;</div>
+
+      <!-- Preparation -->
+      <div style="flex: 1; background: #f5f5f5; padding: 2.5vh 1.5vw; border-left: 4px solid var(--dark-gray);">
+        <h4 style="font-family: 'Montserrat', sans-serif; font-size: clamp(10px, 1.1vw, 14px); font-weight: 800; text-transform: uppercase; letter-spacing: 2px; color: var(--dark-gray); margin-bottom: 1.5vh;">Career Preparation</h4>
+        <p style="font-size: clamp(9px, 0.9vw, 12px); color: var(--dark-gray); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; margin-bottom: 1vh;">HS Courses</p>
+        <ul style="list-style: none; padding: 0;">
+          <li style="font-size: clamp(11px, 1.15vw, 14px); color: #333; margin-bottom: 0.7vh; padding-left: 14px; position: relative;"><span style="position: absolute; left: 0; color: var(--gold);">&#9654;</span> Team Challenges</li>
+          <li style="font-size: clamp(11px, 1.15vw, 14px); color: #333; margin-bottom: 0.7vh; padding-left: 14px; position: relative;"><span style="position: absolute; left: 0; color: var(--gold);">&#9654;</span> Tours & Site Visits</li>
+          <li style="font-size: clamp(11px, 1.15vw, 14px); color: #333; margin-bottom: 0.7vh; padding-left: 14px; position: relative;"><span style="position: absolute; left: 0; color: var(--gold);">&#9654;</span> CTE Coursework</li>
+        </ul>
+      </div>
+
+      <div style="display: flex; align-items: center; font-size: clamp(16px, 2vw, 28px); color: var(--light-gray); padding: 0 0.3vw;">&#9654;</div>
+
+      <!-- Experience -->
+      <div style="flex: 1.2; background: var(--crimson); padding: 2.5vh 1.5vw; border-radius: 0 8px 8px 0; color: white;">
+        <h4 style="font-family: 'Montserrat', sans-serif; font-size: clamp(10px, 1.1vw, 14px); font-weight: 800; text-transform: uppercase; letter-spacing: 2px; color: var(--gold); margin-bottom: 1.5vh;">Field Experience</h4>
+        <p style="font-size: clamp(9px, 0.9vw, 12px); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; margin-bottom: 1vh; opacity: 0.7;">The Capstone</p>
+        <ul style="list-style: none; padding: 0;">
+          <li style="font-size: clamp(11px, 1.15vw, 14px); margin-bottom: 0.7vh; padding-left: 14px; position: relative;"><span style="position: absolute; left: 0; color: var(--gold);">&#9654;</span> Internships</li>
+          <li style="font-size: clamp(11px, 1.15vw, 14px); margin-bottom: 0.7vh; padding-left: 14px; position: relative;"><span style="position: absolute; left: 0; color: var(--gold);">&#9654;</span> School-Based</li>
+          <li style="font-size: clamp(11px, 1.15vw, 14px); margin-bottom: 0.7vh; padding-left: 14px; position: relative;"><span style="position: absolute; left: 0; color: var(--gold);">&#9654;</span> Clinical & Student-Led</li>
+        </ul>
+      </div>
+    </div>
+
+    <p style="font-size: clamp(10px, 1vw, 13px); color: var(--dark-gray); text-align: center; margin-top: 1vh; font-style: italic;">Supported by Teachers &middot; Counselors &middot; Administrators &middot; Community Partners</p>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════════════════
+     SLIDE 6 — CCPE Requirements
+     ════════════════════════════════════════════════════ -->
+<div class="slide">
+  <img src="https://res.cloudinary.com/dsbllwpbh/image/upload/v1770990807/field-study-logo-trans_kewube.png" alt="" class="slide-logo">
+  <div class="bottom-stripe"></div>
+
+  <div class="slide-pad">
+    <div class="eyebrow">State Requirements</div>
+    <h2 class="slide-title">CCPE Requirements <span class="accent">Deep Dive</span></h2>
+
+    <p class="slide-subtitle" style="margin-bottom: 3.5vh;">Each College & Career Pathway Endorsement requires students to complete all five components before graduation.</p>
+
+    <div style="display: flex; gap: 1.5vw; flex: 1; align-items: start;">
+      <div style="flex: 1; text-align: center; background: var(--off-white); border-radius: 8px; padding: 3vh 1.5vw; border-top: 4px solid var(--crimson);">
+        <div style="font-family: 'Montserrat', sans-serif; font-size: clamp(28px, 3.5vw, 46px); font-weight: 900; color: var(--crimson);">2</div>
+        <div style="font-family: 'Montserrat', sans-serif; font-size: clamp(11px, 1.2vw, 15px); font-weight: 700; margin-top: 0.5vh;">CTE Classes</div>
+        <p style="font-size: clamp(10px, 1vw, 13px); color: var(--dark-gray); margin-top: 1vh; line-height: 1.45;">Within a career pathway sequence</p>
+      </div>
+
+      <div style="flex: 1; text-align: center; background: var(--off-white); border-radius: 8px; padding: 3vh 1.5vw; border-top: 4px solid var(--gold);">
+        <div style="font-family: 'Montserrat', sans-serif; font-size: clamp(28px, 3.5vw, 46px); font-weight: 900; color: var(--gold-dark);">6</div>
+        <div style="font-family: 'Montserrat', sans-serif; font-size: clamp(11px, 1.2vw, 15px); font-weight: 700; margin-top: 0.5vh;">Dual Credit Hours</div>
+        <p style="font-size: clamp(10px, 1vw, 13px); color: var(--dark-gray); margin-top: 1vh; line-height: 1.45;">College credit earned in high school</p>
+      </div>
+
+      <div style="flex: 1; text-align: center; background: var(--off-white); border-radius: 8px; padding: 3vh 1.5vw; border-top: 4px solid var(--crimson);">
+        <div style="font-family: 'Montserrat', sans-serif; font-size: clamp(28px, 3.5vw, 46px); font-weight: 900; color: var(--crimson);">2</div>
+        <div style="font-family: 'Montserrat', sans-serif; font-size: clamp(11px, 1.2vw, 15px); font-weight: 700; margin-top: 0.5vh;">Team Challenges</div>
+        <p style="font-size: clamp(10px, 1vw, 13px); color: var(--dark-gray); margin-top: 1vh; line-height: 1.45;">Collaborative problem-solving experiences</p>
+      </div>
+
+      <div style="flex: 1; text-align: center; background: var(--off-white); border-radius: 8px; padding: 3vh 1.5vw; border-top: 4px solid var(--gold);">
+        <div style="font-family: 'Montserrat', sans-serif; font-size: clamp(28px, 3.5vw, 46px); font-weight: 900; color: var(--gold-dark);">2</div>
+        <div style="font-family: 'Montserrat', sans-serif; font-size: clamp(11px, 1.2vw, 15px); font-weight: 700; margin-top: 0.5vh;">Career Explorations</div>
+        <p style="font-size: clamp(10px, 1vw, 13px); color: var(--dark-gray); margin-top: 1vh; line-height: 1.45;">Structured career discovery activities</p>
+      </div>
+
+      <div style="flex: 1; text-align: center; background: var(--crimson); border-radius: 8px; padding: 3vh 1.5vw; color: white;">
+        <div style="font-family: 'Montserrat', sans-serif; font-size: clamp(28px, 3.5vw, 46px); font-weight: 900; color: var(--gold);">60</div>
+        <div style="font-family: 'Montserrat', sans-serif; font-size: clamp(11px, 1.2vw, 15px); font-weight: 700; margin-top: 0.5vh;">Hours</div>
+        <p style="font-size: clamp(10px, 1vw, 13px); opacity: 0.8; margin-top: 1vh; line-height: 1.45;">Paid or for-credit supervised career development</p>
+      </div>
+    </div>
+
+    <div style="margin-top: 2.5vh; background: var(--off-white); border-radius: 8px; padding: 1.8vh 2vw; text-align: center;">
+      <p style="font-size: clamp(11px, 1.2vw, 15px); color: var(--dark-gray);"><strong style="color: var(--crimson);">Field Experience</strong> is designed to satisfy the 60-hour internship requirement and provide a framework for career exploration activities.</p>
+    </div>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════════════════
+     SLIDE 7 — Field Experience: The Course
+     ════════════════════════════════════════════════════ -->
+<div class="slide">
+  <img src="https://res.cloudinary.com/dsbllwpbh/image/upload/v1770990807/field-study-logo-trans_kewube.png" alt="" class="slide-logo">
+  <div class="bottom-stripe-alt"></div>
+
+  <div class="slide-pad">
+    <div class="eyebrow">The Course</div>
+    <h2 class="slide-title">Field Experience — <span class="accent">Redesigned</span></h2>
+
+    <div class="two-col" style="flex: 1;">
+      <div>
+        <div class="gold-bar"></div>
+        <p style="font-size: clamp(13px, 1.4vw, 17px); color: #333; line-height: 1.65; margin-bottom: 2.5vh;">
+          We're redesigning the 20-year-old Link course to meet all current requirements — state guidelines, CCPE mandates, and the 91-page ISBE Work-Based Learning manual.
+        </p>
+        <p style="font-size: clamp(13px, 1.4vw, 17px); color: #333; line-height: 1.65; margin-bottom: 2.5vh;">
+          The new Field Experience course offers <strong>four distinct types</strong> of work-based learning, each tailored to different student needs and career pathways.
+        </p>
+
+        <div style="background: var(--crimson); color: white; border-radius: 8px; padding: 2.2vh 2vw;">
+          <h4 style="font-family: 'Montserrat', sans-serif; font-size: clamp(10px, 1.1vw, 14px); font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: var(--gold); margin-bottom: 1vh;">Course Structure</h4>
+          <p style="font-size: clamp(11px, 1.2vw, 15px); line-height: 1.55; opacity: 0.9;">Boot Camp (2–3 weeks) covering employability skills, professional expectations, and workplace readiness — followed by placement in one of the four experience types.</p>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 1.5vh;">
+        <div class="info-card" style="flex: 1;">
+          <h4>Student-Led Experiences</h4>
+          <p>Incubator entrepreneurs continuing and growing their own business ventures</p>
+        </div>
+        <div class="info-card info-card-gold" style="flex: 1;">
+          <h4>School-Based Experiences</h4>
+          <p>School store, BHS merchandise operations, Bulldog Media Team, and other in-building enterprises</p>
+        </div>
+        <div class="info-card" style="flex: 1;">
+          <h4>Clinical Experiences</h4>
+          <p>Medically focused placements through BNAT and healthcare pathway partners</p>
+        </div>
+        <div class="info-card info-card-gold" style="flex: 1;">
+          <h4>Internship Experiences</h4>
+          <p>60+ hours with community employers — building both employability and technical skills</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════════════════
+     SLIDE 8 — Four Experience Types (Detail)
+     ════════════════════════════════════════════════════ -->
+<div class="slide">
+  <img src="https://res.cloudinary.com/dsbllwpbh/image/upload/v1770990807/field-study-logo-trans_kewube.png" alt="" class="slide-logo">
+  <div class="bottom-stripe"></div>
+
+  <div class="slide-pad">
+    <div class="eyebrow">Experience Types</div>
+    <h2 class="slide-title">Four Pathways, <span class="accent">One Course</span></h2>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2vh 2vw; flex: 1; align-content: start; margin-top: 0.5vh;">
+
+      <div style="background: var(--off-white); border-radius: 8px; padding: 2.5vh 2vw; border-left: 5px solid var(--crimson); display: flex; gap: 1.5vw; align-items: flex-start;">
+        <div style="background: var(--crimson); color: white; border-radius: 8px; min-width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: clamp(14px, 1.6vw, 22px);">01</div>
+        <div>
+          <h4 style="font-family: 'Montserrat', sans-serif; font-size: clamp(13px, 1.4vw, 17px); font-weight: 700; margin-bottom: 1vh;">Student-Led</h4>
+          <p style="font-size: clamp(11px, 1.2vw, 15px); color: var(--dark-gray); line-height: 1.5;">Incubator entrepreneurs who continue developing and operating their own business. Students apply business plans created in prior coursework to real-world operations.</p>
+        </div>
+      </div>
+
+      <div style="background: var(--off-white); border-radius: 8px; padding: 2.5vh 2vw; border-left: 5px solid var(--gold); display: flex; gap: 1.5vw; align-items: flex-start;">
+        <div style="background: var(--gold); color: var(--black); border-radius: 8px; min-width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: clamp(14px, 1.6vw, 22px);">02</div>
+        <div>
+          <h4 style="font-family: 'Montserrat', sans-serif; font-size: clamp(13px, 1.4vw, 17px); font-weight: 700; margin-bottom: 1vh;">School-Based</h4>
+          <p style="font-size: clamp(11px, 1.2vw, 15px); color: var(--dark-gray); line-height: 1.5;">Operating the school store, managing BHS merchandise, and running the Bulldog Media Team. Real business operations within a supported school environment.</p>
+        </div>
+      </div>
+
+      <div style="background: var(--off-white); border-radius: 8px; padding: 2.5vh 2vw; border-left: 5px solid var(--gold); display: flex; gap: 1.5vw; align-items: flex-start;">
+        <div style="background: var(--gold); color: var(--black); border-radius: 8px; min-width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: clamp(14px, 1.6vw, 22px);">03</div>
+        <div>
+          <h4 style="font-family: 'Montserrat', sans-serif; font-size: clamp(13px, 1.4vw, 17px); font-weight: 700; margin-bottom: 1vh;">Clinical</h4>
+          <p style="font-size: clamp(11px, 1.2vw, 15px); color: var(--dark-gray); line-height: 1.5;">Medically focused placements through the BNAT program and healthcare partners. Students gain hands-on clinical experience in healthcare settings.</p>
+        </div>
+      </div>
+
+      <div style="background: var(--crimson); border-radius: 8px; padding: 2.5vh 2vw; color: white; display: flex; gap: 1.5vw; align-items: flex-start;">
+        <div style="background: var(--gold); color: var(--black); border-radius: 8px; min-width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: clamp(14px, 1.6vw, 22px);">04</div>
+        <div>
+          <h4 style="font-family: 'Montserrat', sans-serif; font-size: clamp(13px, 1.4vw, 17px); font-weight: 700; margin-bottom: 1vh; color: white;">Internships</h4>
+          <p style="font-size: clamp(11px, 1.2vw, 15px); line-height: 1.5; opacity: 0.9;">60+ hours with community employers building employability skills <em>and</em> technical competencies. The cornerstone of the CCPE supervised career development requirement.</p>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top: 2vh; text-align: center;">
+      <p style="font-size: clamp(11px, 1.1vw, 14px); color: var(--dark-gray);">All four types include the <strong>Boot Camp</strong> foundation (2–3 weeks) covering professional readiness, communication, and workplace expectations.</p>
+    </div>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════════════════
+     SLIDE 9 — Timeline & Current Status
+     ════════════════════════════════════════════════════ -->
+<div class="slide">
+  <img src="https://res.cloudinary.com/dsbllwpbh/image/upload/v1770990807/field-study-logo-trans_kewube.png" alt="" class="slide-logo">
+  <div class="bottom-stripe-alt"></div>
+
+  <div class="slide-pad">
+    <div class="eyebrow">Implementation</div>
+    <h2 class="slide-title">Timeline & <span class="accent">Current Status</span></h2>
+
+    <div class="timeline-row" style="flex: 1; margin-top: 1vh;">
+      <div class="timeline-item">
+        <h4>Fall 2024</h4>
+        <ul>
+          <li>Course approval process</li>
+          <li>Student & counselor information sessions</li>
+          <li>Recruitment campaign launch</li>
+          <li>Course selection integration</li>
+        </ul>
+        <div style="margin-top: 1.5vh; background: #e8f5e9; border-radius: 4px; padding: 0.7vh 1vw; font-size: clamp(9px, 0.9vw, 12px); font-weight: 600; color: #2e7d32; text-align: center;">COMPLETE</div>
+      </div>
+
+      <div class="timeline-item">
+        <h4>Winter 2025</h4>
+        <ul>
+          <li>~100 primary requests received</li>
+          <li>~80 alternate requests</li>
+          <li>Student info sessions</li>
+          <li>Application & interview process</li>
+        </ul>
+        <div style="margin-top: 1.5vh; background: #fff3e0; border-radius: 4px; padding: 0.7vh 1vw; font-size: clamp(9px, 0.9vw, 12px); font-weight: 600; color: #e65100; text-align: center;">IN PROGRESS</div>
+      </div>
+
+      <div class="timeline-item">
+        <h4>Spring / Summer 2025</h4>
+        <ul>
+          <li>Community connections & outreach</li>
+          <li>Chamber of Commerce partnerships</li>
+          <li>Business partner recruitment</li>
+          <li>Placement matching</li>
+        </ul>
+        <div style="margin-top: 1.5vh; background: var(--off-white); border-radius: 4px; padding: 0.7vh 1vw; font-size: clamp(9px, 0.9vw, 12px); font-weight: 600; color: var(--dark-gray); text-align: center;">UPCOMING</div>
+      </div>
+
+      <div class="timeline-item" style="border-top-color: var(--crimson);">
+        <h4>Fall 2025</h4>
+        <ul>
+          <li><strong>1st Cohort launches!</strong></li>
+          <li>Boot Camp (2–3 weeks)</li>
+          <li>Internship placements begin</li>
+          <li>Ongoing support & evaluation</li>
+        </ul>
+        <div style="margin-top: 1.5vh; background: #fce4ec; border-radius: 4px; padding: 0.7vh 1vw; font-size: clamp(9px, 0.9vw, 12px); font-weight: 600; color: var(--crimson); text-align: center;">LAUNCH</div>
+      </div>
+    </div>
+
+    <div style="display: flex; gap: 1.5vw; margin-top: 2.5vh;">
+      <div class="stat-box" style="flex: 1;">
+        <div class="num">~100</div>
+        <div class="label">Primary Requests</div>
+      </div>
+      <div class="stat-box" style="flex: 1;">
+        <div class="num">~80</div>
+        <div class="label">Alternate Requests</div>
+      </div>
+      <div class="stat-box" style="flex: 1;">
+        <div class="num" style="color: var(--gold-dark);">180</div>
+        <div class="label">Total Student Interest</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════════════════
+     SLIDE 10 — Future Work
+     ════════════════════════════════════════════════════ -->
+<div class="slide">
+  <img src="https://res.cloudinary.com/dsbllwpbh/image/upload/v1770990807/field-study-logo-trans_kewube.png" alt="" class="slide-logo">
+  <div class="bottom-stripe"></div>
+
+  <div class="slide-pad">
+    <div class="eyebrow">Looking Ahead</div>
+    <h2 class="slide-title">Future <span class="accent">Work</span></h2>
+
+    <div class="two-col" style="flex: 1; margin-top: 1vh;">
+      <div style="display: flex; flex-direction: column; gap: 2vh;">
+        <div style="display: flex; gap: 1.2vw; align-items: flex-start;">
+          <div style="background: var(--crimson); color: white; border-radius: 8px; min-width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 16px; flex-shrink: 0;">1</div>
+          <div>
+            <h4 style="font-family: 'Montserrat', sans-serif; font-size: clamp(12px, 1.3vw, 16px); font-weight: 700; margin-bottom: 0.5vh;">Support Instructors</h4>
+            <p style="font-size: clamp(11px, 1.2vw, 15px); color: var(--dark-gray); line-height: 1.5;">Provide ongoing support for instructors guiding the first cohorts through the Field Experience program.</p>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 1.2vw; align-items: flex-start;">
+          <div style="background: var(--gold); color: var(--black); border-radius: 8px; min-width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 16px; flex-shrink: 0;">2</div>
+          <div>
+            <h4 style="font-family: 'Montserrat', sans-serif; font-size: clamp(12px, 1.3vw, 16px); font-weight: 700; margin-bottom: 0.5vh;">Grow Community Connections</h4>
+            <p style="font-size: clamp(11px, 1.2vw, 15px); color: var(--dark-gray); line-height: 1.5;">Increase community partnerships and placement capacity to serve more students each year.</p>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 1.2vw; align-items: flex-start;">
+          <div style="background: var(--crimson); color: white; border-radius: 8px; min-width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 16px; flex-shrink: 0;">3</div>
+          <div>
+            <h4 style="font-family: 'Montserrat', sans-serif; font-size: clamp(12px, 1.3vw, 16px); font-weight: 700; margin-bottom: 0.5vh;">Develop Job Shadowing</h4>
+            <p style="font-size: clamp(11px, 1.2vw, 15px); color: var(--dark-gray); line-height: 1.5;">Build a structured job shadowing program as part of the WBL continuum for younger students.</p>
+          </div>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 2vh;">
+        <div style="display: flex; gap: 1.2vw; align-items: flex-start;">
+          <div style="background: var(--gold); color: var(--black); border-radius: 8px; min-width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 16px; flex-shrink: 0;">4</div>
+          <div>
+            <h4 style="font-family: 'Montserrat', sans-serif; font-size: clamp(12px, 1.3vw, 16px); font-weight: 700; margin-bottom: 0.5vh;">Expand High-Demand Areas</h4>
+            <p style="font-size: clamp(11px, 1.2vw, 15px); color: var(--dark-gray); line-height: 1.5;">Scale programming in areas of greatest student interest — healthcare, technology, business, and trades.</p>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 1.2vw; align-items: flex-start;">
+          <div style="background: var(--crimson); color: white; border-radius: 8px; min-width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 16px; flex-shrink: 0;">5</div>
+          <div>
+            <h4 style="font-family: 'Montserrat', sans-serif; font-size: clamp(12px, 1.3vw, 16px); font-weight: 700; margin-bottom: 0.5vh;">Dual Credit Partnerships</h4>
+            <p style="font-size: clamp(11px, 1.2vw, 15px); color: var(--dark-gray); line-height: 1.5;">Establish dual credit agreements with Waubonsee Community College (WCC) or College of DuPage (COD).</p>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 1.2vw; align-items: flex-start;">
+          <div style="background: var(--gold); color: var(--black); border-radius: 8px; min-width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 16px; flex-shrink: 0;">6</div>
+          <div>
+            <h4 style="font-family: 'Montserrat', sans-serif; font-size: clamp(12px, 1.3vw, 16px); font-weight: 700; margin-bottom: 0.5vh;">Expand to Rotolo Middle School</h4>
+            <p style="font-size: clamp(11px, 1.2vw, 15px); color: var(--dark-gray); line-height: 1.5;">Increase career exploration activities at RMS to build the awareness pipeline earlier.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════════════════
+     SLIDE 11 — The Ask
+     ════════════════════════════════════════════════════ -->
+<div class="slide">
+  <img src="https://res.cloudinary.com/dsbllwpbh/image/upload/v1770990807/field-study-logo-trans_kewube.png" alt="" class="slide-logo">
+  <div class="bottom-stripe-alt"></div>
+
+  <div class="slide-pad">
+    <div class="eyebrow">Call to Action</div>
+    <h2 class="slide-title">BPS Should <span class="accent">Model the Way</span></h2>
+
+    <div class="two-col" style="flex: 1;">
+      <div>
+        <div class="gold-bar"></div>
+        <p style="font-size: clamp(13px, 1.5vw, 18px); color: #333; line-height: 1.65; margin-bottom: 2.2vh;">
+          We're asking the community to host interns. <strong>BPS needs to lead by example</strong> — offering internship opportunities across our own departments.
+        </p>
+
+        <div class="info-card" style="margin-bottom: 1.8vh;">
+          <h4 style="color: var(--crimson);">Why Internal Placements Matter</h4>
+          <ul class="bullet-list" style="margin-top: 1vh;">
+            <li><strong>Equity</strong> — Not all students have transportation to off-site placements</li>
+            <li><strong>Supervision</strong> — School-based placements offer built-in support structures</li>
+            <li><strong>Modeling</strong> — If we ask the community to participate, we should participate first</li>
+          </ul>
+        </div>
+
+        <div style="background: var(--crimson); color: white; border-radius: 8px; padding: 2vh 2vw; margin-top: 1vh;">
+          <p style="font-size: clamp(12px, 1.3vw, 16px); font-weight: 600; font-family: 'Montserrat', sans-serif;">Every department should consider what an internship could look like.</p>
+        </div>
+      </div>
+
+      <div>
+        <div class="crimson-bar"></div>
+        <h3 style="font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: clamp(13px, 1.4vw, 17px); margin-bottom: 1.8vh;">BPS Departments</h3>
+        <div class="dept-grid" style="margin-bottom: 3vh;">
+          <div class="dept-tag">Technology</div>
+          <div class="dept-tag">Buildings & Grounds</div>
+          <div class="dept-tag">Communications</div>
+          <div class="dept-tag">Business & Finance</div>
+          <div class="dept-tag">Teaching & Learning</div>
+          <div class="dept-tag">Operations</div>
+          <div class="dept-tag">Athletics</div>
+          <div class="dept-tag">Nursing</div>
+        </div>
+
+        <h3 style="font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: clamp(13px, 1.4vw, 17px); margin-bottom: 1.5vh;">Community Partners</h3>
+        <div class="dept-grid">
+          <div class="dept-tag" style="border-color: var(--gold); background: #fffde6;">City of Batavia</div>
+          <div class="dept-tag" style="border-color: var(--gold); background: #fffde6;">Batavia Park District</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════════════════
+     SLIDE 12 — Close
+     ════════════════════════════════════════════════════ -->
+<div class="slide" style="background: var(--black);">
+  <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 6px; background: linear-gradient(90deg, var(--crimson) 0%, var(--crimson) 50%, var(--gold) 50%, var(--gold) 100%);"></div>
+
+  <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; text-align: center; padding: 5vh 5vw;">
+
+    <img src="https://res.cloudinary.com/dsbllwpbh/image/upload/v1770990807/field-study-logo-trans_kewube.png" alt="BHS Field Experience" style="height: 9vh; margin-bottom: 5vh;">
+
+    <h2 style="font-family: 'Montserrat', sans-serif; font-size: clamp(28px, 3.8vw, 48px); font-weight: 900; color: white; letter-spacing: -0.5px; line-height: 1.2; margin-bottom: 1.5vh;">
+      Know your path<br><span style="color: var(--gold);">before you pay for it.</span>
+    </h2>
+
+    <div style="width: 60px; height: 3px; background: var(--crimson); margin: 3.5vh auto;"></div>
+
+    <p style="font-family: 'Montserrat', sans-serif; font-size: clamp(14px, 1.6vw, 20px); color: rgba(255,255,255,0.7); font-weight: 500; margin-bottom: 1vh;">Michael Theriault</p>
+    <p style="font-size: clamp(12px, 1.3vw, 16px); color: rgba(255,255,255,0.4); margin-bottom: 0.5vh;">michael@bps101.net</p>
+    <p style="font-size: clamp(10px, 1.1vw, 14px); color: rgba(255,255,255,0.25); margin-top: 3vh; font-family: 'Montserrat', sans-serif; letter-spacing: 2px; text-transform: uppercase;">Batavia Public Schools &middot; District 101</p>
+  </div>
+</div>
+
+</div><!-- end .deck -->
+
+<!-- Navigation UI -->
+<div class="slide-progress" id="progress"></div>
+<div class="slide-counter" id="counter"></div>
+<div class="slide-nav">
+  <button id="prevBtn" aria-label="Previous slide">&#9664;</button>
+  <button id="nextBtn" aria-label="Next slide">&#9654;</button>
+</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const total = slides.length;
+  let current = 0;
+
+  const progress = document.getElementById('progress');
+  const counter = document.getElementById('counter');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+
+  function goTo(index) {
+    if (index < 0 || index >= total) return;
+    slides[current].classList.remove('active');
+    current = index;
+    slides[current].classList.add('active');
+    updateUI();
+  }
+
+  function updateUI() {
+    progress.style.width = ((current + 1) / total * 100) + '%';
+    counter.textContent = (current + 1) + ' / ' + total;
+    prevBtn.disabled = current === 0;
+    nextBtn.disabled = current === total - 1;
+  }
+
+  prevBtn.addEventListener('click', () => goTo(current - 1));
+  nextBtn.addEventListener('click', () => goTo(current + 1));
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') {
+      e.preventDefault();
+      goTo(current + 1);
+    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      goTo(current - 1);
+    } else if (e.key === 'Home') {
+      e.preventDefault();
+      goTo(0);
+    } else if (e.key === 'End') {
+      e.preventDefault();
+      goTo(total - 1);
+    }
+  });
+
+  // Touch support
+  let touchStartX = 0;
+  document.addEventListener('touchstart', (e) => { touchStartX = e.touches[0].clientX; });
+  document.addEventListener('touchend', (e) => {
+    const diff = touchStartX - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 50) {
+      diff > 0 ? goTo(current + 1) : goTo(current - 1);
+    }
+  });
+
+  updateUI();
+</script>
+
+</body>
+</html>
