@@ -331,21 +331,18 @@
         />
         <div class="hidden sm:block">
           <p class="font-heading font-bold text-navy-900 text-sm md:text-base leading-tight">BHS Field Experience</p>
-          <p class="text-[10px] md:text-xs text-navy-500 uppercase tracking-wider">Work-Based Learning Opportunities</p>
+          <p class="text-[10px] md:text-xs text-navy-500 uppercase tracking-wider">Work-Based Learning</p>
         </div>
       </a>
 
       <!-- Desktop Nav -->
       <div class="hidden md:flex items-center gap-8">
-        <a href="#program" class="text-navy-600 hover:text-crimson-800 text-sm font-medium transition-colors">Program</a>
+        <a href="#bootcamp" class="text-navy-600 hover:text-crimson-800 text-sm font-medium transition-colors">Bootcamp</a>
         <a href="#pathways" class="text-navy-600 hover:text-crimson-800 text-sm font-medium transition-colors">Career Pathways</a>
-        <a href="#business" class="text-navy-600 hover:text-crimson-800 text-sm font-medium transition-colors">For Business</a>
-        <a href="#business" class="bg-crimson-800 text-white px-6 py-2.5 text-sm font-semibold hover:bg-crimson-700 transition-colors">
-          Partner With Us
-        </a>
-        <button onclick="openModal('inquiry-form')" class="border border-navy-200 text-navy-700 px-6 py-2.5 text-sm font-semibold hover:border-crimson-800 hover:text-crimson-800 transition-colors">
+        <a href="#calendar" class="text-navy-600 hover:text-crimson-800 text-sm font-medium transition-colors">Calendar</a>
+        <a href="mailto:michael@bps101.net" class="bg-crimson-800 text-white px-6 py-2.5 text-sm font-semibold hover:bg-crimson-700 transition-colors">
           Contact
-        </button>
+        </a>
       </div>
 
       <!-- Mobile Menu Button -->
@@ -354,6 +351,16 @@
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
         </svg>
       </button>
+    </div>
+
+    <!-- Mobile Menu Panel -->
+    <div id="mobile-menu" class="md:hidden hidden bg-white border-t border-navy-100">
+      <div class="px-6 py-4 space-y-1">
+        <a href="#bootcamp" onclick="toggleMobileMenu()" class="block py-3 text-navy-700 font-medium border-b border-navy-50 hover:text-crimson-800 transition-colors">Bootcamp</a>
+        <a href="#pathways" onclick="toggleMobileMenu()" class="block py-3 text-navy-700 font-medium border-b border-navy-50 hover:text-crimson-800 transition-colors">Career Pathways</a>
+        <a href="#calendar" onclick="toggleMobileMenu()" class="block py-3 text-navy-700 font-medium border-b border-navy-50 hover:text-crimson-800 transition-colors">Calendar</a>
+        <a href="mailto:michael@bps101.net" class="block py-3 text-crimson-800 font-semibold">Contact Instructor</a>
+      </div>
     </div>
   </nav>
 
@@ -378,30 +385,28 @@
           <div class="flex items-center gap-3 mb-6 opacity-0 animate-in">
             <div class="w-12 h-0.5 bg-crimson-800"></div>
             <p class="text-sm uppercase tracking-widest text-crimson-800 font-semibold">
-              Batavia High School
+              Field Experience — BPS101
             </p>
           </div>
 
           <!-- Main headline -->
           <h1 class="font-heading text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.1] text-navy-900 mb-6 opacity-0 animate-in delay-1">
-            Know your path<br>
-            <span class="text-crimson-800">before</span> you<br>
-            pay for it.
+            The work<br>
+            starts <span class="text-crimson-800">now.</span>
           </h1>
 
           <!-- Subhead -->
           <p class="text-lg md:text-xl leading-relaxed text-navy-600 mb-10 max-w-lg opacity-0 animate-in delay-2">
-            Real workplace experience. Professional connections you build yourself.
-            Certainty about your future—while there's still time to change your mind.
+            Field Experience puts you in a real workplace this semester — earning real experience, building professional skills, and finding out what you actually want to do with your future.
           </p>
 
           <!-- CTAs -->
           <div class="flex flex-col sm:flex-row gap-4 opacity-0 animate-in delay-3">
-            <button onclick="openModal('partner-form')" class="bg-crimson-800 text-white px-8 py-4 text-sm font-semibold uppercase tracking-wider hover:bg-crimson-700 transition-colors text-center">
-              Become a Partner
-            </button>
-            <a href="#pathways" class="border-2 border-navy-900 text-navy-900 px-8 py-4 text-sm font-semibold uppercase tracking-wider hover:bg-navy-900 hover:text-white transition-colors text-center">
-              Explore Pathways
+            <a href="#pathways" class="bg-crimson-800 text-white px-8 py-4 text-sm font-semibold uppercase tracking-wider hover:bg-crimson-700 transition-colors text-center">
+              Explore Career Pathways
+            </a>
+            <a href="#bootcamp" class="border-2 border-navy-900 text-navy-900 px-8 py-4 text-sm font-semibold uppercase tracking-wider hover:bg-navy-900 hover:text-white transition-colors text-center">
+              What to Expect
             </a>
           </div>
 
@@ -454,12 +459,12 @@
 
         <!-- Content -->
         <div class="flex-1 text-center md:text-left">
-          <p class="text-sm uppercase tracking-widest text-gold-500 font-semibold mb-2">Program Overview</p>
+          <p class="text-sm uppercase tracking-widest text-gold-500 font-semibold mb-2">Course Overview</p>
           <h2 class="font-heading text-2xl md:text-3xl font-bold text-white mb-3">
-            Hear the Full Story
+            The Full Picture
           </h2>
           <p class="text-navy-300 mb-6 leading-relaxed">
-            18-minute audio overview of Field Experience — the vision, the structure, and how it transforms high school internships into real work.
+            18 minutes. Everything you need to know about Field Experience — the vision, the structure, and what you'll actually be doing this semester.
           </p>
 
           <!-- Audio Player -->
@@ -474,7 +479,7 @@
               Your browser does not support the audio element.
             </audio>
             <div class="flex items-center justify-between mt-3 text-sm">
-              <span class="text-navy-400">Transforming High School Internships Into Real Work</span>
+              <span class="text-navy-400">What is Field Experience?</span>
               <span class="text-navy-500">18:00</span>
             </div>
           </div>
@@ -618,54 +623,12 @@
     </div>
   </section>
 
-  <!-- Promise / Equity Section -->
-  <section class="py-24 md:py-32 px-6 md:px-8">
-    <div class="max-w-7xl mx-auto">
-
-      <div class="grid lg:grid-cols-12 gap-12 lg:gap-16">
-
-        <div class="lg:col-span-5">
-          <div class="flex items-center gap-3 mb-4">
-            <div class="w-8 h-0.5 bg-crimson-800"></div>
-            <p class="text-sm uppercase tracking-widest text-crimson-800 font-semibold">Our Promise</p>
-          </div>
-          <h2 class="font-heading text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-navy-900 mb-6">
-            Every student deserves <span class="text-crimson-800">equitable access</span> to opportunity.
-          </h2>
-        </div>
-
-        <div class="lg:col-span-6 lg:col-start-7">
-          <p class="text-xl leading-relaxed text-navy-700 mb-6">
-            The old system rewarded students with connections—parents who owned businesses,
-            family friends in the right industries. If you didn't have those networks,
-            you didn't get the experience.
-          </p>
-          <p class="text-lg leading-relaxed text-navy-500 mb-8">
-            Field Experience changes that equation. We build the partnerships.
-            We provide the coaching. We create pathways that don't depend on
-            who your parents know.
-          </p>
-          <div class="flex items-center gap-4">
-            <div class="w-12 h-12 rounded-full bg-teal-600 text-white flex items-center justify-center">
-              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-              </svg>
-            </div>
-            <p class="font-medium text-navy-900">State-aligned, growth-oriented, and transparent</p>
-          </div>
-        </div>
-
-      </div>
-
-    </div>
-  </section>
-
   <!-- Secondary Themes / Cards Section -->
   <section id="program" class="py-24 md:py-32 px-6 md:px-8 bg-navy-50">
     <div class="max-w-7xl mx-auto">
 
       <div class="text-center mb-16">
-        <p class="text-sm uppercase tracking-widest text-crimson-800 font-semibold mb-4">What Makes This Different</p>
+        <p class="text-sm uppercase tracking-widest text-crimson-800 font-semibold mb-4">What Makes This Course Different</p>
         <h2 class="font-heading text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-navy-900">
           Built for the real world.
         </h2>
@@ -698,15 +661,15 @@
           </div>
         </div>
 
-        <!-- Card 2: Business Partnership -->
-        <div class="theme-card group cursor-pointer relative overflow-hidden rounded-lg border-l-4 border-teal-600" onclick="openModal('business')">
-          <img src="https://res.cloudinary.com/dsbllwpbh/image/upload/v1770345155/panel-business-partnership_zmkni5.jpg" alt="" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+        <!-- Card 2: Weekly Accountability -->
+        <div class="theme-card group cursor-pointer relative overflow-hidden rounded-lg border-l-4 border-teal-600" onclick="openModal('accountability')">
+          <img src="https://res.cloudinary.com/dsbllwpbh/image/upload/v1770345156/panel-structured-coaching_wn7bwu.jpg" alt="" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
           <div class="absolute inset-0 bg-white/85 group-hover:bg-white/75 transition-all duration-500"></div>
           <div class="relative z-10 p-8 md:p-10">
             <div class="flex justify-between items-start mb-6">
               <div class="w-14 h-14 rounded-lg bg-teal-100 text-teal-600 flex items-center justify-center">
                 <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/>
                 </svg>
               </div>
               <span class="w-10 h-10 rounded-full border border-navy-200 flex items-center justify-center group-hover:border-teal-600 group-hover:bg-teal-600 transition-all">
@@ -715,9 +678,9 @@
                 </svg>
               </span>
             </div>
-            <h3 class="font-heading text-xl md:text-2xl font-bold text-navy-900 mb-3">Business Partnership</h3>
+            <h3 class="font-heading text-xl md:text-2xl font-bold text-navy-900 mb-3">Weekly Accountability</h3>
             <p class="text-navy-600 leading-relaxed">
-              This isn't charity. Partners get motivated talent, fresh ideas, and a pipeline to future hires.
+              Log your hours, reflect on your growth, and build the habits that every employer looks for.
             </p>
           </div>
         </div>
@@ -846,57 +809,29 @@
           </div>
         </div>
 
-        <!-- Video 2: Business -->
+        <!-- Video 2: Bootcamp Preview (coming soon) -->
         <div class="group">
-          <div class="relative bg-black rounded-2xl overflow-hidden shadow-2xl" style="aspect-ratio: 9/16;">
-            <!-- Video -->
-            <video
-              class="w-full h-full object-cover"
-              playsinline
-              loop
-              muted
-              preload="metadata"
-              poster=""
-              onclick="this.paused ? this.play() : this.pause()"
-            >
-              <source src="https://res.cloudinary.com/dsbllwpbh/video/upload/v1770319517/BHS_WBL_Batavia_Business_Talent_Pipeline_fwoywo.mp4" type="video/mp4">
-            </video>
-
-            <!-- Play Button Overlay -->
-            <div class="video-overlay absolute inset-0 bg-black/40 flex items-center justify-center transition-opacity duration-300 cursor-pointer" onclick="playVideo(this)">
-              <div class="w-16 h-16 rounded-full bg-white/20 backdrop-blur flex items-center justify-center border-2 border-white/50 group-hover:scale-110 transition-transform">
-                <svg class="w-8 h-8 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M8 5v14l11-7z"/>
+          <div class="relative bg-navy-800 rounded-2xl overflow-hidden shadow-2xl flex items-center justify-center" style="aspect-ratio: 9/16;">
+            <!-- Placeholder -->
+            <div class="absolute inset-0 bg-gradient-to-b from-navy-800 to-navy-950"></div>
+            <div class="relative z-10 text-center p-8">
+              <div class="w-16 h-16 rounded-full bg-crimson-800/30 border-2 border-crimson-800/50 flex items-center justify-center mx-auto mb-6">
+                <svg class="w-8 h-8 text-crimson-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
                 </svg>
               </div>
+              <p class="text-white font-heading font-bold text-lg mb-2">Bootcamp Highlights</p>
+              <p class="text-navy-400 text-sm leading-relaxed">Video coming soon — a look inside the first two weeks of the course.</p>
             </div>
-
             <!-- Top Badge -->
-            <div class="absolute top-4 left-4 right-4 flex justify-between items-start pointer-events-none">
-              <span class="bg-teal-600 text-white text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wider">
-                For Business
-              </span>
-              <div class="flex items-center gap-1 bg-black/50 backdrop-blur px-2 py-1 rounded-full">
-                <svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-                </svg>
-                <span class="text-white text-xs font-medium">0:52</span>
-              </div>
-            </div>
-
-            <!-- Bottom Info -->
-            <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent pointer-events-none">
-              <p class="text-white font-heading font-bold text-sm mb-1">Talent Pipeline</p>
-              <p class="text-white/70 text-xs leading-relaxed line-clamp-2">
-                Build your workforce—4 ways to partner with pre-screened, motivated students.
-              </p>
+            <div class="absolute top-4 left-4 pointer-events-none">
+              <span class="bg-crimson-800 text-white text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wider">Coming Soon</span>
             </div>
           </div>
-
           <!-- Caption Below -->
           <div class="mt-4 text-center">
-            <h3 class="font-heading font-bold text-white mb-1">Business Partners</h3>
-            <p class="text-navy-400 text-sm">Shadow → Speak → Mentor → Host</p>
+            <h3 class="font-heading font-bold text-white mb-1">Bootcamp</h3>
+            <p class="text-navy-400 text-sm">Interview Prep → Workplace Skills → Ready</p>
           </div>
         </div>
 
@@ -956,25 +891,130 @@
 
       </div>
 
-      <!-- Social Follow CTA -->
-      <div class="mt-12 text-center">
-        <p class="text-navy-400 text-sm mb-4">Follow us for more updates</p>
-        <div class="flex justify-center gap-4">
-          <a href="#" class="w-10 h-10 rounded-full bg-navy-800 hover:bg-crimson-800 text-white flex items-center justify-center transition-colors">
-            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005 20.1a6.34 6.34 0 0010.86-4.43v-7a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1-.1z"/>
+    </div>
+  </section>
+
+  <!-- Bootcamp Section -->
+  <section id="bootcamp" class="py-24 md:py-32 px-6 md:px-8">
+    <div class="max-w-7xl mx-auto">
+
+      <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-start mb-20">
+        <div>
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-8 h-0.5 bg-crimson-800"></div>
+            <p class="text-sm uppercase tracking-widest text-crimson-800 font-semibold">Week 1–2</p>
+          </div>
+          <h2 class="font-heading text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-navy-900 mb-6">
+            Bootcamp: Get ready before you go.
+          </h2>
+          <p class="text-lg text-navy-600 leading-relaxed mb-6">
+            Before you set foot in a workplace, you'll spend the first two weeks of the course in Bootcamp — learning how to interview, how to carry yourself professionally, and how to make the most of your placement.
+          </p>
+          <p class="text-navy-500 leading-relaxed mb-8">
+            Bootcamp is where you'll build the foundation: resume writing, interview skills, workplace expectations, and the 10 employability skills you'll track all semester. You'll leave ready — not hoping you're ready.
+          </p>
+          <a href="https://docs.google.com/document/d/1gj2rydlR0JWdTtJuBWm7TmV_g2y7SSqKPQ-Oj17bvjw/edit?usp=sharing" target="_blank" rel="noopener" class="inline-flex items-center gap-3 bg-navy-900 text-white px-8 py-4 text-sm font-semibold uppercase tracking-wider hover:bg-crimson-800 transition-colors">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
             </svg>
+            <span>Course Expectations &amp; Policies</span>
           </a>
-          <a href="#" class="w-10 h-10 rounded-full bg-navy-800 hover:bg-crimson-800 text-white flex items-center justify-center transition-colors">
-            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-            </svg>
-          </a>
-          <a href="#" class="w-10 h-10 rounded-full bg-navy-800 hover:bg-crimson-800 text-white flex items-center justify-center transition-colors">
-            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
-            </svg>
-          </a>
+        </div>
+        <div class="grid grid-cols-1 gap-4">
+          <div class="bg-navy-50 border-l-4 border-crimson-800 p-6">
+            <h3 class="font-heading font-bold text-navy-900 mb-2">Interview Prep</h3>
+            <p class="text-navy-600 text-sm leading-relaxed">Practice real interviews, learn what employers are looking for, and build confidence before it counts.</p>
+          </div>
+          <div class="bg-navy-50 border-l-4 border-gold-500 p-6">
+            <h3 class="font-heading font-bold text-navy-900 mb-2">Workplace Readiness</h3>
+            <p class="text-navy-600 text-sm leading-relaxed">Professionalism, communication, showing up — the basics that make or break your placement.</p>
+          </div>
+          <div class="bg-navy-50 border-l-4 border-navy-900 p-6">
+            <h3 class="font-heading font-bold text-navy-900 mb-2">Career Exploration</h3>
+            <p class="text-navy-600 text-sm leading-relaxed">Research career clusters, identify employer opportunities, and narrow down where you want to apply.</p>
+          </div>
+          <div class="bg-crimson-800 text-white border-l-4 border-gold-500 p-6">
+            <div class="flex items-center gap-2 mb-2">
+              <h3 class="font-heading font-bold">Employability Skills</h3>
+              <span class="bg-gold-500 text-navy-900 text-xs font-bold px-2 py-0.5 rounded">10 SKILLS</span>
+            </div>
+            <p class="text-crimson-100 text-sm leading-relaxed">The cross-sector competencies you'll develop and reflect on all semester — starting in Bootcamp.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 10 Employability Skills -->
+      <div class="border-t border-navy-100 pt-16">
+        <div class="text-center mb-12">
+          <p class="text-sm uppercase tracking-widest text-crimson-800 font-semibold mb-4">What You'll Build All Semester</p>
+          <h3 class="font-heading text-2xl md:text-3xl font-bold tracking-tight text-navy-900 mb-4">
+            10 Essential Employability Skills
+          </h3>
+          <p class="text-navy-600 max-w-2xl mx-auto">
+            These aren't "soft skills" — they're the competencies every employer values, in every industry. You'll reflect on one each week during your placement.
+          </p>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+          <div class="bg-navy-50 p-4 rounded-lg cursor-pointer hover:bg-navy-100 transition-colors group" onclick="openSkillModal('teamwork')">
+            <div class="flex items-center justify-between">
+              <p class="font-heading font-semibold text-sm text-navy-900">Teamwork &amp; Conflict Resolution</p>
+              <svg class="w-4 h-4 text-navy-400 group-hover:text-crimson-800 transition-colors flex-shrink-0 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            </div>
+          </div>
+          <div class="bg-navy-50 p-4 rounded-lg cursor-pointer hover:bg-navy-100 transition-colors group" onclick="openSkillModal('communication')">
+            <div class="flex items-center justify-between">
+              <p class="font-heading font-semibold text-sm text-navy-900">Communication</p>
+              <svg class="w-4 h-4 text-navy-400 group-hover:text-crimson-800 transition-colors flex-shrink-0 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            </div>
+          </div>
+          <div class="bg-navy-50 p-4 rounded-lg cursor-pointer hover:bg-navy-100 transition-colors group" onclick="openSkillModal('problem-solving')">
+            <div class="flex items-center justify-between">
+              <p class="font-heading font-semibold text-sm text-navy-900">Problem Solving</p>
+              <svg class="w-4 h-4 text-navy-400 group-hover:text-crimson-800 transition-colors flex-shrink-0 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            </div>
+          </div>
+          <div class="bg-navy-50 p-4 rounded-lg cursor-pointer hover:bg-navy-100 transition-colors group" onclick="openSkillModal('decision-making')">
+            <div class="flex items-center justify-between">
+              <p class="font-heading font-semibold text-sm text-navy-900">Decision Making</p>
+              <svg class="w-4 h-4 text-navy-400 group-hover:text-crimson-800 transition-colors flex-shrink-0 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            </div>
+          </div>
+          <div class="bg-navy-50 p-4 rounded-lg cursor-pointer hover:bg-navy-100 transition-colors group" onclick="openSkillModal('critical-thinking')">
+            <div class="flex items-center justify-between">
+              <p class="font-heading font-semibold text-sm text-navy-900">Critical Thinking</p>
+              <svg class="w-4 h-4 text-navy-400 group-hover:text-crimson-800 transition-colors flex-shrink-0 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            </div>
+          </div>
+          <div class="bg-navy-50 p-4 rounded-lg cursor-pointer hover:bg-navy-100 transition-colors group" onclick="openSkillModal('adaptability')">
+            <div class="flex items-center justify-between">
+              <p class="font-heading font-semibold text-sm text-navy-900">Adaptability &amp; Flexibility</p>
+              <svg class="w-4 h-4 text-navy-400 group-hover:text-crimson-800 transition-colors flex-shrink-0 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            </div>
+          </div>
+          <div class="bg-navy-50 p-4 rounded-lg cursor-pointer hover:bg-navy-100 transition-colors group" onclick="openSkillModal('initiative')">
+            <div class="flex items-center justify-between">
+              <p class="font-heading font-semibold text-sm text-navy-900">Initiative &amp; Self-Drive</p>
+              <svg class="w-4 h-4 text-navy-400 group-hover:text-crimson-800 transition-colors flex-shrink-0 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            </div>
+          </div>
+          <div class="bg-navy-50 p-4 rounded-lg cursor-pointer hover:bg-navy-100 transition-colors group" onclick="openSkillModal('reliability')">
+            <div class="flex items-center justify-between">
+              <p class="font-heading font-semibold text-sm text-navy-900">Reliability &amp; Accountability</p>
+              <svg class="w-4 h-4 text-navy-400 group-hover:text-crimson-800 transition-colors flex-shrink-0 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            </div>
+          </div>
+          <div class="bg-navy-50 p-4 rounded-lg cursor-pointer hover:bg-navy-100 transition-colors group" onclick="openSkillModal('cultural')">
+            <div class="flex items-center justify-between">
+              <p class="font-heading font-semibold text-sm text-navy-900">Cultural Competence</p>
+              <svg class="w-4 h-4 text-navy-400 group-hover:text-crimson-800 transition-colors flex-shrink-0 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            </div>
+          </div>
+          <div class="bg-gold-500 text-navy-900 p-4 rounded-lg cursor-pointer hover:bg-gold-400 transition-colors group" onclick="openSkillModal('planning')">
+            <div class="flex items-center justify-between">
+              <p class="font-heading font-semibold text-sm">Planning &amp; Organizing</p>
+              <svg class="w-4 h-4 text-navy-900/50 group-hover:text-navy-900 transition-colors flex-shrink-0 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -982,7 +1022,7 @@
   </section>
 
   <!-- 7 Career Clusters Section -->
-  <section id="pathways" class="py-24 md:py-32 px-6 md:px-8">
+  <section id="pathways" class="py-24 md:py-32 px-6 md:px-8 bg-navy-50">
     <div class="max-w-7xl mx-auto">
 
       <div class="text-center mb-16">
@@ -991,7 +1031,7 @@
           7 Career Clusters
         </h2>
         <p class="text-lg text-navy-600 max-w-2xl mx-auto">
-          Explore pathways aligned to Illinois career development standards. Each cluster has specific technical competencies you'll develop.
+          Click a cluster to explore careers and see partner employers you can apply to. Each cluster is aligned to Illinois career development standards.
         </p>
       </div>
 
@@ -1071,113 +1111,100 @@
 
       </div>
 
+      <!-- Employer Opportunities Placeholder -->
+      <div class="mt-16 border-t border-navy-200 pt-16">
+        <div class="text-center mb-10">
+          <p class="text-sm uppercase tracking-widest text-crimson-800 font-semibold mb-3">Apply for Your Placement</p>
+          <h3 class="font-heading text-2xl md:text-3xl font-bold text-navy-900 mb-3">Partner Employer Opportunities</h3>
+          <p class="text-navy-600 max-w-2xl mx-auto">Click a career cluster above to see specific employers and how to apply. Partner employers are being added — check back as we build out these connections.</p>
+        </div>
+        <div class="grid md:grid-cols-3 gap-6">
+          <div class="bg-white border border-navy-200 rounded-lg p-6 border-dashed">
+            <div class="w-10 h-10 rounded-lg bg-navy-100 flex items-center justify-center mb-4">
+              <svg class="w-5 h-5 text-navy-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+            </div>
+            <p class="font-heading font-bold text-navy-900 mb-1">Partner Business</p>
+            <p class="text-navy-500 text-sm">Application details coming soon</p>
+          </div>
+          <div class="bg-white border border-navy-200 rounded-lg p-6 border-dashed">
+            <div class="w-10 h-10 rounded-lg bg-navy-100 flex items-center justify-center mb-4">
+              <svg class="w-5 h-5 text-navy-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+            </div>
+            <p class="font-heading font-bold text-navy-900 mb-1">Partner Business</p>
+            <p class="text-navy-500 text-sm">Application details coming soon</p>
+          </div>
+          <div class="bg-white border border-navy-200 rounded-lg p-6 border-dashed">
+            <div class="w-10 h-10 rounded-lg bg-navy-100 flex items-center justify-center mb-4">
+              <svg class="w-5 h-5 text-navy-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+            </div>
+            <p class="font-heading font-bold text-navy-900 mb-1">Partner Business</p>
+            <p class="text-navy-500 text-sm">Application details coming soon</p>
+          </div>
+        </div>
+      </div>
+
     </div>
   </section>
 
-  <!-- Essential Employability Skills Section -->
-  <section class="py-24 md:py-32 px-6 md:px-8 bg-crimson-800 text-white">
+  <!-- Student Resources Section -->
+  <section id="resources" class="py-24 md:py-32 px-6 md:px-8">
     <div class="max-w-7xl mx-auto">
 
-      <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+      <div class="text-center mb-16">
+        <p class="text-sm uppercase tracking-widest text-crimson-800 font-semibold mb-4">During Your Placement</p>
+        <h2 class="font-heading text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-navy-900 mb-4">
+          Course Resources
+        </h2>
+        <p class="text-lg text-navy-600 max-w-2xl mx-auto">
+          Everything you need to stay on track during your placement — log your hours, submit your weekly reflection, and review course expectations.
+        </p>
+      </div>
 
-        <div>
-          <p class="text-sm uppercase tracking-widest text-crimson-300 font-semibold mb-4">Cross-Sector Competencies</p>
-          <h2 class="font-heading text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mb-6">
-            10 Essential Employability Skills
-          </h2>
-          <p class="text-lg text-crimson-100 leading-relaxed mb-8">
-            These aren't "soft skills"—they're the cross-sector competencies that every employer values, regardless of industry.
-            You'll develop and demonstrate these throughout your Field Experience.
-          </p>
-          <a href="#apply" class="inline-flex items-center gap-3 bg-white text-crimson-800 px-8 py-4 text-sm font-semibold uppercase tracking-wider hover:bg-gold-500 hover:text-navy-900 transition-colors">
-            <span>Start Building Skills</span>
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+      <div class="grid md:grid-cols-3 gap-8">
+
+        <!-- Resource 1: Class Expectations -->
+        <div class="group bg-white border border-navy-200 rounded-lg p-8 hover:border-crimson-800 hover:shadow-lg transition-all">
+          <div class="w-14 h-14 rounded-lg bg-crimson-100 text-crimson-800 flex items-center justify-center mb-6">
+            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
             </svg>
+          </div>
+          <h3 class="font-heading text-xl font-bold text-navy-900 mb-3">Course Expectations</h3>
+          <p class="text-navy-600 leading-relaxed mb-6 text-sm">Review the policies, procedures, and expectations for the Field Experience course. Read this first.</p>
+          <a href="https://docs.google.com/document/d/1gj2rydlR0JWdTtJuBWm7TmV_g2y7SSqKPQ-Oj17bvjw/edit?usp=sharing" target="_blank" rel="noopener" class="inline-flex items-center gap-2 text-crimson-800 font-semibold text-sm hover:text-crimson-700 transition-colors group-hover:gap-3">
+            Open Document
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
           </a>
         </div>
 
-        <div class="grid grid-cols-2 gap-4">
-          <div class="bg-white/10 backdrop-blur p-4 rounded-lg cursor-pointer hover:bg-white/20 transition-colors group" onclick="openSkillModal('teamwork')">
-            <div class="flex items-center justify-between">
-              <p class="font-heading font-semibold">Teamwork & Conflict Resolution</p>
-              <svg class="w-4 h-4 text-white/50 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-              </svg>
-            </div>
+        <!-- Resource 2: Weekly Hours Log -->
+        <div class="group bg-white border border-navy-200 rounded-lg p-8 hover:border-gold-500 hover:shadow-lg transition-all">
+          <div class="w-14 h-14 rounded-lg bg-gold-100 text-gold-600 flex items-center justify-center mb-6">
+            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+            </svg>
           </div>
-          <div class="bg-white/10 backdrop-blur p-4 rounded-lg cursor-pointer hover:bg-white/20 transition-colors group" onclick="openSkillModal('communication')">
-            <div class="flex items-center justify-between">
-              <p class="font-heading font-semibold">Communication</p>
-              <svg class="w-4 h-4 text-white/50 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-              </svg>
-            </div>
+          <h3 class="font-heading text-xl font-bold text-navy-900 mb-3">Weekly Hours Log</h3>
+          <p class="text-navy-600 leading-relaxed mb-6 text-sm">Make a copy of this Google Sheet to track your placement hours each week. Fill it out and share your copy with your instructor.</p>
+          <a href="https://docs.google.com/spreadsheets/d/1cjlkw7Pz3cbC9wjAEG5VeYqoVRs3oWCVOrvzGQtAeQc/copy" target="_blank" rel="noopener" class="inline-flex items-center gap-2 text-gold-600 font-semibold text-sm hover:text-gold-500 transition-colors group-hover:gap-3">
+            Make a Copy
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+          </a>
+        </div>
+
+        <!-- Resource 3: Weekly Reflection Form -->
+        <div class="group bg-white border border-navy-200 rounded-lg p-8 hover:border-navy-900 hover:shadow-lg transition-all">
+          <div class="w-14 h-14 rounded-lg bg-navy-100 text-navy-900 flex items-center justify-center mb-6">
+            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+            </svg>
           </div>
-          <div class="bg-white/10 backdrop-blur p-4 rounded-lg cursor-pointer hover:bg-white/20 transition-colors group" onclick="openSkillModal('problem-solving')">
-            <div class="flex items-center justify-between">
-              <p class="font-heading font-semibold">Problem Solving</p>
-              <svg class="w-4 h-4 text-white/50 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-              </svg>
-            </div>
-          </div>
-          <div class="bg-white/10 backdrop-blur p-4 rounded-lg cursor-pointer hover:bg-white/20 transition-colors group" onclick="openSkillModal('decision-making')">
-            <div class="flex items-center justify-between">
-              <p class="font-heading font-semibold">Decision Making</p>
-              <svg class="w-4 h-4 text-white/50 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-              </svg>
-            </div>
-          </div>
-          <div class="bg-white/10 backdrop-blur p-4 rounded-lg cursor-pointer hover:bg-white/20 transition-colors group" onclick="openSkillModal('critical-thinking')">
-            <div class="flex items-center justify-between">
-              <p class="font-heading font-semibold">Critical Thinking</p>
-              <svg class="w-4 h-4 text-white/50 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-              </svg>
-            </div>
-          </div>
-          <div class="bg-white/10 backdrop-blur p-4 rounded-lg cursor-pointer hover:bg-white/20 transition-colors group" onclick="openSkillModal('adaptability')">
-            <div class="flex items-center justify-between">
-              <p class="font-heading font-semibold">Adaptability & Flexibility</p>
-              <svg class="w-4 h-4 text-white/50 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-              </svg>
-            </div>
-          </div>
-          <div class="bg-white/10 backdrop-blur p-4 rounded-lg cursor-pointer hover:bg-white/20 transition-colors group" onclick="openSkillModal('initiative')">
-            <div class="flex items-center justify-between">
-              <p class="font-heading font-semibold">Initiative & Self-Drive</p>
-              <svg class="w-4 h-4 text-white/50 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-              </svg>
-            </div>
-          </div>
-          <div class="bg-white/10 backdrop-blur p-4 rounded-lg cursor-pointer hover:bg-white/20 transition-colors group" onclick="openSkillModal('reliability')">
-            <div class="flex items-center justify-between">
-              <p class="font-heading font-semibold">Reliability & Accountability</p>
-              <svg class="w-4 h-4 text-white/50 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-              </svg>
-            </div>
-          </div>
-          <div class="bg-white/10 backdrop-blur p-4 rounded-lg cursor-pointer hover:bg-white/20 transition-colors group" onclick="openSkillModal('cultural')">
-            <div class="flex items-center justify-between">
-              <p class="font-heading font-semibold">Cultural Competence</p>
-              <svg class="w-4 h-4 text-white/50 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-              </svg>
-            </div>
-          </div>
-          <div class="bg-gold-500 text-navy-900 p-4 rounded-lg cursor-pointer hover:bg-gold-400 transition-colors group" onclick="openSkillModal('planning')">
-            <div class="flex items-center justify-between">
-              <p class="font-heading font-semibold">Planning & Organizing</p>
-              <svg class="w-4 h-4 text-navy-900/50 group-hover:text-navy-900 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-              </svg>
-            </div>
-          </div>
+          <h3 class="font-heading text-xl font-bold text-navy-900 mb-3">Weekly Reflection Form</h3>
+          <p class="text-navy-600 leading-relaxed mb-6 text-sm">Submit your weekly recap — what you did, what you learned, and which employability skill you're focusing on. Due each week.</p>
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLSdIioovjDY9OgL4VlEddAHlOOuwm8ZKEdRY5yWbYiTIL0prkw/viewform?usp=header" target="_blank" rel="noopener" class="inline-flex items-center gap-2 text-navy-900 font-semibold text-sm hover:text-crimson-800 transition-colors group-hover:gap-3">
+            Submit Reflection
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+          </a>
         </div>
 
       </div>
@@ -1185,8 +1212,32 @@
     </div>
   </section>
 
-  <!-- For Business Section -->
-  <section id="business" class="py-24 md:py-32 px-6 md:px-8">
+  <!-- Calendar Section -->
+  <section id="calendar" class="py-24 md:py-32 px-6 md:px-8 bg-navy-50">
+    <div class="max-w-7xl mx-auto">
+
+      <div class="text-center mb-12">
+        <p class="text-sm uppercase tracking-widest text-crimson-800 font-semibold mb-4">Stay on Track</p>
+        <h2 class="font-heading text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-navy-900 mb-4">
+          Class Calendar
+        </h2>
+        <p class="text-lg text-navy-600 max-w-2xl mx-auto">
+          Key dates, meeting days, deadlines, and placement milestones — all in one place.
+        </p>
+      </div>
+
+      <div class="bg-white rounded-xl shadow-sm border border-navy-100 overflow-hidden">
+        <div class="w-full overflow-x-auto">
+          <iframe src="https://calendar.google.com/calendar/embed?src=c_1d562a1ba796d11aef144a7aa410cef3c69637dd2994944bba9ebbf9249d46c3%40group.calendar.google.com&ctz=America%2FChicago" style="border: 0" width="800" height="600" frameborder="0" scrolling="no" class="w-full min-w-[320px]"></iframe>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- REMOVED: For Business Section -->
+  <div id="business" style="display:none"></div>
+  <section style="display:none" class="py-24 md:py-32 px-6 md:px-8">
     <div class="max-w-7xl mx-auto">
 
       <div class="grid lg:grid-cols-2 gap-16 lg:gap-24">
@@ -1319,84 +1370,6 @@
     </div>
   </section>
 
-  <!-- Partner Businesses Section -->
-  <section class="py-24 md:py-32 px-6 md:px-8 bg-navy-50">
-    <div class="max-w-7xl mx-auto">
-
-      <div class="text-center mb-16">
-        <p class="text-sm uppercase tracking-widest text-crimson-800 font-semibold mb-4">Our Partners</p>
-        <h2 class="font-heading text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-navy-900 mb-4">
-          Businesses Already On Board
-        </h2>
-        <p class="text-lg text-navy-600 max-w-2xl mx-auto">
-          These local businesses are investing in the next generation. Want to join them?
-        </p>
-      </div>
-
-      <!-- Partner Logo Grid (placeholder) -->
-      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 mb-16">
-        <!-- Placeholder partner slots -->
-        <div class="bg-white border border-navy-200 rounded-lg p-6 flex items-center justify-center min-h-[100px]">
-          <p class="text-navy-300 text-sm text-center font-medium">Partner Logo</p>
-        </div>
-        <div class="bg-white border border-navy-200 rounded-lg p-6 flex items-center justify-center min-h-[100px]">
-          <p class="text-navy-300 text-sm text-center font-medium">Partner Logo</p>
-        </div>
-        <div class="bg-white border border-navy-200 rounded-lg p-6 flex items-center justify-center min-h-[100px]">
-          <p class="text-navy-300 text-sm text-center font-medium">Partner Logo</p>
-        </div>
-        <div class="bg-white border border-navy-200 rounded-lg p-6 flex items-center justify-center min-h-[100px]">
-          <p class="text-navy-300 text-sm text-center font-medium">Partner Logo</p>
-        </div>
-        <div class="bg-white border border-navy-200 rounded-lg p-6 flex items-center justify-center min-h-[100px]">
-          <p class="text-navy-300 text-sm text-center font-medium">Partner Logo</p>
-        </div>
-        <div class="bg-white border border-navy-200 rounded-lg p-6 flex items-center justify-center min-h-[100px] border-dashed">
-          <a href="#business" class="text-crimson-800 text-sm text-center font-semibold hover:text-crimson-700 transition-colors">Your Business Here?</a>
-        </div>
-      </div>
-
-      <!-- Partner Testimonials -->
-      <div class="max-w-4xl mx-auto">
-        <h3 class="font-heading text-xl font-bold text-navy-900 mb-8 text-center">What Our Partners Say</h3>
-        <div class="grid md:grid-cols-2 gap-8">
-
-          <!-- Testimonial placeholder 1 -->
-          <div class="bg-white p-8 rounded-lg border border-navy-100">
-            <svg class="w-8 h-8 text-gold-500 mb-4" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
-            </svg>
-            <p class="text-navy-600 leading-relaxed italic mb-4">Partner testimonial coming soon — stories from businesses about how beneficial it was to host student interns.</p>
-            <div class="flex items-center gap-3">
-              <div class="w-10 h-10 rounded-full bg-navy-100"></div>
-              <div>
-                <p class="font-heading font-bold text-navy-900 text-sm">Business Name</p>
-                <p class="text-navy-500 text-xs">Partner since 2026</p>
-              </div>
-            </div>
-          </div>
-
-          <!-- Testimonial placeholder 2 -->
-          <div class="bg-white p-8 rounded-lg border border-navy-100">
-            <svg class="w-8 h-8 text-gold-500 mb-4" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
-            </svg>
-            <p class="text-navy-600 leading-relaxed italic mb-4">Partner testimonial coming soon — stories about the bright, motivated students who contributed real value.</p>
-            <div class="flex items-center gap-3">
-              <div class="w-10 h-10 rounded-full bg-navy-100"></div>
-              <div>
-                <p class="font-heading font-bold text-navy-900 text-sm">Business Name</p>
-                <p class="text-navy-500 text-xs">Partner since 2026</p>
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </div>
-
-    </div>
-  </section>
-
   <!-- Journey / Continuum Section -->
   <section class="py-24 md:py-32 px-6 md:px-8 bg-navy-900 text-white">
     <div class="max-w-7xl mx-auto">
@@ -1408,70 +1381,31 @@
         </h2>
       </div>
 
-      <!-- Timeline -->
-      <div class="grid md:grid-cols-4 gap-8">
+      <!-- Timeline: 3 steps -->
+      <div class="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
 
-        <div class="relative">
-          <div class="w-12 h-12 rounded-full bg-navy-800 border-2 border-gold-500 text-gold-500 flex items-center justify-center mb-4 font-heading font-bold">1</div>
-          <h3 class="font-heading font-bold text-lg mb-2">Application</h3>
-          <p class="text-navy-300 text-sm leading-relaxed">Submit your application, attend the info meeting, and get a teacher reference.</p>
-        </div>
-
-        <div class="relative">
-          <div class="w-12 h-12 rounded-full bg-navy-800 border-2 border-gold-500 text-gold-500 flex items-center justify-center mb-4 font-heading font-bold">2</div>
+        <div class="relative text-center md:text-left">
+          <div class="w-12 h-12 rounded-full bg-navy-800 border-2 border-gold-500 text-gold-500 flex items-center justify-center mb-4 font-heading font-bold mx-auto md:mx-0">1</div>
           <h3 class="font-heading font-bold text-lg mb-2">Bootcamp</h3>
-          <p class="text-navy-300 text-sm leading-relaxed">Two weeks of interview prep, workplace readiness, and essential employability skills coaching.</p>
+          <p class="text-navy-300 text-sm leading-relaxed">Two weeks of interview prep, workplace readiness, and employability skills coaching. You leave Bootcamp ready — not hoping you're ready.</p>
         </div>
 
-        <div class="relative">
-          <div class="w-12 h-12 rounded-full bg-navy-800 border-2 border-gold-500 text-gold-500 flex items-center justify-center mb-4 font-heading font-bold">3</div>
+        <div class="relative text-center md:text-left">
+          <div class="w-12 h-12 rounded-full bg-navy-800 border-2 border-gold-500 text-gold-500 flex items-center justify-center mb-4 font-heading font-bold mx-auto md:mx-0">2</div>
           <h3 class="font-heading font-bold text-lg mb-2">Placement</h3>
-          <p class="text-navy-300 text-sm leading-relaxed">60+ hours of hands-on experience with ongoing coaching and weekly accountability.</p>
+          <p class="text-navy-300 text-sm leading-relaxed">60+ hours of real workplace experience. Log your hours weekly, submit reflections, and meet with your instructor every couple weeks.</p>
         </div>
 
-        <div class="relative">
-          <div class="w-12 h-12 rounded-full bg-gold-500 text-navy-900 flex items-center justify-center mb-4">
+        <div class="relative text-center md:text-left">
+          <div class="w-12 h-12 rounded-full bg-gold-500 text-navy-900 flex items-center justify-center mb-4 mx-auto md:mx-0">
             <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
               <path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/>
             </svg>
           </div>
           <h3 class="font-heading font-bold text-lg mb-2">Capstone</h3>
-          <p class="text-navy-300 text-sm leading-relaxed">Tell your story. Showcase your products, skills, and what you've learned.</p>
+          <p class="text-navy-300 text-sm leading-relaxed">Tell your story. Showcase what you built, the skills you grew, and what you discovered about your future — whether you loved it or learned it's not for you.</p>
         </div>
 
-      </div>
-
-    </div>
-  </section>
-
-  <!-- CTA Section -->
-  <section id="apply" class="py-24 md:py-32 px-6 md:px-8">
-    <div class="max-w-4xl mx-auto text-center">
-
-      <div class="flex justify-center mb-8">
-        <div class="w-16 h-16 rounded-full bg-gold-500 text-navy-900 flex items-center justify-center shadow-lg shadow-gold-500/30">
-          <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/>
-          </svg>
-        </div>
-      </div>
-
-      <h2 class="font-heading text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-navy-900 mb-6">
-        Invest in the next generation.<br>
-        <span class="text-crimson-800">Partner with BHS.</span>
-      </h2>
-
-      <p class="text-lg md:text-xl text-navy-600 leading-relaxed mb-10 max-w-2xl mx-auto">
-        Whether you can host an intern, offer a job shadow, speak to a class, or mentor a student — there's a way for your business to make an impact.
-      </p>
-
-      <div class="flex flex-col sm:flex-row gap-4 justify-center">
-        <button onclick="openModal('partner-form')" class="bg-crimson-800 text-white px-10 py-5 text-sm font-semibold uppercase tracking-wider hover:bg-crimson-700 transition-colors">
-          Fill Out the Partner Form
-        </button>
-        <button onclick="openModal('inquiry-form')" class="border-2 border-navy-900 text-navy-900 px-10 py-5 text-sm font-semibold uppercase tracking-wider hover:bg-navy-900 hover:text-white transition-colors">
-          General Inquiry
-        </button>
       </div>
 
     </div>
@@ -1489,13 +1423,14 @@
             alt="BHS Field Experience"
             class="h-8 max-w-[200px] object-contain object-left brightness-0 invert opacity-90"
           />
-          <p class="text-sm text-navy-400">BHS Field Experience — Work-Based Learning Opportunities</p>
+          <p class="text-sm text-navy-400">BHS Field Experience — Work-Based Learning</p>
         </div>
 
         <div class="flex flex-col md:flex-row items-start md:items-center gap-6 md:gap-12">
-          <a href="#business" class="text-navy-300 hover:text-white text-sm transition-colors">Partner With Us</a>
-          <a href="#pathways-overview" class="text-navy-300 hover:text-white text-sm transition-colors">Pathways</a>
-          <a href="#" onclick="openModal('inquiry-form'); return false;" class="text-navy-300 hover:text-white text-sm transition-colors">Contact</a>
+          <a href="#bootcamp" class="text-navy-300 hover:text-white text-sm transition-colors">Bootcamp</a>
+          <a href="#pathways" class="text-navy-300 hover:text-white text-sm transition-colors">Career Pathways</a>
+          <a href="#resources" class="text-navy-300 hover:text-white text-sm transition-colors">Resources</a>
+          <a href="#calendar" class="text-navy-300 hover:text-white text-sm transition-colors">Calendar</a>
         </div>
 
       </div>
@@ -1560,45 +1495,44 @@
     </div>
   </div>
 
-  <!-- Modal: Business Partnership -->
-  <div id="modal-business" class="modal-backdrop items-center justify-center p-6">
+  <!-- Modal: Weekly Accountability -->
+  <div id="modal-accountability" class="modal-backdrop items-center justify-center p-6">
     <div class="modal-content bg-white w-full max-w-4xl max-h-[90vh] overflow-y-auto">
       <div class="p-8 md:p-12">
         <div class="flex justify-between items-start mb-8">
           <div class="w-14 h-14 rounded-lg bg-teal-100 text-teal-600 flex items-center justify-center">
             <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/>
             </svg>
           </div>
-          <button onclick="closeModal('business')" class="w-10 h-10 rounded-full border border-navy-200 flex items-center justify-center hover:bg-teal-600 hover:text-white hover:border-teal-600 transition-all">
+          <button onclick="closeModal('accountability')" class="w-10 h-10 rounded-full border border-navy-200 flex items-center justify-center hover:bg-teal-600 hover:text-white hover:border-teal-600 transition-all">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
             </svg>
           </button>
         </div>
-        <h2 class="font-heading text-2xl md:text-3xl font-bold text-navy-900 mb-6">Business Partnership</h2>
+        <h2 class="font-heading text-2xl md:text-3xl font-bold text-navy-900 mb-6">Weekly Accountability</h2>
         <div class="space-y-4 text-navy-600 leading-relaxed">
           <p class="text-lg text-navy-700">
-            This isn't charity. Companies get real value from participating.
+            During your placement, two things are due every week — your hours log and your reflection.
           </p>
           <p>
-            <strong class="text-navy-900">Access to motivated, coachable talent.</strong> These are students who
-            applied for a competitive program, went through screening, and earned their spot. They want to be there.
+            <strong class="text-navy-900">Weekly Hours Log.</strong> You'll make a copy of a Google Sheet template and use it all semester. Each week, plan out when you're working and where. At the end of the week, go back and log your actual hours — because life happens and schedules shift. Share your copy with your instructor so they can track your progress.
           </p>
           <p>
-            <strong class="text-navy-900">Preview potential future employees.</strong> You get a semester to see
-            how someone works, learns, and fits your culture—before you ever have to make a hiring decision.
+            <strong class="text-navy-900">Weekly Reflection Form.</strong> A short Google Form where you recap what you did that week, what stood out, and which employability skill you focused on. By the end of the semester, these reflections become a log of everything you've accomplished — and they'll feed directly into your Capstone.
           </p>
           <p>
-            <strong class="text-navy-900">Fresh ideas and support on daily tasks.</strong> That project you've
-            never had time for? That event you couldn't staff? These students can help—and they bring
-            energy, tech fluency, and new perspectives.
+            <strong class="text-navy-900">Every two weeks — group check-ins.</strong> You'll meet with your instructor and classmates for discussion, reflection, and shared learning. These aren't just checkboxes — they're where you get better.
           </p>
-          <p>
-            <strong class="text-navy-900">Build your workforce pipeline.</strong> If you do a good job,
-            students will want to work for you. You're not just filling an intern slot—you're building
-            relationships with the next generation of your industry.
-          </p>
+          <div class="flex flex-col sm:flex-row gap-4 pt-4">
+            <a href="https://docs.google.com/spreadsheets/d/1cjlkw7Pz3cbC9wjAEG5VeYqoVRs3oWCVOrvzGQtAeQc/copy" target="_blank" rel="noopener" class="inline-flex items-center gap-2 bg-gold-500 text-navy-900 px-6 py-3 text-sm font-semibold uppercase tracking-wider hover:bg-gold-400 transition-colors">
+              Make a Copy of Hours Log
+            </a>
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSdIioovjDY9OgL4VlEddAHlOOuwm8ZKEdRY5yWbYiTIL0prkw/viewform?usp=header" target="_blank" rel="noopener" class="inline-flex items-center gap-2 bg-navy-900 text-white px-6 py-3 text-sm font-semibold uppercase tracking-wider hover:bg-crimson-800 transition-colors">
+              Submit Weekly Reflection
+            </a>
+          </div>
         </div>
       </div>
     </div>
@@ -1757,20 +1691,20 @@
           </div>
         </div>
 
-        <div class="mt-8 pt-6 border-t border-navy-100">
-          <a href="#apply" onclick="closeClusterModal()" class="inline-flex items-center gap-2 bg-crimson-800 text-white px-6 py-3 text-sm font-semibold uppercase tracking-wider hover:bg-crimson-700 transition-colors">
-            <span>Explore This Pathway</span>
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
-            </svg>
-          </a>
+        <div class="mt-6 pt-6 border-t border-navy-100">
+          <h3 class="font-heading font-bold text-navy-900 mb-3 flex items-center gap-2">
+            <span class="w-6 h-6 rounded bg-gold-500 text-navy-900 flex items-center justify-center text-xs font-bold">EO</span>
+            Employer Opportunities
+          </h3>
+          <p class="text-sm text-navy-500 mb-4">Partner employers in this cluster — click to view application details.</p>
+          <div id="cluster-employers" class="space-y-3"></div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Modal: Partner Interest Form -->
-  <div id="modal-partner-form" class="modal-backdrop items-center justify-center p-6">
+  <!-- Modal: Partner Interest Form (hidden - not used on student site) -->
+  <div id="modal-partner-form" class="modal-backdrop items-center justify-center p-6" style="display:none!important">
     <div class="modal-content bg-white w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-lg">
       <div class="p-8 md:p-10">
         <div class="flex justify-between items-start mb-6">
@@ -2065,7 +1999,8 @@
 
     // Mobile menu toggle
     function toggleMobileMenu() {
-      alert('Mobile menu would open here');
+      var menu = document.getElementById('mobile-menu');
+      menu.classList.toggle('hidden');
     }
 
     // Video player function
@@ -2280,7 +2215,8 @@
           'Agricultural technology',
           'Natural resource conservation'
         ],
-        careers: ['Agricultural Scientist', 'Farm Manager', 'Food Inspector', 'Environmental Technician', 'Landscape Architect', 'Veterinary Assistant']
+        careers: ['Agricultural Scientist', 'Farm Manager', 'Food Inspector', 'Environmental Technician', 'Landscape Architect', 'Veterinary Assistant'],
+        employers: []
       },
       arts: {
         title: 'Arts & Communication',
@@ -2293,7 +2229,8 @@
           'Creative problem solving',
           'Brand storytelling'
         ],
-        careers: ['Graphic Designer', 'Video Producer', 'Social Media Manager', 'Journalist', 'Photographer', 'Marketing Coordinator']
+        careers: ['Graphic Designer', 'Video Producer', 'Social Media Manager', 'Journalist', 'Photographer', 'Marketing Coordinator'],
+        employers: []
       },
       finance: {
         title: 'Finance & Business Services',
@@ -2306,7 +2243,8 @@
           'Business operations',
           'Customer relationship management'
         ],
-        careers: ['Accountant', 'Financial Analyst', 'Bank Teller', 'Business Manager', 'Entrepreneur', 'Insurance Agent']
+        careers: ['Accountant', 'Financial Analyst', 'Bank Teller', 'Business Manager', 'Entrepreneur', 'Insurance Agent'],
+        employers: []
       },
       health: {
         title: 'Health Sciences & Technology',
@@ -2319,7 +2257,8 @@
           'Clinical procedures',
           'Healthcare ethics & compliance'
         ],
-        careers: ['Registered Nurse', 'Medical Assistant', 'Physical Therapist', 'Pharmacy Technician', 'EMT/Paramedic', 'Lab Technician']
+        careers: ['Registered Nurse', 'Medical Assistant', 'Physical Therapist', 'Pharmacy Technician', 'EMT/Paramedic', 'Lab Technician'],
+        employers: []
       },
       human: {
         title: 'Human & Public Services',
@@ -2332,7 +2271,8 @@
           'Crisis intervention',
           'Cultural competence'
         ],
-        careers: ['Social Worker', 'Teacher', 'Police Officer', 'Firefighter', 'City Planner', 'Nonprofit Manager']
+        careers: ['Social Worker', 'Teacher', 'Police Officer', 'Firefighter', 'City Planner', 'Nonprofit Manager'],
+        employers: []
       },
       it: {
         title: 'Information Technology',
@@ -2345,7 +2285,8 @@
           'Database management',
           'Technical troubleshooting'
         ],
-        careers: ['Software Developer', 'IT Support Specialist', 'Cybersecurity Analyst', 'Web Developer', 'Data Analyst', 'Network Administrator']
+        careers: ['Software Developer', 'IT Support Specialist', 'Cybersecurity Analyst', 'Web Developer', 'Data Analyst', 'Network Administrator'],
+        employers: []
       },
       manufacturing: {
         title: 'Manufacturing, Engineering & Trades',
@@ -2358,7 +2299,8 @@
           'Supply chain logistics',
           'Technical documentation'
         ],
-        careers: ['Mechanical Engineer', 'Electrician', 'CNC Machinist', 'Welder', 'HVAC Technician', 'Construction Manager']
+        careers: ['Mechanical Engineer', 'Electrician', 'CNC Machinist', 'Welder', 'HVAC Technician', 'Construction Manager'],
+        employers: []
       }
     };
 
@@ -2388,6 +2330,22 @@
       careersList.innerHTML = data.careers.map(c =>
         `<span class="bg-navy-100 text-navy-700 px-3 py-1.5 rounded-full text-sm font-medium">${c}</span>`
       ).join('');
+
+      // Populate employers
+      const employersList = document.getElementById('cluster-employers');
+      if (data.employers && data.employers.length > 0) {
+        employersList.innerHTML = data.employers.map(e =>
+          `<a href="${e.url || '#'}" target="_blank" rel="noopener" class="flex items-center justify-between bg-navy-50 hover:bg-crimson-50 border border-navy-200 hover:border-crimson-800 rounded-lg px-4 py-3 transition-all group">
+            <div>
+              <p class="font-heading font-bold text-navy-900 text-sm group-hover:text-crimson-800">${e.name}</p>
+              <p class="text-navy-500 text-xs">${e.role || 'Internship Available'}</p>
+            </div>
+            <svg class="w-4 h-4 text-navy-400 group-hover:text-crimson-800 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+          </a>`
+        ).join('');
+      } else {
+        employersList.innerHTML = '<div class="bg-navy-50 border border-dashed border-navy-200 rounded-lg px-4 py-4 text-center"><p class="text-navy-400 text-sm">Partner employers coming soon — check back as we build these connections.</p></div>';
+      }
 
       // Show modal
       const modal = document.getElementById('modal-cluster');
