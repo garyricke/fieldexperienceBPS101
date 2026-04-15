@@ -270,6 +270,20 @@
     video {
       background: #000;
     }
+
+    /* Ken Burns hero animation */
+    @keyframes kenBurns {
+      0%   { transform: scale(1.08) translate(0%, 0%); }
+      25%  { transform: scale(1.14) translate(-1.5%, -1%); }
+      50%  { transform: scale(1.10) translate(1%, -0.5%); }
+      75%  { transform: scale(1.16) translate(-0.5%, 1%); }
+      100% { transform: scale(1.08) translate(0%, 0%); }
+    }
+    .hero-ken-burns {
+      animation: kenBurns 22s ease-in-out infinite;
+      transform-origin: center center;
+      will-change: transform;
+    }
   </style>
 </head>
 
@@ -374,12 +388,12 @@
   <!-- Hero Section -->
   <section class="min-h-screen relative flex items-center pt-20 overflow-hidden">
 
-    <!-- Hero Background Image -->
-    <div class="absolute inset-0 -z-10">
+    <!-- Hero Background Image (Ken Burns) -->
+    <div class="absolute inset-0 -z-10 overflow-hidden">
       <img
         src="https://res.cloudinary.com/dsbllwpbh/image/upload/v1770320194/bhs-field-experiences-hero-student-classroom-work-trans_fbnbxe.jpg"
         alt="BHS Field Experience student working"
-        class="w-full h-full object-cover object-center"
+        class="w-full h-full object-cover object-center hero-ken-burns"
       />
     </div>
 
