@@ -301,10 +301,17 @@
   </div>
 
   <script>
-    function checkPassword(e) {
+    const PASS_HASH = 'e38fa83e534c7abb32ed373abf73f49981e57731308548868635497f4b53b64d';
+
+    async function checkPassword(e) {
       e.preventDefault();
       var input = document.getElementById('password-input');
-      if (input.value === 'Bulldogs1') {
+      var val = input.value;
+      var msgBuffer = new TextEncoder().encode(val);
+      var hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+      var hashArray = Array.from(new Uint8Array(hashBuffer));
+      var hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+      if (hashHex === PASS_HASH) {
         var screen = document.getElementById('password-screen');
         screen.style.opacity = '0';
         screen.style.transition = 'opacity 0.4s ease';
@@ -475,12 +482,12 @@
               preload="metadata"
               style="filter: sepia(20%) saturate(70%) grayscale(0) brightness(1.1) hue-rotate(350deg);"
             >
-              <source src="https://res.cloudinary.com/dsbllwpbh/video/upload/v1770316764/Transforming_High_School_Internships_Into_Real_Work_cb5hst.mp4" type="video/mp4">
+              <source src="From_Classroom_to_Proven_Professional.m4a" type="audio/mp4">
               Your browser does not support the audio element.
             </audio>
             <div class="flex items-center justify-between mt-3 text-sm">
-              <span class="text-navy-400">What is Field Experience?</span>
-              <span class="text-navy-500">18:00</span>
+              <span class="text-navy-400">From Classroom to Proven Professional</span>
+              <span class="text-navy-500"></span>
             </div>
           </div>
         </div>
