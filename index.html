@@ -163,10 +163,14 @@
     /* Career cluster icons */
     .cluster-icon {
       transition: all 0.3s ease;
+      min-height: 160px;
     }
     .cluster-icon:hover {
-      transform: scale(1.1);
-      color: #5D5D5D;
+      transform: scale(1.08);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.35);
+    }
+    .cluster-icon:hover .cluster-overlay {
+      background: rgba(15, 30, 60, 0.5) !important;
     }
 
     /* Stagger animation */
@@ -1060,74 +1064,95 @@
       <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-6">
 
         <!-- Agriculture -->
-        <div class="cluster-icon flex flex-col items-center p-6 bg-white border border-navy-100 rounded-lg hover:border-teal-600 cursor-pointer transition-all" onclick="openClusterModal('agriculture')">
-          <div class="w-16 h-16 rounded-full bg-teal-50 text-teal-600 flex items-center justify-center mb-4">
-            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-            </svg>
+        <div class="cluster-icon relative flex flex-col items-center p-6 rounded-lg cursor-pointer overflow-hidden" style="background-image: url('https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=400&q=80'); background-size: cover; background-position: center;" onclick="openClusterModal('agriculture')">
+          <div class="cluster-overlay absolute inset-0" style="background: rgba(15, 30, 60, 0.65);"></div>
+          <div class="relative z-10 flex flex-col items-center">
+            <div class="w-16 h-16 rounded-full flex items-center justify-center mb-4 text-white" style="background: rgba(255,255,255,0.2);">
+              <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+            </div>
+            <p class="font-heading font-semibold text-sm text-white text-center">Agriculture & Natural Resources</p>
           </div>
-          <p class="font-heading font-semibold text-sm text-navy-900 text-center">Agriculture & Natural Resources</p>
         </div>
 
         <!-- Arts -->
-        <div class="cluster-icon flex flex-col items-center p-6 bg-white border border-navy-100 rounded-lg hover:border-teal-600 cursor-pointer transition-all" onclick="openClusterModal('arts')">
-          <div class="w-16 h-16 rounded-full bg-teal-50 text-teal-600 flex items-center justify-center mb-4">
-            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z"/>
-            </svg>
+        <div class="cluster-icon relative flex flex-col items-center p-6 rounded-lg cursor-pointer overflow-hidden" style="background-image: url('https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&w=400&q=80'); background-size: cover; background-position: center;" onclick="openClusterModal('arts')">
+          <div class="cluster-overlay absolute inset-0" style="background: rgba(15, 30, 60, 0.65);"></div>
+          <div class="relative z-10 flex flex-col items-center">
+            <div class="w-16 h-16 rounded-full flex items-center justify-center mb-4 text-white" style="background: rgba(255,255,255,0.2);">
+              <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z"/>
+              </svg>
+            </div>
+            <p class="font-heading font-semibold text-sm text-white text-center">Arts & Communication</p>
           </div>
-          <p class="font-heading font-semibold text-sm text-navy-900 text-center">Arts & Communication</p>
         </div>
 
         <!-- Finance -->
-        <div class="cluster-icon flex flex-col items-center p-6 bg-white border border-navy-100 rounded-lg hover:border-teal-600 cursor-pointer transition-all" onclick="openClusterModal('finance')">
-          <div class="w-16 h-16 rounded-full bg-teal-50 text-teal-600 flex items-center justify-center mb-4">
-            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-            </svg>
+        <div class="cluster-icon relative flex flex-col items-center p-6 rounded-lg cursor-pointer overflow-hidden" style="background-image: url('https://images.unsplash.com/photo-1579532537598-459ecdaf39cc?auto=format&fit=crop&w=400&q=80'); background-size: cover; background-position: center;" onclick="openClusterModal('finance')">
+          <div class="cluster-overlay absolute inset-0" style="background: rgba(15, 30, 60, 0.65);"></div>
+          <div class="relative z-10 flex flex-col items-center">
+            <div class="w-16 h-16 rounded-full flex items-center justify-center mb-4 text-white" style="background: rgba(255,255,255,0.2);">
+              <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+            </div>
+            <p class="font-heading font-semibold text-sm text-white text-center">Finance & Business</p>
           </div>
-          <p class="font-heading font-semibold text-sm text-navy-900 text-center">Finance & Business</p>
         </div>
 
         <!-- Health -->
-        <div class="cluster-icon flex flex-col items-center p-6 bg-white border border-navy-100 rounded-lg hover:border-teal-600 cursor-pointer transition-all" onclick="openClusterModal('health')">
-          <div class="w-16 h-16 rounded-full bg-teal-50 text-teal-600 flex items-center justify-center mb-4">
-            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
-            </svg>
+        <div class="cluster-icon relative flex flex-col items-center p-6 rounded-lg cursor-pointer overflow-hidden" style="background-image: url('https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=400&q=80'); background-size: cover; background-position: center;" onclick="openClusterModal('health')">
+          <div class="cluster-overlay absolute inset-0" style="background: rgba(15, 30, 60, 0.65);"></div>
+          <div class="relative z-10 flex flex-col items-center">
+            <div class="w-16 h-16 rounded-full flex items-center justify-center mb-4 text-white" style="background: rgba(255,255,255,0.2);">
+              <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+              </svg>
+            </div>
+            <p class="font-heading font-semibold text-sm text-white text-center">Health Sciences</p>
           </div>
-          <p class="font-heading font-semibold text-sm text-navy-900 text-center">Health Sciences</p>
         </div>
 
         <!-- Human Services -->
-        <div class="cluster-icon flex flex-col items-center p-6 bg-white border border-navy-100 rounded-lg hover:border-teal-600 cursor-pointer transition-all" onclick="openClusterModal('human')">
-          <div class="w-16 h-16 rounded-full bg-teal-50 text-teal-600 flex items-center justify-center mb-4">
-            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
-            </svg>
+        <div class="cluster-icon relative flex flex-col items-center p-6 rounded-lg cursor-pointer overflow-hidden" style="background-image: url('https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?auto=format&fit=crop&w=400&q=80'); background-size: cover; background-position: center;" onclick="openClusterModal('human')">
+          <div class="cluster-overlay absolute inset-0" style="background: rgba(15, 30, 60, 0.65);"></div>
+          <div class="relative z-10 flex flex-col items-center">
+            <div class="w-16 h-16 rounded-full flex items-center justify-center mb-4 text-white" style="background: rgba(255,255,255,0.2);">
+              <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
+              </svg>
+            </div>
+            <p class="font-heading font-semibold text-sm text-white text-center">Human & Public Services</p>
           </div>
-          <p class="font-heading font-semibold text-sm text-navy-900 text-center">Human & Public Services</p>
         </div>
 
         <!-- IT -->
-        <div class="cluster-icon flex flex-col items-center p-6 bg-white border border-navy-100 rounded-lg hover:border-teal-600 cursor-pointer transition-all" onclick="openClusterModal('it')">
-          <div class="w-16 h-16 rounded-full bg-teal-50 text-teal-600 flex items-center justify-center mb-4">
-            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>
-            </svg>
+        <div class="cluster-icon relative flex flex-col items-center p-6 rounded-lg cursor-pointer overflow-hidden" style="background-image: url('https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=400&q=80'); background-size: cover; background-position: center;" onclick="openClusterModal('it')">
+          <div class="cluster-overlay absolute inset-0" style="background: rgba(15, 30, 60, 0.65);"></div>
+          <div class="relative z-10 flex flex-col items-center">
+            <div class="w-16 h-16 rounded-full flex items-center justify-center mb-4 text-white" style="background: rgba(255,255,255,0.2);">
+              <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>
+              </svg>
+            </div>
+            <p class="font-heading font-semibold text-sm text-white text-center">Information Technology</p>
           </div>
-          <p class="font-heading font-semibold text-sm text-navy-900 text-center">Information Technology</p>
         </div>
 
         <!-- Manufacturing -->
-        <div class="cluster-icon flex flex-col items-center p-6 bg-white border border-navy-100 rounded-lg hover:border-teal-600 cursor-pointer transition-all" onclick="openClusterModal('manufacturing')">
-          <div class="w-16 h-16 rounded-full bg-teal-50 text-teal-600 flex items-center justify-center mb-4">
-            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-            </svg>
+        <div class="cluster-icon relative flex flex-col items-center p-6 rounded-lg cursor-pointer overflow-hidden" style="background-image: url('https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=400&q=80'); background-size: cover; background-position: center;" onclick="openClusterModal('manufacturing')">
+          <div class="cluster-overlay absolute inset-0" style="background: rgba(15, 30, 60, 0.65);"></div>
+          <div class="relative z-10 flex flex-col items-center">
+            <div class="w-16 h-16 rounded-full flex items-center justify-center mb-4 text-white" style="background: rgba(255,255,255,0.2);">
+              <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+              </svg>
+            </div>
+            <p class="font-heading font-semibold text-sm text-white text-center">Manufacturing & Engineering</p>
           </div>
-          <p class="font-heading font-semibold text-sm text-navy-900 text-center">Manufacturing & Engineering</p>
         </div>
 
       </div>
