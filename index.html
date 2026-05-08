@@ -2455,7 +2455,7 @@
       'arts & communication':                'arts',
     };
 
-    let allBusinesses = STATIC_BUSINESSES;
+    let allBusinesses = [];
 
     function toDriveImg(raw) {
       if (!raw || !raw.trim()) return '';
@@ -2505,6 +2505,7 @@
       { idx:8, name:'BPS101 Technology Dept.', sector:'Information Technology', website:'https://www.bps101.net/depts/technology/', logo:'', mission:'At BPS101, we believe every child deserves access to digital tools that support their learning and help them become successful contributors to our global world.', role:'Help Desk Technician', tasks:'-Technical support for software/hardware issues for staff and students\n-Resolving helpdesk tickets promptly\n-Level 1 support operations\n-Setup and repair of technology hardware\n-Record keeping and inventory', skills:'-Customer service\n-Problem solving\n-Troubleshooting', environment:'Office-based', compensation:'Paid Hourly', hours:'5 hours, Flexible/Project-based', reqs:'Must provide own transport, Specific course prerequisite, Any specific job trainings', specificReqs:'Some kind of tech class; ideal: CompTIA A+ and Net+ certifications', numStudents:'1–2 (high school and middle school)', mentorName:'David Thurlby, Rob Luxton, Lynn Bartolotta', mentorEmail:'David.thurlby@bps101.net', appLink:'', appInstructions:'Apply via our company website, Email a resume and cover letter directly to the contact listed above', idealCandidate:'Responsible, owns their work, good with customer service, takes responsibility.', otherInfo:'', clusterId:'it' },
     ];
 
+    allBusinesses = STATIC_BUSINESSES;
     let sheetStatus = 'ready'; // start ready with static data; fetch will update
 
     function parseRows(results) {
