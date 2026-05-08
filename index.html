@@ -11,6 +11,7 @@
 
   <!-- Tailwind Play CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5/papaparse.min.js"></script>
   <script>
     tailwind.config = {
       theme: {
@@ -1749,6 +1750,13 @@
     </div>
   </div>
 
+  <!-- Job Description Modal -->
+  <div id="modal-job" class="modal-backdrop items-center justify-center p-4" style="z-index:200">
+    <div class="modal-content bg-white w-full max-w-2xl max-h-[90vh] rounded-xl overflow-hidden shadow-2xl flex flex-col">
+      <div id="job-modal-content"><!-- populated by JS --></div>
+    </div>
+  </div>
+
   <!-- Modal: Partner Interest Form (hidden - not used on student site) -->
   <div id="modal-partner-form" class="modal-backdrop items-center justify-center p-6" style="display:none!important">
     <div class="modal-content bg-white w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-lg">
@@ -2377,21 +2385,8 @@
         `<span class="bg-navy-100 text-navy-700 px-3 py-1.5 rounded-full text-sm font-medium">${c}</span>`
       ).join('');
 
-      // Populate employers
-      const employersList = document.getElementById('cluster-employers');
-      if (data.employers && data.employers.length > 0) {
-        employersList.innerHTML = data.employers.map(e =>
-          `<a href="${e.url || '#'}" target="_blank" rel="noopener" class="flex items-center justify-between bg-navy-50 hover:bg-crimson-50 border border-navy-200 hover:border-crimson-800 rounded-lg px-4 py-3 transition-all group">
-            <div>
-              <p class="font-heading font-bold text-navy-900 text-sm group-hover:text-crimson-800">${e.name}</p>
-              <p class="text-navy-500 text-xs">${e.role || 'Internship Available'}</p>
-            </div>
-            <svg class="w-4 h-4 text-navy-400 group-hover:text-crimson-800 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-          </a>`
-        ).join('');
-      } else {
-        employersList.innerHTML = '<div class="bg-navy-50 border border-dashed border-navy-200 rounded-lg px-4 py-4 text-center"><p class="text-navy-400 text-sm">Partner employers coming soon — check back as we build these connections.</p></div>';
-      }
+      // Populate employers from Google Sheet
+      renderEmployerCards(clusterId);
 
       // Show modal
       const modal = document.getElementById('modal-cluster');
@@ -2439,5 +2434,238 @@
       el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
       observer.observe(el);
     });
+
+    // ─── GOOGLE SHEET INTEGRATION ─────────────────────────────────────
+    const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vThv1ErH_g0w2jrzFEchiZD57plzs2zAraZFvfyqeXrLZWU-PybYoq_Qbf6WdMx1tQBRfvVZFVSpirP/pub?gid=819912657&single=true&output=csv';
+
+    const CLUSTER_MAP = {
+      'business & finance':                  'finance',
+      'finance & business':                  'finance',
+      'health sciences':                     'health',
+      'human & public services':             'human',
+      'manufacturing, engineering, & trades':'manufacturing',
+      'manufacturing, engineering & trades': 'manufacturing',
+      'information technology':              'it',
+      'agriculture, food & natural resources':'agriculture',
+      'agriculture':                         'agriculture',
+      'arts & communication':                'arts',
+    };
+
+    let allBusinesses = [];
+
+    function toDriveImg(raw) {
+      if (!raw || !raw.trim()) return '';
+      const m = raw.match(/[?&]id=([^&\s]+)/);
+      if (m) return 'https://drive.google.com/uc?export=view&id=' + m[1];
+      if (raw.trim().startsWith('http')) return raw.trim();
+      return '';
+    }
+
+    function initials(name) {
+      return (name || '??').split(/\s+/).map(w => w[0] || '').join('').slice(0, 2).toUpperCase();
+    }
+
+    function escHtml(s) {
+      return (s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    function bulletLines(text) {
+      if (!text) return '';
+      return text.split('\n')
+        .map(l => l.replace(/^[-•*]\s*/, '').trim())
+        .filter(Boolean)
+        .map(l => `<li class="flex items-start gap-2"><span class="text-crimson-800 mt-0.5 flex-shrink-0">•</span><span>${escHtml(l)}</span></li>`)
+        .join('');
+    }
+
+    function statBadge(icon, label, value) {
+      if (!value) return '';
+      return `<div class="bg-navy-50 rounded-lg p-2.5 text-center border border-navy-100">
+        <div class="text-base">${icon}</div>
+        <div class="text-xs text-navy-400 font-medium">${label}</div>
+        <div class="text-xs font-heading font-bold text-navy-800 leading-tight mt-0.5">${escHtml(value)}</div>
+      </div>`;
+    }
+
+    function loadBusinesses() {
+      Papa.parse(SHEET_CSV_URL, {
+        download: true,
+        header: true,
+        skipEmptyLines: true,
+        complete: function(results) {
+          allBusinesses = results.data.map((row, idx) => {
+            const sector = (row['Industry/Sector:'] || '').trim();
+            return {
+              idx,
+              name:            (row['Company Name'] || '').trim(),
+              sector,
+              website:         (row['Company Website'] || '').trim(),
+              logo:            toDriveImg(row['Company Logo '] || ''),
+              mission:         (row['Brief Mission Statement'] || '').trim(),
+              role:            (row['Internship Role Title  (e.g., marketing assistant, shadow, architect). '] || '').trim(),
+              tasks:           (row['Primary Tasks & Responsibilities (Use Bullet Points)'] || '').trim(),
+              skills:          (row['Top 3 Skills Student will develop'] || '').trim(),
+              environment:     (row['Work Environment'] || '').trim(),
+              compensation:    (row['Compensation'] || '').trim(),
+              hours:           (row['Weekly Time Commitment'] || '').trim(),
+              reqs:            (row['Student Requirements'] || '').trim(),
+              specificReqs:    (row['What are the specific requirements?'] || '').trim(),
+              numStudents:     (row['Number of students Requested'] || '').trim(),
+              mentorName:      (row['Primary Mentor Name'] || '').trim(),
+              mentorEmail:     (row['Mentor Email'] || '').trim(),
+              appLink:         (row['Direct Application Link (If you have your own portal that you require).'] || '').trim(),
+              appInstructions: (row['Application Instructions'] || '').trim(),
+              idealCandidate:  (row['What is your ideal candidate?'] || '').trim(),
+              otherInfo:       (row['Any other important information to share'] || '').trim(),
+              clusterId:       CLUSTER_MAP[sector.toLowerCase()] || null,
+            };
+          });
+        },
+        error: function() { /* sheet unavailable — modals will show "coming soon" */ }
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', loadBusinesses);
+
+    // ─── EMPLOYER LOGO GRID (inside cluster modal) ────────────────────
+    function renderEmployerCards(clusterId) {
+      const businesses = allBusinesses.filter(b => b.clusterId === clusterId);
+      const el = document.getElementById('cluster-employers');
+      el.className = 'grid grid-cols-2 sm:grid-cols-3 gap-3';
+      if (!businesses.length) {
+        el.innerHTML = '<div class="col-span-full bg-navy-50 border border-dashed border-navy-200 rounded-lg px-4 py-6 text-center"><p class="text-navy-400 text-sm">Partner employers coming soon — check back as we build these connections.</p></div>';
+        return;
+      }
+      el.innerHTML = businesses.map(b => {
+        const logoTag = b.logo
+          ? `<img src="${b.logo}" alt="${escHtml(b.name)}" class="w-full h-full object-contain p-1" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
+          : '';
+        const fbStyle = b.logo ? 'display:none' : 'display:flex';
+        return `
+          <button onclick="openJobModal(${b.idx})"
+            class="flex flex-col items-center gap-2 p-4 rounded-xl border-2 border-navy-100 hover:border-crimson-800 hover:shadow-lg transition-all group cursor-pointer bg-white w-full">
+            <div class="w-16 h-16 rounded-lg overflow-hidden bg-navy-50 border border-navy-100 flex-shrink-0 flex items-center justify-center">
+              ${logoTag}
+              <span style="${fbStyle}" class="w-full h-full items-center justify-center text-lg font-heading font-bold text-crimson-800 bg-crimson-50">${initials(b.name)}</span>
+            </div>
+            <span class="text-xs font-heading font-bold text-navy-900 text-center group-hover:text-crimson-800 leading-tight">${escHtml(b.name)}</span>
+            <span class="text-xs text-navy-400 text-center leading-tight">${escHtml(b.role || 'Internship')}</span>
+          </button>`;
+      }).join('');
+    }
+
+    // ─── JOB DESCRIPTION MODAL ───────────────────────────────────────
+    function openJobModal(idx) {
+      const b = allBusinesses[idx];
+      if (!b) return;
+
+      const appMethods = b.appInstructions.split(',').map(s => s.trim()).filter(Boolean);
+      const appMethodsHtml = appMethods.length
+        ? appMethods.map(m => `<li class="flex items-start gap-2"><span class="text-crimson-800 font-bold mt-0.5 flex-shrink-0">→</span><span>${escHtml(m)}</span></li>`).join('')
+        : '<li>Contact the mentor listed below.</li>';
+
+      const logoTag = b.logo
+        ? `<img src="${b.logo}" alt="${escHtml(b.name)}" class="h-10 max-w-[100px] object-contain" onerror="this.style.display='none'">`
+        : `<span class="text-xl font-heading font-bold text-crimson-800">${initials(b.name)}</span>`;
+
+      document.getElementById('job-modal-content').innerHTML = `
+        <div class="bg-crimson-800 text-white px-6 py-5 flex items-start justify-between gap-4">
+          <div class="flex items-center gap-4">
+            <div class="w-14 h-14 bg-white rounded-lg flex items-center justify-center flex-shrink-0 p-1.5">${logoTag}</div>
+            <div>
+              <p class="text-crimson-200 text-xs uppercase tracking-widest font-semibold mb-0.5">${escHtml(b.sector)}</p>
+              <h2 class="font-heading text-xl font-bold leading-tight">${escHtml(b.name)}</h2>
+              <p class="text-crimson-100 text-sm mt-0.5">${escHtml(b.role)}</p>
+            </div>
+          </div>
+          <button onclick="closeJobModal()" class="w-9 h-9 rounded-full bg-white/10 hover:bg-white/25 flex items-center justify-center flex-shrink-0 transition-colors mt-1">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+          </button>
+        </div>
+        <div class="p-6 space-y-5 overflow-y-auto" style="max-height:calc(90vh - 110px)">
+
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+            ${statBadge('💰','Pay', b.compensation)}
+            ${statBadge('⏱','Hours/Week', b.hours)}
+            ${statBadge('🏢','Setting', b.environment)}
+            ${statBadge('👥','Openings', b.numStudents)}
+          </div>
+
+          ${b.mission ? `
+          <div class="border-l-4 border-gold-500 pl-4">
+            <h3 class="font-heading font-bold text-navy-900 text-sm uppercase tracking-wide mb-1">About ${escHtml(b.name)}</h3>
+            <p class="text-navy-600 text-sm leading-relaxed">${escHtml(b.mission)}</p>
+          </div>` : ''}
+
+          ${b.tasks ? `
+          <div>
+            <h3 class="font-heading font-bold text-navy-900 mb-2 flex items-center gap-2">
+              <span class="w-5 h-5 rounded bg-crimson-800 text-white flex items-center justify-center text-xs font-bold">✓</span>
+              What You'll Do
+            </h3>
+            <ul class="space-y-1.5 text-sm text-navy-600">${bulletLines(b.tasks)}</ul>
+          </div>` : ''}
+
+          ${b.skills ? `
+          <div>
+            <h3 class="font-heading font-bold text-navy-900 mb-2 flex items-center gap-2">
+              <span class="w-5 h-5 rounded bg-gold-500 text-navy-900 flex items-center justify-center text-xs font-bold">★</span>
+              Skills You'll Build
+            </h3>
+            <ul class="space-y-1.5 text-sm text-navy-600">${bulletLines(b.skills)}</ul>
+          </div>` : ''}
+
+          ${(b.specificReqs || b.reqs) ? `
+          <div>
+            <h3 class="font-heading font-bold text-navy-900 mb-2 flex items-center gap-2">
+              <span class="w-5 h-5 rounded bg-navy-700 text-white flex items-center justify-center text-xs font-bold">!</span>
+              Requirements
+            </h3>
+            <ul class="space-y-1.5 text-sm text-navy-600">
+              ${b.specificReqs ? bulletLines(b.specificReqs) : `<li class="flex items-start gap-2"><span class="text-crimson-800 mt-0.5">•</span><span>${escHtml(b.reqs)}</span></li>`}
+            </ul>
+          </div>` : ''}
+
+          ${b.idealCandidate ? `
+          <div class="bg-navy-50 rounded-lg p-4 border border-navy-100">
+            <h3 class="font-heading font-bold text-navy-900 mb-2 text-sm">🎯 Who They're Looking For</h3>
+            <p class="text-navy-600 text-sm leading-relaxed">${escHtml(b.idealCandidate)}</p>
+          </div>` : ''}
+
+          <div class="bg-crimson-50 rounded-lg p-4 border border-crimson-100">
+            <h3 class="font-heading font-bold text-crimson-800 mb-3">How to Apply</h3>
+            <ul class="space-y-2 text-sm text-navy-700 mb-4">${appMethodsHtml}</ul>
+            <div class="space-y-2 text-sm">
+              ${b.mentorName ? `<div class="flex items-start gap-2"><span class="font-semibold text-navy-900 min-w-[60px]">Mentor:</span><span class="text-navy-600">${escHtml(b.mentorName)}</span></div>` : ''}
+              ${b.mentorEmail ? `<div class="flex items-start gap-2"><span class="font-semibold text-navy-900 min-w-[60px]">Email:</span><a href="mailto:${escHtml(b.mentorEmail)}" class="text-crimson-800 hover:underline break-all">${escHtml(b.mentorEmail)}</a></div>` : ''}
+            </div>
+            ${b.appLink ? `<a href="${escHtml(b.appLink)}" target="_blank" rel="noopener" class="mt-4 flex items-center justify-center gap-2 bg-crimson-800 text-white font-heading font-bold text-sm px-4 py-2.5 rounded-lg hover:bg-crimson-700 transition-colors w-full">Apply Now →</a>` : ''}
+          </div>
+
+          ${b.otherInfo ? `
+          <div class="text-xs text-navy-400 border-t border-navy-100 pt-4">
+            <strong class="text-navy-600">Additional Info:</strong> ${escHtml(b.otherInfo)}
+          </div>` : ''}
+
+        </div>
+      `;
+
+      document.body.style.overflow = 'hidden';
+      const modal = document.getElementById('modal-job');
+      modal.style.display = 'flex';
+      modal.offsetHeight;
+      modal.classList.add('active');
+    }
+
+    function closeJobModal() {
+      const modal = document.getElementById('modal-job');
+      modal.classList.remove('active');
+      setTimeout(() => { modal.style.display = 'none'; }, 400);
+    }
+
+    document.getElementById('modal-job').addEventListener('click', e => {
+      if (e.target.id === 'modal-job') closeJobModal();
+    });
+
   </script>
 
