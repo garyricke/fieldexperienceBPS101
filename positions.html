@@ -76,13 +76,13 @@
       header, footer, .no-print { display:none !important; }
       main { padding:0 !important; max-width:100% !important; }
 
-      /* Print one card: hide everything except the target */
+      /* Print one card: hide sibling cards + section headers, NOT the parent wrappers */
       body.print-one .position-card { display:none !important; }
-      body.print-one .cluster-section { display:none !important; }
-      body.print-one #card-print-target { display:block !important; box-shadow:none !important; border-radius:0 !important; }
+      body.print-one .cluster-section-header { display:none !important; }
+      body.print-one #card-print-target { display:block !important; box-shadow:none !important; border-radius:0 !important; page-break-after:avoid; }
 
       /* Print all: one card per page */
-      body:not(.print-one) .position-card { page-break-after:always; break-after:page; box-shadow:none !important; }
+      body:not(.print-one) .position-card { page-break-after:always; break-after:page; box-shadow:none !important; margin-bottom:0 !important; }
       body:not(.print-one) .position-card:last-child { page-break-after:avoid; break-after:avoid; }
       body:not(.print-one) .cluster-section-header { page-break-after:avoid; break-after:avoid; }
     }
@@ -314,17 +314,18 @@ function downloadCard(idx) {
   const card = document.getElementById(`card-${idx}`);
   if (!card) return;
 
-  // Tag the target, switch body to single-card print mode
   card.id = 'card-print-target';
   document.body.classList.add('print-one');
 
-  window.print();
-
-  // Restore after dialog closes (slight delay for Safari)
+  // Small delay so DOM paint completes before print dialog opens
   setTimeout(() => {
-    card.id = `card-${idx}`;
-    document.body.classList.remove('print-one');
-  }, 500);
+    window.print();
+    // Restore after dialog closes
+    setTimeout(() => {
+      card.id = `card-${idx}`;
+      document.body.classList.remove('print-one');
+    }, 1000);
+  }, 80);
 }
 
 function downloadAll() {
