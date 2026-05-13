@@ -533,13 +533,16 @@ function buildPage(clusterId, cluster) {
              onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">\`
         : '';
       const fbDisplay = logoUrl ? 'display:none' : 'display:flex';
+      const isBps = (b.name || '').toLowerCase().includes('bps');
+      const cardLogoBg = isBps ? 'background:#AC161D' : 'background:#f9fafb';
+      const cardLogoBorder = isBps ? '' : 'border border-gray-100';
       const envBadges = (b.environment||'').split(',').map(e=>e.trim()).filter(Boolean).slice(0,2)
         .map(e=>\`<span class="env-badge">\${esc(e)}</span>\`).join('');
 
       return \`
         <div class="job-card">
           <div class="flex items-start gap-4 mb-4">
-            <div class="w-16 h-16 rounded-xl bg-gray-50 border border-gray-100 overflow-hidden flex-shrink-0 flex items-center justify-center">
+            <div class="w-16 h-16 rounded-xl \${cardLogoBorder} overflow-hidden flex-shrink-0 flex items-center justify-center" style="\${cardLogoBg}">
               \${logoHtml}
               <span style="\${fbDisplay}" class="w-full h-full items-center justify-center font-heading font-bold text-lg"
                     title="\${esc(b.name)}"
@@ -581,6 +584,8 @@ function buildPage(clusterId, cluster) {
     const b = allBusinesses[idx];
     if (!b) return;
     const logoUrl = getLogoUrl(b);
+    const isBpsModal = (b.name || '').toLowerCase().includes('bps');
+    const modalLogoBg = isBpsModal ? '#AC161D' : '#ffffff';
     const logoHtml = logoUrl
       ? \`<img src="\${logoUrl}" alt="\${esc(b.name)}" class="h-10 max-w-[100px] object-contain" onerror="this.style.display='none'">\`
       : \`<span class="text-xl font-heading font-bold" style="color:\${CLUSTER_COLOR}">\${initials(b.name)}</span>\`;
@@ -593,7 +598,7 @@ function buildPage(clusterId, cluster) {
     document.getElementById('job-modal-inner').innerHTML = \`
       <div class="text-white px-6 py-5 flex items-start justify-between gap-4" style="background:\${CLUSTER_COLOR}">
         <div class="flex items-center gap-4">
-          <div class="w-14 h-14 bg-white rounded-xl flex items-center justify-center flex-shrink-0 p-2">\${logoHtml}</div>
+          <div class="w-14 h-14 rounded-xl flex items-center justify-center flex-shrink-0 p-2" style="background:\${modalLogoBg}">\${logoHtml}</div>
           <div>
             <p class="text-xs uppercase tracking-widest font-semibold opacity-75 mb-0.5">\${esc(b.sector)}</p>
             <h2 class="font-heading text-xl font-bold leading-tight">\${esc(b.name)}</h2>
