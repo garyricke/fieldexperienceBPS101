@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Internship Positions — Field Experience BHS</title>
+  <link rel="icon" type="image/png" href="https://res.cloudinary.com/dsbllwpbh/image/upload/v1771966521/fieldexperience-favicon_jgdotp.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Open+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script>
+    tailwind.config = {
+      theme: { extend: {
+        colors: {
+          crimson: { 50:'#fef2f2',100:'#fee2e2',200:'#fdcbcb',300:'#fba5a6',400:'#f56d6f',500:'#eb4044',600:'#d72429',700:'#b91c22',800:'#AC161D',900:'#851519' },
+          navy:    { 50:'#f5f5f5',100:'#e5e5e5',200:'#D9D9D9',300:'#b3b3b3',400:'#8a8a8a',500:'#5D5D5D',600:'#4a4a4a',700:'#333333',800:'#1a1a1a',900:'#000000' },
+          gold:    { 50:'#fffde6',100:'#fffabd',200:'#fff48a',300:'#ffe94d',400:'#fde020',500:'#FBCD07',600:'#DAB107',700:'#9a7305' },
+        },
+        fontFamily: { heading:['Montserrat','system-ui','sans-serif'], body:['Open Sans','system-ui','sans-serif'] }
+      }}
+    }
+  </script>
+  <style>
+    *{box-sizing:border-box}
+    body{font-family:'Open Sans',system-ui,sans-serif;background:#f5f5f5;color:#000}
+    .font-heading{font-family:'Montserrat',system-ui,sans-serif}
+    ::selection{background:#AC161D;color:#fff}
+
+    .position-card{
+      background:#fff;
+      border-radius:16px;
+      box-shadow:0 2px 16px rgba(0,0,0,.07);
+      overflow:hidden;
+      page-break-inside:avoid;
+      break-inside:avoid;
+    }
+
+    .cluster-tag{
+      display:inline-flex;align-items:center;gap:.4rem;
+      font-family:'Montserrat',sans-serif;font-size:.65rem;font-weight:700;
+      letter-spacing:.1em;text-transform:uppercase;
+      padding:.3rem .75rem;border-radius:999px;
+    }
+
+    .detail-row{display:flex;gap:.5rem;align-items:flex-start;padding:.5rem 0;border-bottom:1px solid #f0f0f0}
+    .detail-row:last-child{border-bottom:none}
+    .detail-label{font-family:'Montserrat',sans-serif;font-size:.7rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#8a8a8a;width:120px;flex-shrink:0;padding-top:.1rem}
+    .detail-value{font-size:.82rem;color:#333;line-height:1.5;flex:1}
+
+    .task-line{display:flex;gap:.5rem;align-items:flex-start;margin-bottom:.3rem}
+    .task-line::before{content:'→';color:#AC161D;font-weight:700;flex-shrink:0;font-size:.8rem;margin-top:.1rem}
+
+    .download-btn{
+      display:inline-flex;align-items:center;gap:.5rem;
+      background:#AC161D;color:#fff;
+      font-family:'Montserrat',sans-serif;font-size:.75rem;font-weight:700;
+      letter-spacing:.06em;text-transform:uppercase;
+      padding:.6rem 1.2rem;border-radius:8px;border:none;cursor:pointer;
+      transition:all .2s ease;
+    }
+    .download-btn:hover{background:#b91c22;transform:translateY(-1px)}
+
+    .section-divider{
+      font-family:'Montserrat',sans-serif;font-size:.7rem;font-weight:800;
+      letter-spacing:.14em;text-transform:uppercase;
+      color:#AC161D;border-bottom:2px solid #AC161D;
+      padding-bottom:.5rem;margin-bottom:1.25rem;
+    }
+
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .spinner{width:36px;height:36px;border:3px solid #e5e5e5;border-top-color:#AC161D;border-radius:50%;animation:spin .8s linear infinite}
+
+    /* Print styles — hides everything except the target card */
+    @media print {
+      body{background:#fff!important}
+      .no-print{display:none!important}
+      .position-card{box-shadow:none!important;border-radius:0!important}
+      .download-btn{display:none!important}
+    }
+  </style>
+</head>
+<body class="min-h-screen">
+
+<!-- ── HEADER ── -->
+<header class="no-print bg-white border-b border-gray-200 sticky top-0 z-40">
+  <div class="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between gap-4 flex-wrap">
+    <div class="flex items-center gap-3">
+      <img src="https://res.cloudinary.com/dsbllwpbh/image/upload/v1770990807/field-study-logo-trans_kewube.png" alt="BHS" class="h-10 w-auto">
+      <div>
+        <p class="font-heading font-bold text-navy-900 text-sm leading-tight">Field Experience — BHS</p>
+        <p class="text-[10px] text-navy-400 uppercase tracking-wider">Internship Positions for Business Review</p>
+      </div>
+    </div>
+    <div class="flex items-center gap-3 flex-wrap">
+      <span id="position-count" class="text-xs text-navy-400 font-heading font-semibold"></span>
+      <button onclick="downloadAll()" id="download-all-btn" class="download-btn hidden">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+        Download All as PDF
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ── LOADING ── -->
+<div id="loading-state" class="flex flex-col items-center justify-center py-32">
+  <div class="spinner mb-4"></div>
+  <p class="font-heading text-sm text-navy-400 uppercase tracking-wider">Loading positions from sheet…</p>
+</div>
+
+<!-- ── ERROR ── -->
+<div id="error-state" class="hidden flex flex-col items-center justify-center py-32 px-6 text-center">
+  <svg class="w-12 h-12 text-crimson-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
+  <p class="font-heading font-bold text-navy-900 mb-2">Could not load positions</p>
+  <p class="text-sm text-navy-500 max-w-sm">Check that the Apps Script is deployed and accessible, then reload the page.</p>
+</div>
+
+<!-- ── POSITIONS LIST ── -->
+<main id="positions-list" class="hidden max-w-5xl mx-auto px-6 py-10 space-y-10"></main>
+
+<!-- ── FOOTER ── -->
+<footer class="no-print py-8 px-6 text-center border-t border-gray-200 mt-10">
+  <p class="text-xs text-navy-400 font-heading">Batavia Public Schools 101 · Field Experience Program · For Business Partner Review</p>
+</footer>
+
+<script>
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxeHACK_6TtpOYYpo32qM5AGa962uiHOnE8-UF13x8hDqjeozKwpXbYtL7bOqTbZoBwNg/exec';
+
+const BPS_LOGO    = 'https://res.cloudinary.com/dikkdclum/image/upload/v1778676762/field-experience/logos/bps101.png';
+const LIB_LOGO    = 'https://res.cloudinary.com/dikkdclum/image/upload/v1778676763/field-experience/logos/batavia-library.png';
+const ORGANIC_LOGO= 'https://res.cloudinary.com/dikkdclum/image/upload/v1778676763/field-experience/logos/organic-life.png';
+
+const CLUSTER_COLORS = {
+  agriculture:   { bg:'#2d6a4f', light:'#d8f3dc' },
+  arts:          { bg:'#7b2d8b', light:'#f3e8ff' },
+  finance:       { bg:'#1a3a5c', light:'#dbeafe' },
+  health:        { bg:'#AC161D', light:'#fee2e2' },
+  human:         { bg:'#b45309', light:'#fef3c7' },
+  it:            { bg:'#1e3a5f', light:'#dbeafe' },
+  manufacturing: { bg:'#374151', light:'#f3f4f6' },
+};
+
+const CLUSTER_NAMES = {
+  agriculture:   'Agriculture, Food & Natural Resources',
+  arts:          'Arts & Communication',
+  finance:       'Finance & Business Services',
+  health:        'Health Sciences & Technology',
+  human:         'Human & Public Services',
+  it:            'Information Technology',
+  manufacturing: 'Manufacturing, Engineering & Trades',
+};
+
+const CLUSTER_ORDER = ['finance','health','human','it','manufacturing','agriculture','arts'];
+
+function esc(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') }
+
+function getLogoUrl(b) {
+  const n = (b.name||'').toLowerCase();
+  if (n.includes('batavia public library') || n.includes('batavia library')) return LIB_LOGO;
+  if (n.includes('organic life')) return ORGANIC_LOGO;
+  if (n.includes('bps') || n.includes('batavia public school')) return BPS_LOGO;
+  return '';
+}
+
+function isBpsLogo(b) {
+  const n = (b.name||'').toLowerCase();
+  return n.includes('bps') || n.includes('batavia public school');
+}
+
+function formatTasks(raw) {
+  if (!raw) return '';
+  return raw.split('\n')
+    .map(s => s.replace(/^[-–•]\s*/,'').trim())
+    .filter(Boolean)
+    .map(s => `<div class="task-line"><span>${esc(s)}</span></div>`)
+    .join('');
+}
+
+function formatList(raw) {
+  if (!raw) return '<span class="text-navy-400">—</span>';
+  return raw.split('\n')
+    .map(s => s.replace(/^[-–•]\s*/,'').trim())
+    .filter(Boolean)
+    .join(' · ');
+}
+
+function normalizeCluster(raw) {
+  const map = {
+    'finance & business':'finance','business & finance':'finance',
+    'health sciences':'health','health sciences & technology':'health',
+    'human & public services':'human',
+    'information technology':'it',
+    'manufacturing, engineering, & trades':'manufacturing','manufacturing, engineering & trades':'manufacturing','manufacturing':'manufacturing',
+    'agriculture, food & natural resources':'agriculture','agriculture':'agriculture',
+    'arts & communication':'arts','arts':'arts',
+  };
+  return map[(raw||'').toLowerCase().trim()] || 'other';
+}
+
+let allPositions = [];
+
+function buildCard(b, idx) {
+  const logoUrl = getLogoUrl(b);
+  const isBps = isBpsLogo(b);
+  const logoBg = isBps ? '#AC161D' : '#f9fafb';
+  const clusterId = normalizeCluster(b.clusterId || b.sector || '');
+  const colors = CLUSTER_COLORS[clusterId] || { bg:'#374151', light:'#f3f4f6' };
+
+  const logoHtml = logoUrl
+    ? `<img src="${esc(logoUrl)}" alt="${esc(b.name)}" class="w-full h-full object-contain p-2">`
+    : `<span class="font-heading font-bold text-xl text-white">${esc((b.name||'?').charAt(0))}</span>`;
+
+  return `
+  <div class="position-card" id="card-${idx}">
+
+    <!-- Card header -->
+    <div class="px-7 py-5 flex items-start justify-between gap-4" style="background:${colors.bg}">
+      <div class="flex items-center gap-4">
+        <div class="w-14 h-14 rounded-xl flex items-center justify-center flex-shrink-0 overflow-hidden" style="background:${logoBg}">
+          ${logoHtml}
+        </div>
+        <div>
+          <span class="cluster-tag text-white mb-1 inline-block" style="background:rgba(255,255,255,.2)">${esc(CLUSTER_NAMES[clusterId] || b.sector || '')}</span>
+          <h2 class="font-heading font-black text-white text-xl leading-tight">${esc(b.name)}</h2>
+          <p class="text-white/80 text-sm mt-0.5 font-semibold">${esc(b.role || 'Internship')}</p>
+        </div>
+      </div>
+      <button
+        onclick="downloadCard(${idx})"
+        class="download-btn no-print flex-shrink-0"
+        style="background:rgba(255,255,255,.2);border:1.5px solid rgba(255,255,255,.4)"
+        onmouseover="this.style.background='rgba(255,255,255,.35)'"
+        onmouseout="this.style.background='rgba(255,255,255,.2)'">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+        Download PDF
+      </button>
+    </div>
+
+    <!-- Card body -->
+    <div class="px-7 py-6 grid md:grid-cols-2 gap-8">
+
+      <!-- Left col -->
+      <div>
+        <p class="section-divider">Position Overview</p>
+        ${b.mission ? `<p class="text-sm text-navy-600 leading-relaxed mb-5 italic">"${esc(b.mission)}"</p>` : ''}
+        <div class="detail-row">
+          <span class="detail-label">Compensation</span>
+          <span class="detail-value font-semibold" style="color:${colors.bg}">${esc(b.compensation||'—')}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Hours</span>
+          <span class="detail-value">${esc(b.hours||'—')}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Environment</span>
+          <span class="detail-value">${esc(b.environment||'—')}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Openings</span>
+          <span class="detail-value">${esc(b.numStudents||'—')}</span>
+        </div>
+        ${b.website ? `<div class="detail-row"><span class="detail-label">Website</span><span class="detail-value"><a href="${esc(b.website)}" class="text-blue-600 underline" target="_blank">${esc(b.website)}</a></span></div>` : ''}
+
+        <p class="section-divider mt-6">Mentor Contact</p>
+        <div class="detail-row">
+          <span class="detail-label">Name</span>
+          <span class="detail-value font-semibold">${esc(b.mentorName||'—')}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Email</span>
+          <span class="detail-value">${b.mentorEmail ? `<a href="mailto:${esc(b.mentorEmail)}" class="text-blue-600">${esc(b.mentorEmail)}</a>` : '—'}</span>
+        </div>
+      </div>
+
+      <!-- Right col -->
+      <div>
+        <p class="section-divider">Responsibilities</p>
+        <div class="mb-5 text-sm leading-relaxed">${formatTasks(b.tasks)}</div>
+
+        <p class="section-divider">Skills Students Will Develop</p>
+        <p class="text-sm text-navy-600 leading-relaxed mb-5">${esc(formatList(b.skills))}</p>
+
+        ${b.reqs || b.specificReqs ? `
+        <p class="section-divider">Requirements</p>
+        <p class="text-sm text-navy-600 leading-relaxed mb-5">${esc(formatList((b.reqs||'') + (b.specificReqs ? '\n'+b.specificReqs : '')))}</p>
+        ` : ''}
+
+        ${b.idealCandidate ? `
+        <p class="section-divider">Ideal Candidate</p>
+        <p class="text-sm text-navy-600 leading-relaxed italic">"${esc(b.idealCandidate)}"</p>
+        ` : ''}
+      </div>
+
+    </div>
+
+    <!-- Approval footer -->
+    <div class="px-7 py-4 flex items-center justify-between gap-4 flex-wrap" style="background:#f9fafb;border-top:1px solid #e5e5e5">
+      <p class="text-xs text-navy-400 font-heading">BHS Field Experience · For Business Partner Review & Approval</p>
+      <p class="text-xs text-navy-400 font-heading">Prepared by Michael Theriault · <a href="mailto:michael@bps101.net" class="text-crimson-700">michael@bps101.net</a></p>
+    </div>
+
+  </div>`;
+}
+
+function downloadCard(idx) {
+  const el = document.getElementById(`card-${idx}`);
+  if (!el) return;
+  const name = allPositions[idx]?.name || `position-${idx}`;
+  const filename = name.toLowerCase().replace(/[^a-z0-9]+/g,'-') + '.pdf';
+  html2pdf().set({
+    margin: 8,
+    filename,
+    image: { type:'jpeg', quality:.95 },
+    html2canvas: { scale:2, useCORS:true },
+    jsPDF: { unit:'mm', format:'letter', orientation:'portrait' }
+  }).from(el).save();
+}
+
+function downloadAll() {
+  const btn = document.getElementById('download-all-btn');
+  btn.textContent = 'Generating…';
+  btn.disabled = true;
+
+  let chain = Promise.resolve();
+  allPositions.forEach((b, idx) => {
+    chain = chain.then(() => new Promise(resolve => {
+      const el = document.getElementById(`card-${idx}`);
+      if (!el) return resolve();
+      const name = (b.name||`position-${idx}`).toLowerCase().replace(/[^a-z0-9]+/g,'-');
+      html2pdf().set({
+        margin:8, filename:`${name}.pdf`,
+        image:{type:'jpeg',quality:.95},
+        html2canvas:{scale:2,useCORS:true},
+        jsPDF:{unit:'mm',format:'letter',orientation:'portrait'}
+      }).from(el).save().then(() => setTimeout(resolve, 600));
+    }));
+  });
+
+  chain.then(() => {
+    btn.innerHTML = '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg> Download All as PDF';
+    btn.disabled = false;
+  });
+}
+
+async function loadPositions() {
+  try {
+    const res = await fetch(APPS_SCRIPT_URL);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    const businesses = Array.isArray(data) ? data : (data.businesses || data.data || []);
+
+    // Merge with static businesses (dedup by name)
+    const staticNames = new Set(STATIC_BUSINESSES.map(b => b.name.toLowerCase()));
+    const sheetOnly = businesses.filter(b => !staticNames.has((b.name||'').toLowerCase()));
+    allPositions = [...STATIC_BUSINESSES, ...sheetOnly];
+
+    render();
+  } catch(e) {
+    console.warn('Sheet fetch failed, using static data:', e.message);
+    allPositions = [...STATIC_BUSINESSES];
+    render();
+  }
+}
+
+function render() {
+  document.getElementById('loading-state').classList.add('hidden');
+
+  if (!allPositions.length) {
+    document.getElementById('error-state').classList.remove('hidden');
+    return;
+  }
+
+  document.getElementById('position-count').textContent = `${allPositions.length} position${allPositions.length !== 1 ? 's' : ''}`;
+  document.getElementById('download-all-btn').classList.remove('hidden');
+
+  // Group by cluster
+  const groups = {};
+  allPositions.forEach((b, idx) => {
+    const cid = normalizeCluster(b.clusterId || b.sector || '');
+    if (!groups[cid]) groups[cid] = [];
+    groups[cid].push({ b, idx });
+  });
+
+  const list = document.getElementById('positions-list');
+  list.classList.remove('hidden');
+
+  const order = [...CLUSTER_ORDER, 'other'];
+  order.forEach(cid => {
+    if (!groups[cid]?.length) return;
+    const colors = CLUSTER_COLORS[cid] || { bg:'#374151', light:'#f3f4f6' };
+    const section = document.createElement('div');
+    section.innerHTML = `
+      <div class="no-print flex items-center gap-4 mb-6">
+        <div class="flex-1 h-px" style="background:${colors.bg};opacity:.3"></div>
+        <h2 class="font-heading font-black text-lg tracking-tight" style="color:${colors.bg}">${CLUSTER_NAMES[cid] || cid}</h2>
+        <div class="flex-1 h-px" style="background:${colors.bg};opacity:.3"></div>
+      </div>
+      <div class="space-y-6">${groups[cid].map(({b,idx}) => buildCard(b,idx)).join('')}</div>
+    `;
+    list.appendChild(section);
+  });
+}
+
+// Static fallback — same 9 businesses from build-cluster-pages.js
+const BPS_L = BPS_LOGO;
+const STATIC_BUSINESSES = [
+  { name:'BPS101 Business Office',      sector:'Finance & Business', clusterId:'finance',       role:'Business Office Intern',         mission:'Committed to fostering student success through operational excellence, responsible stewardship of resources, and a focus on supporting teaching and learning.', tasks:'-Organizing and digitizing business office files and records\n-Cleaning and standardizing vendor data in accounting system\n-Review and audit new naming conventions\n-Create how-to guides for staff\n-General office support', skills:'-Data organization and systems thinking\n-Process improvement and documentation\n-Understanding of financial operations', environment:'Office-based, Hybrid', compensation:'One-Time Stipend', hours:'5 hrs/wk', reqs:'Any specific job trainings', specificReqs:'Excel/Google Sheet knowledge', numStudents:'1', mentorName:'Josh Bulak', mentorEmail:'josh.bulak@bps101.net', website:'https://www.bps101.net/depts/finance-business/', idealCandidate:'Someone who is attentive to detail and curious — looks at data and asks why? Now what? So what?', appInstructions:'Email a resume and cover letter directly to the contact listed above' },
+  { name:'BPS101 Athletics',            sector:'Finance & Business', clusterId:'finance',       role:'Athletics Intern',                mission:'Batavia High School strives for excellence in all areas of student development, including athletics.', tasks:'-Set ups for events\n-Logistics for events\n-Snap Website: registrations, schedules, rosters\n-Contract and official work\n-Athlete highlights / social media\n-Marketing, sponsorships, fundraising', skills:'-Leadership\n-Organization\n-Communication with adults, community members, and students', environment:'Office, Field, Hybrid, Hands-on', compensation:'One-Time Stipend', hours:'10 hrs/wk', reqs:'Any specific job trainings', specificReqs:'FERPA/HIPAA training, Public School Works trainings', numStudents:'1', mentorName:'Mark Anderson', mentorEmail:'mark.anderson@bps101.net', website:'https://schools.snap.app/batavia', idealCandidate:'Someone with an athletics background interested in schools — teacher or coach track.', appInstructions:'Email a resume and cover letter directly to the contact listed above' },
+  { name:'BPS101 Superintendent Office',sector:'Finance & Business', clusterId:'finance',       role:'Leadership & Public Policy Intern',mission:'To ensure that our school system is operating and functioning so that students can learn every day.', tasks:'-Attend meetings\n-Diligent notetaking\n-Summaries and reflection', skills:'-Leadership through multiple lenses\n-Legal literacy — reading important documents\n-Strategic planning and thinking', environment:'Office, Field, Hybrid, Hands-on', compensation:'One-Time Stipend', hours:'5 hrs/wk', reqs:'Must provide own transport, Specific course prerequisite', specificReqs:'Leadership-type courses; self-motivated, self-starter', numStudents:'1 or 2', mentorName:'Tom Kim', mentorEmail:'tom.kim@bps101.net', website:'https://bps101.net', idealCandidate:'Self starter, reliable, passionate about public service, curious, strong leader.', appInstructions:'Email a resume and cover letter directly to the contact listed above' },
+  { name:'BPS101 Athletic Training',    sector:'Health Sciences',    clusterId:'health',        role:'Athletic Training Student Aide',  mission:'Athletic training encompasses the prevention, examination, diagnosis, treatment and rehabilitation of emergent, acute or chronic injuries and medical conditions.', tasks:'-Facilitating prehab/rehab protocols\n-Game and practice set up\n-Shadowing evaluations and injury assessments\n-Learn how to tape athletes\n-Assisting with sideline procedures', skills:'-Understanding of athletic trainer responsibilities\n-Skills to evaluate and assess injuries\n-Injury protocol knowledge', environment:'Office, Field, Hands-on', compensation:'Paid Hourly', hours:'5–10 hrs/wk', reqs:'Specific course prerequisite, CPR certified', specificReqs:'Accell course, anatomy course, Sports Med club interest, CPR certified', numStudents:'1', mentorName:'Zac Roberts, Jake Reist', mentorEmail:'zac.roberts@bps101.net', website:'https://sites.google.com/bps101.net/batavia-athletic-training/', idealCandidate:'Outgoing, passionate, flexible, quick learner, trustworthy, good communication skills.', appInstructions:'Email a resume and cover letter directly to the contact listed above' },
+  { name:'BPS101 Nursing',              sector:'Health Sciences',    clusterId:'health',        role:'Nursing Intern',                  mission:'To provide general health and well-being to all students through BPS101 schools.', tasks:'-Quick assessment of students\n-Wound care\n-Additional education\n-Five rights of medication\n-Documentation', skills:'-Vital signs\n-Wound care\n-Giving medication with RN assistance\n-Quick neuro assessment\n-Patient flow and general student health intake', environment:'Office, Hands-on', compensation:'Paid Hourly', hours:'Flexible/Project-based', reqs:'Anatomy, General Health class', specificReqs:'Anatomy, General Health class, Possibly FERPA/HIPAA', numStudents:'Up to 1 per building', mentorName:'Kelii Coonrod', mentorEmail:'kelli.coonrod@bps101.net', website:'https://www.bps101.net/health-services/', idealCandidate:'Interested in expanding nursing knowledge. Good work ethic. Ready to listen and learn.', appInstructions:'Email a resume and cover letter directly to the contact listed above' },
+  { name:'Batavia Public Library',      sector:'Human & Public Services', clusterId:'human',   role:'Graphic Design & Marketing Intern',mission:'We are a welcoming place to gather, create, and learn by providing quality resources and experiences.', tasks:'-Design social media graphics for Instagram, Facebook, TikTok\n-Create flyers and posters for library programs\n-Assist with short-form video creation\n-Capture photography at library events\n-Support campaigns like summer reading', skills:'-Real-world experience on a creative team\n-Portfolio-ready work across print, digital, and social media\n-Mentorship from designers, illustrators, and content creators', environment:'Office, Field, Hybrid, Hands-on', compensation:'Paid Hourly', hours:'10 hrs/wk', reqs:'Portfolio examples, Adobe Suite', specificReqs:'Portfolio examples, Adobe Suite (Photoshop, Illustrator, Canva, Mac environment)', numStudents:'1', mentorName:'Cesar Orozco', mentorEmail:'corozco@bataviapl.org', website:'https://www.bataviapl.org/', idealCandidate:'Someone passionate about creativity who can communicate ideas and sell a concept.', appInstructions:'Email a resume and cover letter directly to the contact listed above' },
+  { name:'Organic Life',               sector:'Human & Public Services', clusterId:'human',    role:'Food Service Worker',             mission:"OrganicLife is the Midwest's foremost food management service, delivering unparalleled services tailored to clients of varying scales.", tasks:"-Breakfast prep\n-Cold/hot box prep at middle school for elementaries\n-Loading/unloading food deliveries\n-Receiving and stocking food on Thursday mornings\n-General food prep and management", skills:'-Purchasing and supply aspects of food services\n-Understanding food prep and delivery workflow\n-Cost management, customer interaction, and rotating product', environment:'Shop/Lab, Hands-on', compensation:'Paid Hourly', hours:'5 hrs/wk', reqs:'Illinois Food Handlers License ($10 online)', specificReqs:"Illinois Food Handlers License ($10 online), Work in morning 6:30am–7:30am", numStudents:'1', mentorName:'Anne Hjelmberg / Tony Lopez', mentorEmail:'Anthony.lopez@bps101.net', website:'https://www.organiclifeusa.com/', idealCandidate:"Hard worker, self-motivated, doesn't need to be micromanaged.", appInstructions:'Email a resume and cover letter directly to the contact listed above' },
+  { name:'BPS101 Building & Grounds',  sector:'Manufacturing, Engineering, & Trades', clusterId:'manufacturing', role:'General Maintenance Intern', mission:'The Facilities Department oversees nine sites and one million square feet of school buildings and grounds.', tasks:'-HVAC\n-Plumbing\n-Electrical\n-General repairs\n-Snow removal\n-Turf maintenance', skills:'-Collaboration\n-Problem solving and troubleshooting\n-Technical skills in different trades', environment:'Field, Hands-on', compensation:'Paid Hourly', hours:'5 hrs/wk', reqs:'Must provide own transport, Trades courses', specificReqs:'Trades courses, safety trainings for public works', numStudents:'1 (can expand)', mentorName:'Robert Schmidt', mentorEmail:'robert.schmitt@bps101.net', website:'https://www.bps101.net/depts/facilities/', idealCandidate:"A go-getter who wants to work and do hands-on tasks. You learn by doing, not just watching.", appInstructions:'Email a resume and cover letter directly to the contact listed above' },
+  { name:'BPS101 Technology Dept.',    sector:'Information Technology', clusterId:'it',         role:'Help Desk Technician',            mission:'At BPS101, we believe every child deserves access to digital tools that support their learning and help them become successful contributors to our global world.', tasks:'-Technical support for software/hardware issues\n-Resolving helpdesk tickets promptly\n-Level 1 support operations\n-Setup and repair of technology hardware\n-Record keeping and inventory', skills:'-Customer service\n-Problem solving\n-Troubleshooting', environment:'Office-based', compensation:'Paid Hourly', hours:'5 hrs/wk', reqs:'Must provide own transport, Some kind of tech class', specificReqs:'Some kind of tech class; ideal: CompTIA A+ and Net+ certifications', numStudents:'1–2', mentorName:'David Thurlby, Rob Luxton, Lynn Bartolotta', mentorEmail:'David.thurlby@bps101.net', website:'https://www.bps101.net/depts/technology/', idealCandidate:'Responsible, owns their work, good with customer service, takes responsibility.', appInstructions:'Email a resume and cover letter directly to the contact listed above' },
+];
+
+loadPositions();
+</script>
+
+</body>
+</html>
