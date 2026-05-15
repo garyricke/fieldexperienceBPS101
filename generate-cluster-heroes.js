@@ -13,13 +13,13 @@ const CLD_KEY    = getEnv('CLOUDINARY_API_KEY');
 const CLD_SECRET = getEnv('CLOUDINARY_API_SECRET');
 
 const CLUSTERS = [
-  { id: 'agriculture', prompt: 'Vast golden farm fields at sunset with rolling hills, lush green crops, tractors in distance, cinematic aerial wide shot, rich warm colors, professional photography' },
-  { id: 'arts',        prompt: 'Vibrant creative studio with colorful canvases, camera equipment, microphones and design screens glowing, artistic energy, moody dramatic lighting, professional photography' },
-  { id: 'finance',     prompt: 'Modern glass skyscraper financial district at dusk, city lights reflecting, sleek corporate architecture, dramatic sky, professional architectural photography' },
-  { id: 'health',      prompt: 'Bright modern hospital corridor with professional medical staff in scrubs walking confidently, clean clinical environment, soft warm lighting, professional photography' },
-  { id: 'human',       prompt: 'Energetic diverse community gathering outdoors, teachers and volunteers helping people, warm sunlight, positive uplifting atmosphere, professional photography' },
-  { id: 'it',          prompt: 'Modern tech workspace with multiple glowing screens showing code and data visualizations, blue and purple ambient lighting, sleek futuristic environment, professional photography' },
-  { id: 'manufacturing', prompt: 'Dynamic industrial facility with sparks flying from welding, engineers in hard hats reviewing blueprints, heavy machinery, dramatic lighting, professional photography' },
+  { id: 'agriculture',   prompt: 'Close-up of lush green wheat stalks and golden grain at magic hour, rich warm harvest light, shallow depth of field, cinematic bokeh, vibrant saturated colors, professional nature photography' },
+  { id: 'arts',          prompt: 'Bold splashes of vivid paint in red, yellow, and blue on a dark canvas, close-up abstract art with dramatic lighting, creative energy, professional fine art photography' },
+  { id: 'finance',       prompt: 'Looking up at a towering glass skyscraper reflecting golden sunrise, dramatic low-angle architectural shot, sleek modern lines, deep blue sky, professional architectural photography' },
+  { id: 'health',        prompt: 'Close-up of gloved medical professional hands holding a stethoscope over clean white scrubs, warm clinical lighting, soft bokeh background, professional healthcare photography' },
+  { id: 'human',         prompt: 'Warm overhead shot of diverse hands joined together in a circle, community and unity, soft warm natural light, shallow focus, professional documentary photography' },
+  { id: 'it',            prompt: 'Extreme close-up of illuminated circuit board with glowing blue and cyan traces, dark background, macro photography, dramatic tech lighting, professional product photography' },
+  { id: 'manufacturing', prompt: 'Bright orange sparks from metal grinding in dark industrial workshop, dramatic long-exposure sparks arcing across frame, professional industrial photography' },
 ];
 
 async function generateImage(prompt) {
@@ -30,7 +30,7 @@ async function generateImage(prompt) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         instances: [{ prompt }],
-        parameters: { sampleCount: 1, aspectRatio: '16:9' }
+        parameters: { sampleCount: 1, aspectRatio: '1:1' }
       })
     }
   );
