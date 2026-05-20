@@ -1,0 +1,129 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script>if(sessionStorage.getItem('fe_auth')!=='1'){location.replace('index.html')}</script>
+  <title>Decision Making — Field Experience BHS</title>
+  <link rel="icon" type="image/png" href="https://res.cloudinary.com/dsbllwpbh/image/upload/v1771966521/fieldexperience-favicon_jgdotp.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Open+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={theme:{extend:{colors:{crimson:{800:'#AC161D'},gold:{400:'#fde020',500:'#FBCD07'}},fontFamily:{heading:['Montserrat','system-ui','sans-serif']}}}}</script>
+  <script>
+    const SKILLS_FORM_URL='https://docs.google.com/forms/d/e/YOUR_FORM_ID_HERE/viewform';
+    const SKILL_ENTRY_ID='entry.XXXXXXXXXX';const SKILL_REFLECTION_ID='entry.XXXXXXXXXX';
+    const THIS_SKILL='Skill 04 — Decision Making';
+    function submitSkill(){const name=document.getElementById('student-name').value.trim();const reflection=document.getElementById('student-reflection').value.trim();if(!name){alert('Please enter your name.');return;}if(!reflection){alert('Please write your reflection before submitting.');return;}window.open(SKILLS_FORM_URL+'?usp=pp_url&'+SKILL_ENTRY_ID+'='+encodeURIComponent(THIS_SKILL)+'&'+SKILL_REFLECTION_ID+'='+encodeURIComponent(name+' | '+reflection),'_blank');const btn=document.getElementById('submit-btn');btn.innerHTML='✓ Submitted — confirm in the Google Form tab';btn.disabled=true;}
+    function pickChoice(actId,chosen,correct,feedback){document.querySelectorAll('#act'+actId+' .choice-btn').forEach(b=>{b.classList.remove('chosen-right','chosen-wrong');if(b.getAttribute('data-val')===chosen)b.classList.add(b.getAttribute('data-val')===correct?'chosen-right':'chosen-wrong');});const fb=document.getElementById('feedback-'+actId);fb.style.display='block';fb.innerHTML=feedback;}
+  </script>
+  <style>
+    *{box-sizing:border-box}body{font-family:'Open Sans',system-ui,sans-serif;background:#f7f8fc;color:#1c1f2e;overflow-x:hidden}.font-heading{font-family:'Montserrat',system-ui,sans-serif}::selection{background:#AC161D;color:#fff}html{scroll-behavior:smooth}
+    .top-nav{position:fixed;top:0;left:0;right:0;background:rgba(255,255,255,.97);backdrop-filter:blur(12px);border-bottom:1px solid #e5e5e5;z-index:50;}
+    .section-label{font-family:'Montserrat',sans-serif;font-size:.7rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;}
+    .activity-card{background:#fff;border:1.5px solid #e5e7eb;border-radius:20px;padding:1.75rem;margin-bottom:1.5rem;}
+    .choice-btn{display:block;width:100%;text-align:left;padding:.875rem 1.25rem;border-radius:10px;border:1.5px solid #e5e7eb;background:#fff;color:#374151;font-family:'Open Sans',sans-serif;font-size:.9rem;cursor:pointer;transition:all .2s;margin-bottom:.5rem;}
+    .choice-btn:hover{border-color:#d97706;background:rgba(217,119,6,.1);color:#1c1f2e;}
+    .choice-btn.chosen-right{border-color:#22c55e!important;background:rgba(34,197,94,.1)!important;color:#1c1f2e;}
+    .choice-btn.chosen-wrong{border-color:#e5e7eb!important;background:#f9fafb!important;color:#9ca3af;}
+    .feedback-box{display:none;padding:1.25rem;border-radius:10px;margin-top:.75rem;background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.25);}
+    .rubric-row{display:grid;grid-template-columns:3rem 1fr;gap:1rem;align-items:start;padding:.875rem 0;border-bottom:1px solid #e5e7eb;}
+    .rubric-num{width:2.5rem;height:2.5rem;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:.9rem;font-weight:800;flex-shrink:0;}
+    .submit-section{background:#fff;border:1.5px solid #e5e7eb;border-radius:20px;padding:2rem;}
+    .submit-input{width:100%;background:#fff;border:1.5px solid #d1d5db;border-radius:10px;padding:.75rem 1rem;color:#1c1f2e;font-family:'Open Sans',sans-serif;font-size:.9rem;outline:none;transition:border-color .2s;}
+    .submit-input::placeholder{color:#9ca3af;}.submit-input:focus{border-color:#FBCD07;}
+    .submit-btn{display:inline-flex;align-items:center;gap:.5rem;background:#92400e;color:#fff;font-family:'Montserrat',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:.875rem 2rem;border-radius:999px;border:none;cursor:pointer;transition:all .2s;}
+    .submit-btn:hover{opacity:.88;transform:translateY(-1px);}.submit-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+    .skill-nav-link{display:flex;align-items:center;gap:.5rem;padding:.75rem 1.25rem;border-radius:999px;font-family:'Montserrat',sans-serif;font-size:.8rem;font-weight:700;text-decoration:none;transition:all .2s;background:#f3f4f6;color:#374151;border:1px solid #e5e7eb;}
+    .skill-nav-link:hover{background:#e5e7eb;color:#1c1f2e;}
+    .max-w-3xl.px-5 h2,.max-w-3xl.px-5 h3{color:#1c1f2e}
+    .max-w-3xl.px-5 .text-white{color:#1c1f2e}
+    .max-w-3xl.px-5 label{color:#1c1f2e}
+  </style>
+</head>
+<body>
+<nav class="top-nav"><div class="max-w-7xl mx-auto px-5 py-3 flex items-center justify-between"><a href="index.html#skills" class="flex items-center gap-2 text-sm font-semibold text-gray-600 hover:text-red-700 transition-colors font-heading"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>All Skills</a><a href="index.html" class="flex items-center gap-2.5"><img src="https://res.cloudinary.com/dikkdclum/image/upload/v1778676762/field-experience/logos/bps101.png" alt="BPS101" class="h-8 w-auto"><span class="font-heading font-bold text-sm text-black hidden sm:block">Field Experience</span></a></div></nav>
+
+<section style="margin-top:57px;background:linear-gradient(135deg,#1e2d3d 0%,#243447 100%);padding:4rem 1.5rem 3rem">
+  <div class="max-w-3xl mx-auto">
+    <div class="flex items-center gap-3 mb-4"><span class="section-label" style="color:#FBCD07">Employability Skill</span><span style="background:rgba(146,64,14,.4);color:#fcd34d;font-family:'Montserrat',sans-serif;font-size:.65rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:.3rem .75rem;border-radius:999px">04 of 10</span></div>
+    <div class="flex items-start gap-5">
+      <div class="w-16 h-16 rounded-2xl flex items-center justify-center flex-shrink-0" style="background:#92400e"><svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg></div>
+      <div><h1 class="font-heading text-3xl md:text-5xl font-black tracking-tight text-white leading-tight mb-2">Decision Making</h1><p class="text-lg text-gray-300">Evaluate your options, consider the consequences, and commit to a choice you can stand behind.</p></div>
+    </div>
+  </div>
+</section>
+
+<div class="max-w-3xl mx-auto px-5 py-12">
+
+  <div class="p-5 rounded-2xl mb-10" style="background:#f8fafc;border-left:4px solid #92400e">
+    <p class="section-label mb-2" style="color:#AC161D">Real Workplace Scenario</p>
+    <p style="color:#374151" class="leading-relaxed">A coworker pulls you aside and asks you to cover for them. They want to tell your supervisor they were in the restroom when they were actually outside on a personal phone call. "It's no big deal," they say. "I'll do the same for you sometime."</p>
+    <p class="mt-3 font-heading font-bold text-white text-sm">What do you do?</p>
+  </div>
+
+  <div class="mb-10"><h2 class="font-heading text-2xl font-bold text-white mb-4">Why This Skill Matters</h2>
+    <div class="grid sm:grid-cols-3 gap-4">
+      <div class="p-4 rounded-xl text-center" style="background:#f9fafb;border:1px solid #e5e7eb"><p class="font-heading font-black text-3xl" style="color:#AC161D">Every</p><p class="text-xs mt-1" style="color:#6b7280">day at work involves dozens of micro-decisions. Most won't have a clear right answer in a manual.</p></div>
+      <div class="p-4 rounded-xl text-center" style="background:#f9fafb;border:1px solid #e5e7eb"><p class="font-heading font-black text-3xl" style="color:#FBCD07">Trust</p><p class="text-xs mt-1" style="color:#6b7280">is built or destroyed by how you decide — especially in small moments nobody else is watching</p></div>
+      <div class="p-4 rounded-xl text-center" style="background:#f9fafb;border:1px solid #e5e7eb"><p class="font-heading font-black text-3xl text-white">Yours</p><p class="text-xs mt-1" style="color:#6b7280">Every decision you make at a placement reflects your professional reputation. Own it.</p></div>
+    </div>
+  </div>
+
+  <div class="mb-10 p-6 rounded-2xl" style="background:#fff;border:1.5px solid #e5e7eb">
+    <h2 class="font-heading text-xl font-bold text-white mb-3">What This Skill Actually Is</h2>
+    <p style="color:#374151" class="leading-relaxed mb-3">Decision making is evaluating available options — considering the likely outcomes, the people affected, and the values at stake — and committing to a course of action you can defend and stand behind.</p>
+    <p style="color:#374151" class="leading-relaxed">Strong decision makers don't just pick the most convenient option. They consider: <em>What are the consequences if this goes wrong? Who else is affected? Does this align with what the organization expects of me?</em> And then they act decisively — not paralyzed by indecision, not reckless.</p>
+    <div class="mt-4 p-3 rounded-xl" style="background:#fef3e2;border:1px solid #fed7aa">
+      <p class="text-sm font-heading font-bold mb-1" style="color:#92400e">A quick test before any uncertain decision:</p>
+      <p class="text-sm" style="color:#4b5563">Would you be comfortable if your supervisor could see exactly what you're doing and why? If yes — proceed. If not — pause.</p>
+    </div>
+  </div>
+
+  <div class="activity-card" id="act1">
+    <div class="flex items-center gap-2 mb-1"><span class="section-label" style="color:#FBCD07">Activity 1</span><span class="text-xs font-heading font-bold" style="color:#9ca3af">Scenario — Choose Your Response</span></div>
+    <h3 class="font-heading font-bold text-white text-lg mb-3">The Discount Irregularity</h3>
+    <p style="color:#374151" class="mb-4">You notice a coworker has been regularly giving unauthorized discounts at checkout — it looks like friends are getting special pricing. You're not sure if it's a mistake or intentional. What do you do?</p>
+    <button class="choice-btn" data-val="A" onclick="pickChoice('1','A','C','<strong style=\'color:#22c55e\'>C is the right call — and here\'s why the others are problems:</strong><br><br>A: Saying nothing makes you complicit if it escalates. Ignoring unethical behavior at work is itself a decision — and a bad one.<br><br>B: Confronting them directly could go poorly, especially if you\'re wrong. You could damage the relationship without resolving anything.<br><br>D: Going to other coworkers spreads unverified information and creates a gossip situation — unprofessional and potentially harmful.<br><br><strong>C works because:</strong> you\'re documenting what you observed (not accusing), reporting it through the proper channel (your supervisor), and doing it factually: "I\'ve noticed [specific behavior] and wanted to flag it." You\'re not the judge — you\'re a responsible employee.')">A — Say nothing. It's not your problem.</button>
+    <button class="choice-btn" data-val="B" onclick="pickChoice('1','B','C','<strong style=\'color:#22c55e\'>C is the right call — and here\'s why the others are problems:</strong><br><br>A: Saying nothing makes you complicit if it escalates. Ignoring unethical behavior at work is itself a decision — and a bad one.<br><br>B: Confronting them directly could go poorly, especially if you\'re wrong. You could damage the relationship without resolving anything.<br><br>D: Going to other coworkers spreads unverified information and creates a gossip situation — unprofessional and potentially harmful.<br><br><strong>C works because:</strong> you\'re documenting what you observed (not accusing), reporting it through the proper channel (your supervisor), and doing it factually: "I\'ve noticed [specific behavior] and wanted to flag it." You\'re not the judge — you\'re a responsible employee.')">B — Confront the coworker directly and ask what they're doing</button>
+    <button class="choice-btn" data-val="C" onclick="pickChoice('1','C','C','<strong style=\'color:#22c55e\'>C is the right call — and here\'s why the others are problems:</strong><br><br>A: Saying nothing makes you complicit if it escalates. Ignoring unethical behavior at work is itself a decision — and a bad one.<br><br>B: Confronting them directly could go poorly, especially if you\'re wrong. You could damage the relationship without resolving anything.<br><br>D: Going to other coworkers spreads unverified information and creates a gossip situation — unprofessional and potentially harmful.<br><br><strong>C works because:</strong> you\'re documenting what you observed (not accusing), reporting it through the proper channel (your supervisor), and doing it factually: "I\'ve noticed [specific behavior] and wanted to flag it." You\'re not the judge — you\'re a responsible employee.')">C — Document what you've seen and report it factually to your supervisor</button>
+    <button class="choice-btn" data-val="D" onclick="pickChoice('1','D','C','<strong style=\'color:#22c55e\'>C is the right call — and here\'s why the others are problems:</strong><br><br>A: Saying nothing makes you complicit if it escalates. Ignoring unethical behavior at work is itself a decision — and a bad one.<br><br>B: Confronting them directly could go poorly, especially if you\'re wrong. You could damage the relationship without resolving anything.<br><br>D: Going to other coworkers spreads unverified information and creates a gossip situation — unprofessional and potentially harmful.<br><br><strong>C works because:</strong> you\'re documenting what you observed (not accusing), reporting it through the proper channel (your supervisor), and doing it factually: "I\'ve noticed [specific behavior] and wanted to flag it." You\'re not the judge — you\'re a responsible employee.')">D — Mention it to other coworkers to see if they've noticed too</button>
+    <div class="feedback-box" id="feedback-1"></div>
+  </div>
+
+  <div class="activity-card">
+    <div class="flex items-center gap-2 mb-1"><span class="section-label" style="color:#FBCD07">Activity 2</span><span class="text-xs font-heading font-bold" style="color:#9ca3af">Written Response</span></div>
+    <h3 class="font-heading font-bold text-white text-lg mb-3">Back to the Opening</h3>
+    <p style="color:#374151" class="mb-4">A coworker asks you to lie to your supervisor to cover for them. In 4–6 sentences, explain exactly what you would say to the coworker — keeping the working relationship intact while being honest about why you can't do it. This isn't about lecturing them; it's about a real, human response.</p>
+    <textarea class="submit-input" rows="6" placeholder="Write what you would actually say to the coworker..."></textarea>
+    <p class="text-xs mt-2" style="color:#9ca3af">Strong responses are honest but not preachy — they state a clear "no" while preserving dignity for both people.</p>
+  </div>
+
+  <div class="mb-10"><h2 class="font-heading text-xl font-bold text-white mb-4">Where Are You Right Now?</h2>
+    <div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:16px;overflow:hidden;">
+      <div class="rubric-row px-5"><div class="rubric-num" style="background:#ef4444;color:#fff">1</div><div><p class="font-heading font-bold text-white text-sm">Developing</p><p class="text-sm mt-1" style="color:#6b7280">Makes decisions based on what's easiest or most convenient. Avoids decisions that feel uncomfortable. May go along with others without evaluating the choice.</p></div></div>
+      <div class="rubric-row px-5"><div class="rubric-num" style="background:#f97316;color:#fff">2</div><div><p class="font-heading font-bold text-white text-sm">Approaching</p><p class="text-sm mt-1" style="color:#6b7280">Tries to make good decisions but sometimes acts impulsively or fails to consider longer-term consequences. May seek others' approval before committing.</p></div></div>
+      <div class="rubric-row px-5"><div class="rubric-num" style="background:#22c55e;color:#fff">3</div><div><p class="font-heading font-bold text-white text-sm">Meeting Expectations</p><p class="text-sm mt-1" style="color:#6b7280">Considers options and consequences before acting. Makes decisions aligned with organizational values. Owns the outcomes — including when things go wrong.</p></div></div>
+      <div class="rubric-row px-5" style="border-bottom:none"><div class="rubric-num" style="background:#FBCD07;color:#000">4</div><div><p class="font-heading font-bold text-white text-sm">Exceeding Expectations</p><p class="text-sm mt-1" style="color:#6b7280">Makes principled decisions under pressure. Uses a clear framework. Explains reasoning transparently. Helps others think through difficult decisions. Builds trust consistently through decision quality.</p></div></div>
+    </div>
+  </div>
+
+  <div class="submit-section">
+    <h2 class="font-heading text-xl font-bold text-white mb-1">Mark This Skill Complete</h2>
+    <p class="text-sm mb-5" style="color:#6b7280">Submit your reflection to notify your teacher you've completed this module.</p>
+    <div class="grid sm:grid-cols-2 gap-3 mb-4">
+      <div><label class="block text-xs font-heading font-bold text-white mb-1.5" style="letter-spacing:.05em">YOUR NAME</label><input type="text" id="student-name" class="submit-input" placeholder="First and Last Name"></div>
+      <div><label class="block text-xs font-heading font-bold text-white mb-1.5" style="letter-spacing:.05em">PERIOD</label><select id="student-period" class="submit-input" style="cursor:pointer"><option value="" disabled selected>Select your period</option><option>1st Period</option><option>2nd Period</option><option>3rd Period</option><option>4th Period</option><option>5th Period</option><option>6th Period</option></select></div>
+    </div>
+    <div class="mb-4"><label class="block text-xs font-heading font-bold text-white mb-1.5" style="letter-spacing:.05em">REFLECTION — Think about the coworker scenario. What did you decide? Why? Rate yourself 1–4 on the rubric.</label><textarea id="student-reflection" class="submit-input" rows="5" placeholder="Write your reflection here..."></textarea></div>
+    <button id="submit-btn" class="submit-btn" onclick="submitSkill()"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>Submit Completion</button>
+    <p class="text-xs mt-3" style="color:#9ca3af">A Google Form will open in a new tab to confirm your submission.</p>
+  </div>
+
+  <div class="flex justify-between items-center mt-10 pt-8" style="border-top:1px solid #e5e7eb">
+    <a href="skill-problemsolving.html" class="skill-nav-link"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>Problem Solving</a>
+    <a href="skill-criticalthinking.html" class="skill-nav-link" style="background:#92400e;color:#fff;border-color:#92400e">Next: Critical Thinking<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></a>
+  </div>
+</div>
+
+<footer style="background:#1e2d3d;border-top:1px solid rgba(255,255,255,.1);padding:2.5rem 1.5rem;margin-top:2rem"><div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4"><div class="flex items-center gap-3"><img src="https://res.cloudinary.com/dsbllwpbh/image/upload/v1770990807/field-study-logo-trans_kewube.png" alt="BHS Field Experience" class="h-8 w-auto brightness-0 invert opacity-70"/><div><p class="font-heading font-bold text-white text-sm">BHS Field Experience</p><p style="color:rgba(255,255,255,.4);font-size:.7rem;text-transform:uppercase;letter-spacing:.1em">Batavia High School</p></div></div><div class="flex gap-6"><a href="index.html" class="text-sm font-heading" style="color:rgba(255,255,255,.5)">Home</a><a href="bootcamp.html" class="text-sm font-heading" style="color:rgba(255,255,255,.5)">Bootcamp</a><a href="resources.html" class="text-sm font-heading" style="color:rgba(255,255,255,.5)">Resources</a></div></div></footer>
+</body></html>

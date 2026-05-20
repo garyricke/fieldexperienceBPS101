@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script>if(sessionStorage.getItem('fe_teacher_auth')!=='1'){location.replace('index.html')}</script>
+  <title>Teacher Hub — Field Experience BHS</title>
+  <link rel="icon" type="image/png" href="https://res.cloudinary.com/dsbllwpbh/image/upload/v1771966521/fieldexperience-favicon_jgdotp.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Open+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={theme:{extend:{colors:{crimson:{800:'#AC161D'},gold:{400:'#fde020',500:'#FBCD07'}},fontFamily:{heading:['Montserrat','system-ui','sans-serif']}}}}</script>
+  <script>function logoutTeacher(){sessionStorage.removeItem('fe_teacher_auth');location.href='index.html';}</script>
+  <style>
+    *{box-sizing:border-box}body{font-family:'Open Sans',system-ui,sans-serif;background:#080e1a;color:#fff;overflow-x:hidden}
+    .font-heading{font-family:'Montserrat',system-ui,sans-serif}
+    .teacher-nav{position:fixed;top:0;left:0;right:0;background:rgba(8,14,26,.97);backdrop-filter:blur(12px);border-bottom:2px solid rgba(251,205,7,.25);z-index:50;}
+    .teacher-badge{background:rgba(251,205,7,.15);color:#FBCD07;font-family:'Montserrat',sans-serif;font-size:.65rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;padding:.25rem .75rem;border-radius:999px;border:1px solid rgba(251,205,7,.3);}
+    .section-label{font-family:'Montserrat',sans-serif;font-size:.7rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;}
+    .resource-card{background:rgba(255,255,255,.04);border:1.5px solid rgba(255,255,255,.08);border-radius:20px;padding:1.75rem;text-decoration:none;color:#fff;display:flex;flex-direction:column;transition:all .2s;}
+    .resource-card:hover{background:rgba(255,255,255,.07);border-color:rgba(251,205,7,.35);transform:translateY(-2px);}
+  </style>
+</head>
+<body>
+
+<nav class="teacher-nav"><div class="max-w-7xl mx-auto px-5 py-3 flex items-center justify-between">
+  <a href="index.html" class="flex items-center gap-2 text-sm font-semibold text-gray-400 hover:text-white transition-colors font-heading">
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>Back to Site
+  </a>
+  <div class="flex items-center gap-3">
+    <a href="index.html"><img src="https://res.cloudinary.com/dikkdclum/image/upload/v1778676762/field-experience/logos/bps101.png" alt="BPS101" class="h-8 w-auto brightness-0 invert opacity-60"></a>
+    <span class="teacher-badge">Teacher</span>
+  </div>
+  <button onclick="logoutTeacher()" class="text-sm font-semibold text-gray-400 hover:text-white transition-colors font-heading">Log Out</button>
+</div></nav>
+
+<section style="margin-top:57px;background:linear-gradient(135deg,#080e1a 0%,#0d1a2e 60%,#111827 100%);padding:4rem 1.5rem 3rem">
+  <div class="max-w-5xl mx-auto">
+    <span class="section-label mb-3 block" style="color:#FBCD07">Instructor Area</span>
+    <h1 class="font-heading text-4xl md:text-5xl font-black text-white tracking-tight mb-3">Teacher Hub</h1>
+    <p class="text-lg" style="color:rgba(255,255,255,.5)">All your Field Experience resources in one place. Students can't see this area.</p>
+  </div>
+</section>
+
+<section style="background:#080e1a;padding:3rem 1.5rem 5rem">
+  <div class="max-w-5xl mx-auto">
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+
+      <!-- Student Progress -->
+      <a href="teacher-progress.html" class="resource-card">
+        <div class="w-12 h-12 rounded-2xl flex items-center justify-center mb-4" style="background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.25)">
+          <svg class="w-6 h-6" style="color:#4ade80" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+        </div>
+        <p class="font-heading font-bold text-white text-lg mb-1">Student Progress</p>
+        <p class="text-sm mb-4" style="color:rgba(255,255,255,.5)">See who has completed which Bootcamp weeks and Employability Skill modules. Live from Google Sheets.</p>
+        <span class="mt-auto font-heading font-bold text-xs" style="color:#4ade80">View Dashboard &rarr;</span>
+      </a>
+
+      <!-- Placement Directory -->
+      <a href="teacher-directory.html" class="resource-card">
+        <div class="w-12 h-12 rounded-2xl flex items-center justify-center mb-4" style="background:rgba(59,130,246,.12);border:1px solid rgba(59,130,246,.25)">
+          <svg class="w-6 h-6" style="color:#60a5fa" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        </div>
+        <p class="font-heading font-bold text-white text-lg mb-1">Placement Site Directory</p>
+        <p class="text-sm mb-4" style="color:rgba(255,255,255,.5)">All placement sites, supervisor names, phone numbers, and addresses. Searchable and printable.</p>
+        <span class="mt-auto font-heading font-bold text-xs" style="color:#60a5fa">Open Directory &rarr;</span>
+      </a>
+
+      <!-- Email Templates -->
+      <a href="teacher-emails.html" class="resource-card">
+        <div class="w-12 h-12 rounded-2xl flex items-center justify-center mb-4" style="background:rgba(251,205,7,.1);border:1px solid rgba(251,205,7,.25)">
+          <svg class="w-6 h-6" style="color:#FBCD07" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+        </div>
+        <p class="font-heading font-bold text-white text-lg mb-1">Email Templates</p>
+        <p class="text-sm mb-4" style="color:rgba(255,255,255,.5)">Pre-written emails for common situations — absent notifications, check-ins, thank-yous. Click to copy.</p>
+        <span class="mt-auto font-heading font-bold text-xs" style="color:#FBCD07">Open Templates &rarr;</span>
+      </a>
+
+      <!-- Observation Rubric -->
+      <a href="teacher-rubric.html" class="resource-card">
+        <div class="w-12 h-12 rounded-2xl flex items-center justify-center mb-4" style="background:rgba(168,85,247,.12);border:1px solid rgba(168,85,247,.25)">
+          <svg class="w-6 h-6" style="color:#c084fc" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+        </div>
+        <p class="font-heading font-bold text-white text-lg mb-1">Observation Rubric Sheet</p>
+        <p class="text-sm mb-4" style="color:rgba(255,255,255,.5)">All 10 employability skills with NAF 4-level rubric. Fill out during site visits. Print-ready.</p>
+        <span class="mt-auto font-heading font-bold text-xs" style="color:#c084fc">Open Rubric &rarr;</span>
+      </a>
+
+      <!-- Job Descriptions -->
+      <a href="positions.html" class="resource-card">
+        <div class="w-12 h-12 rounded-2xl flex items-center justify-center mb-4" style="background:rgba(172,22,29,.15);border:1px solid rgba(172,22,29,.3)">
+          <svg class="w-6 h-6" style="color:#f87171" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+        </div>
+        <p class="font-heading font-bold text-white text-lg mb-1">Job Descriptions</p>
+        <p class="text-sm mb-4" style="color:rgba(255,255,255,.5)">Business and site job description cards. Print-optimized for classroom and placement use.</p>
+        <span class="mt-auto font-heading font-bold text-xs" style="color:#f87171">Open &amp; Print &rarr;</span>
+      </a>
+
+      <!-- Coming Next -->
+      <div class="resource-card" style="opacity:.45;cursor:default;border-style:dashed">
+        <div class="w-12 h-12 rounded-2xl flex items-center justify-center mb-4" style="background:rgba(255,255,255,.05)">
+          <svg class="w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
+        </div>
+        <p class="font-heading font-bold text-white text-lg mb-1">More Coming</p>
+        <p class="text-sm" style="color:rgba(255,255,255,.35)">Grading helper, site visit log, and parent communication tracker are planned for future builds.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<footer style="background:#060c18;border-top:1px solid rgba(255,255,255,.05);padding:1.5rem;text-align:center">
+  <p class="text-xs" style="color:rgba(255,255,255,.2)">BHS Field Experience &bull; Teacher Area &bull; <a href="#" onclick="logoutTeacher();return false;" style="color:rgba(255,255,255,.35);text-decoration:none">Log Out</a></p>
+</footer>
+
+</body>
+</html>

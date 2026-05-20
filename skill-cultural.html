@@ -1,0 +1,127 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script>if(sessionStorage.getItem('fe_auth')!=='1'){location.replace('index.html')}</script>
+  <title>Cultural Competence — Field Experience BHS</title>
+  <link rel="icon" type="image/png" href="https://res.cloudinary.com/dsbllwpbh/image/upload/v1771966521/fieldexperience-favicon_jgdotp.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Open+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={theme:{extend:{colors:{crimson:{800:'#AC161D'},gold:{400:'#fde020',500:'#FBCD07'}},fontFamily:{heading:['Montserrat','system-ui','sans-serif']}}}}</script>
+  <script>
+    const SKILLS_FORM_URL='https://docs.google.com/forms/d/e/YOUR_FORM_ID_HERE/viewform';
+    const SKILL_ENTRY_ID='entry.XXXXXXXXXX';const SKILL_REFLECTION_ID='entry.XXXXXXXXXX';
+    const THIS_SKILL='Skill 09 — Cultural Competence';
+    function submitSkill(){const name=document.getElementById('student-name').value.trim();const reflection=document.getElementById('student-reflection').value.trim();if(!name){alert('Please enter your name.');return;}if(!reflection){alert('Please write your reflection.');return;}window.open(SKILLS_FORM_URL+'?usp=pp_url&'+SKILL_ENTRY_ID+'='+encodeURIComponent(THIS_SKILL)+'&'+SKILL_REFLECTION_ID+'='+encodeURIComponent(name+' | '+reflection),'_blank');const btn=document.getElementById('submit-btn');btn.innerHTML='✓ Submitted — confirm in the Google Form tab';btn.disabled=true;}
+    function pickChoice(actId,chosen,correct,feedback){document.querySelectorAll('#act'+actId+' .choice-btn').forEach(b=>{b.classList.remove('chosen-right','chosen-wrong');if(b.getAttribute('data-val')===chosen)b.classList.add(b.getAttribute('data-val')===correct?'chosen-right':'chosen-wrong');});const fb=document.getElementById('feedback-'+actId);fb.style.display='block';fb.innerHTML=feedback;}
+  </script>
+  <style>
+    *{box-sizing:border-box}body{font-family:'Open Sans',system-ui,sans-serif;background:#f7f8fc;color:#1c1f2e;overflow-x:hidden}.font-heading{font-family:'Montserrat',system-ui,sans-serif}::selection{background:#AC161D;color:#fff}html{scroll-behavior:smooth}
+    .top-nav{position:fixed;top:0;left:0;right:0;background:rgba(255,255,255,.97);backdrop-filter:blur(12px);border-bottom:1px solid #e5e5e5;z-index:50;}
+    .section-label{font-family:'Montserrat',sans-serif;font-size:.7rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;}
+    .activity-card{background:#fff;border:1.5px solid #e5e7eb;border-radius:20px;padding:1.75rem;margin-bottom:1.5rem;}
+    .choice-btn{display:block;width:100%;text-align:left;padding:.875rem 1.25rem;border-radius:10px;border:1.5px solid #e5e7eb;background:#fff;color:#374151;font-family:'Open Sans',sans-serif;font-size:.9rem;cursor:pointer;transition:all .2s;margin-bottom:.5rem;}
+    .choice-btn:hover{border-color:#d97706;background:rgba(217,119,6,.1);color:#1c1f2e;}
+    .choice-btn.chosen-right{border-color:#22c55e!important;background:rgba(34,197,94,.1)!important;color:#1c1f2e;}
+    .choice-btn.chosen-wrong{border-color:#e5e7eb!important;background:#f9fafb!important;color:#9ca3af;}
+    .feedback-box{display:none;padding:1.25rem;border-radius:10px;margin-top:.75rem;background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.25);}
+    .rubric-row{display:grid;grid-template-columns:3rem 1fr;gap:1rem;align-items:start;padding:.875rem 0;border-bottom:1px solid #e5e7eb;}
+    .rubric-num{width:2.5rem;height:2.5rem;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:.9rem;font-weight:800;flex-shrink:0;}
+    .submit-section{background:#fff;border:1.5px solid #e5e7eb;border-radius:20px;padding:2rem;}
+    .submit-input{width:100%;background:#fff;border:1.5px solid #d1d5db;border-radius:10px;padding:.75rem 1rem;color:#1c1f2e;font-family:'Open Sans',sans-serif;font-size:.9rem;outline:none;transition:border-color .2s;}
+    .submit-input::placeholder{color:#9ca3af;}.submit-input:focus{border-color:#FBCD07;}
+    .submit-btn{display:inline-flex;align-items:center;gap:.5rem;background:#92400e;color:#fff;font-family:'Montserrat',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:.875rem 2rem;border-radius:999px;border:none;cursor:pointer;transition:all .2s;}
+    .submit-btn:hover{opacity:.88;transform:translateY(-1px);}.submit-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+    .skill-nav-link{display:flex;align-items:center;gap:.5rem;padding:.75rem 1.25rem;border-radius:999px;font-family:'Montserrat',sans-serif;font-size:.8rem;font-weight:700;text-decoration:none;transition:all .2s;background:#f3f4f6;color:#374151;border:1px solid #e5e7eb;}
+    .skill-nav-link:hover{background:#e5e7eb;color:#1c1f2e;}
+    .max-w-3xl.px-5 h2,.max-w-3xl.px-5 h3{color:#1c1f2e}
+    .max-w-3xl.px-5 .text-white{color:#1c1f2e}
+    .max-w-3xl.px-5 label{color:#1c1f2e}
+  </style>
+</head>
+<body>
+<nav class="top-nav"><div class="max-w-7xl mx-auto px-5 py-3 flex items-center justify-between"><a href="index.html#skills" class="flex items-center gap-2 text-sm font-semibold text-gray-600 hover:text-red-700 transition-colors font-heading"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>All Skills</a><a href="index.html" class="flex items-center gap-2.5"><img src="https://res.cloudinary.com/dikkdclum/image/upload/v1778676762/field-experience/logos/bps101.png" alt="BPS101" class="h-8 w-auto"><span class="font-heading font-bold text-sm text-black hidden sm:block">Field Experience</span></a></div></nav>
+
+<section style="margin-top:57px;background:linear-gradient(135deg,#1e2d3d 0%,#243447 100%);padding:4rem 1.5rem 3rem">
+  <div class="max-w-3xl mx-auto">
+    <div class="flex items-center gap-3 mb-4"><span class="section-label" style="color:#FBCD07">Employability Skill</span><span style="background:rgba(146,64,14,.4);color:#fcd34d;font-family:'Montserrat',sans-serif;font-size:.65rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:.3rem .75rem;border-radius:999px">09 of 10</span></div>
+    <div class="flex items-start gap-5">
+      <div class="w-16 h-16 rounded-2xl flex items-center justify-center flex-shrink-0" style="background:#92400e"><svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
+      <div><h1 class="font-heading text-3xl md:text-5xl font-black tracking-tight text-white leading-tight mb-2">Cultural Competence</h1><p class="text-lg text-gray-300">Work effectively across differences in background, perspective, and identity — and actively build inclusive relationships.</p></div>
+    </div>
+  </div>
+</section>
+
+<div class="max-w-3xl mx-auto px-5 py-12">
+  <div class="p-5 rounded-2xl mb-10" style="background:#f8fafc;border-left:4px solid #92400e">
+    <p class="section-label mb-2" style="color:#AC161D">Real Workplace Scenario</p>
+    <p style="color:#374151" class="leading-relaxed">During a team meeting, a coworker makes an offhand comment — it's framed as a joke, but the tone is clearly aimed at something tied to another team member's background. The team member being referenced laughs awkwardly but looks uncomfortable. Nobody else reacts. You're sitting right there.</p>
+    <p class="mt-3 font-heading font-bold text-white text-sm">What goes through your mind? What do you do?</p>
+  </div>
+
+  <div class="mb-10"><h2 class="font-heading text-2xl font-bold text-white mb-4">Why This Skill Matters</h2>
+    <div class="grid sm:grid-cols-3 gap-4">
+      <div class="p-4 rounded-xl text-center" style="background:#f9fafb;border:1px solid #e5e7eb"><p class="font-heading font-black text-3xl" style="color:#AC161D">Every</p><p class="text-xs mt-1" style="color:#6b7280">real workplace is diverse. You will work with people who are different from you — in background, identity, perspective, and experience.</p></div>
+      <div class="p-4 rounded-xl text-center" style="background:#f9fafb;border:1px solid #e5e7eb"><p class="font-heading font-black text-3xl" style="color:#FBCD07">Better</p><p class="text-xs mt-1" style="color:#6b7280">diverse teams make better decisions when people feel included. Cultural competence is what makes that possible.</p></div>
+      <div class="p-4 rounded-xl text-center" style="background:#f9fafb;border:1px solid #e5e7eb"><p class="font-heading font-black text-3xl text-white">Noticed</p><p class="text-xs mt-1" style="color:#6b7280">How you treat people who are different from you is always noticed — by everyone in the room.</p></div>
+    </div>
+  </div>
+
+  <div class="mb-10 p-6 rounded-2xl" style="background:#fff;border:1.5px solid #e5e7eb">
+    <h2 class="font-heading text-xl font-bold text-white mb-3">What This Skill Actually Is</h2>
+    <p style="color:#374151" class="leading-relaxed mb-3">Cultural competence is the understanding and ability to navigate differences in background, perspective, culture, and identity — and to actively build relationships that are respectful, equitable, and inclusive. It's not about pretending differences don't exist. It's about engaging across them with curiosity and respect.</p>
+    <p style="color:#374151" class="leading-relaxed">In a workplace, this includes being aware of your own biases, being genuinely curious about people's experiences different from yours, avoiding assumptions, and speaking up when something feels wrong — even when it's uncomfortable.</p>
+    <div class="mt-4 p-3 rounded-xl" style="background:#fef3e2;border:1px solid #fed7aa">
+      <p class="text-sm font-heading font-bold mb-1" style="color:#92400e">The NACE framework calls this Equity &amp; Inclusion:</p>
+      <p class="text-sm italic" style="color:#4b5563">"Demonstrate awareness, attitude, knowledge, and skills to equitably engage with individuals from diverse cultures and perspectives. Actively solicit and incorporate feedback from multiple cultural perspectives to make inclusive decisions."</p>
+    </div>
+  </div>
+
+  <div class="activity-card" id="act1">
+    <div class="flex items-center gap-2 mb-1"><span class="section-label" style="color:#FBCD07">Activity 1</span><span class="text-xs font-heading font-bold" style="color:#9ca3af">Scenario — Choose Your Response</span></div>
+    <h3 class="font-heading font-bold text-white text-lg mb-3">The Uncomfortable Meeting</h3>
+    <p style="color:#374151" class="mb-4">Return to the opening scenario: the coworker makes the comment, the other team member looks uncomfortable, nobody else reacts. As an intern, what's your most appropriate response?</p>
+    <button class="choice-btn" data-val="A" onclick="pickChoice('1','A','C','<strong style=\'color:#22c55e\'>C is the most appropriate response for your position — and here\'s why:</strong><br><br>A: Laughing along or ignoring it signals that you think the behavior is acceptable. Silence in these moments is a choice — it sides with the commenter.<br><br>B: Confronting the coworker publicly in the meeting could escalate into a conflict that puts you — as an intern — in a difficult position. It may not be the right time or place, especially when you\'re still building relationships.<br><br>D: Telling your supervisor right away about a colleague\'s comment in a staff meeting may feel like over-escalating a first occurrence. Save escalation for patterns or serious situations.<br><br><strong>C works because:</strong> checking on the team member privately says "I noticed, I care, you\'re not alone" — without creating a public conflict. If it happens again, that\'s when escalation to your supervisor becomes appropriate.')">A — Laugh it off or ignore it — it's not your business</button>
+    <button class="choice-btn" data-val="B" onclick="pickChoice('1','B','C','<strong style=\'color:#22c55e\'>C is the most appropriate response for your position — and here\'s why:</strong><br><br>A: Laughing along or ignoring it signals that you think the behavior is acceptable. Silence in these moments is a choice — it sides with the commenter.<br><br>B: Confronting the coworker publicly in the meeting could escalate into a conflict that puts you — as an intern — in a difficult position. It may not be the right time or place, especially when you\'re still building relationships.<br><br>D: Telling your supervisor right away about a colleague\'s comment in a staff meeting may feel like over-escalating a first occurrence. Save escalation for patterns or serious situations.<br><br><strong>C works because:</strong> checking on the team member privately says "I noticed, I care, you\'re not alone" — without creating a public conflict. If it happens again, that\'s when escalation to your supervisor becomes appropriate.')">B — Immediately call out the coworker in front of the team</button>
+    <button class="choice-btn" data-val="C" onclick="pickChoice('1','C','C','<strong style=\'color:#22c55e\'>C is the most appropriate response for your position — and here\'s why:</strong><br><br>A: Laughing along or ignoring it signals that you think the behavior is acceptable. Silence in these moments is a choice — it sides with the commenter.<br><br>B: Confronting the coworker publicly in the meeting could escalate into a conflict that puts you — as an intern — in a difficult position. It may not be the right time or place, especially when you\'re still building relationships.<br><br>D: Telling your supervisor right away about a colleague\'s comment in a staff meeting may feel like over-escalating a first occurrence. Save escalation for patterns or serious situations.<br><br><strong>C works because:</strong> checking on the team member privately says "I noticed, I care, you\'re not alone" — without creating a public conflict. If it happens again, that\'s when escalation to your supervisor becomes appropriate.')">C — Check in privately with the affected team member after the meeting to see how they're doing</button>
+    <button class="choice-btn" data-val="D" onclick="pickChoice('1','D','C','<strong style=\'color:#22c55e\'>C is the most appropriate response for your position — and here\'s why:</strong><br><br>A: Laughing along or ignoring it signals that you think the behavior is acceptable. Silence in these moments is a choice — it sides with the commenter.<br><br>B: Confronting the coworker publicly in the meeting could escalate into a conflict that puts you — as an intern — in a difficult position. It may not be the right time or place, especially when you\'re still building relationships.<br><br>D: Telling your supervisor right away about a colleague\'s comment in a staff meeting may feel like over-escalating a first occurrence. Save escalation for patterns or serious situations.<br><br><strong>C works because:</strong> checking on the team member privately says "I noticed, I care, you\'re not alone" — without creating a public conflict. If it happens again, that\'s when escalation to your supervisor becomes appropriate.')">D — Report the coworker to your supervisor immediately after the meeting</button>
+    <div class="feedback-box" id="feedback-1"></div>
+  </div>
+
+  <div class="activity-card">
+    <div class="flex items-center gap-2 mb-1"><span class="section-label" style="color:#FBCD07">Activity 2</span><span class="text-xs font-heading font-bold" style="color:#9ca3af">Written Reflection</span></div>
+    <h3 class="font-heading font-bold text-white text-lg mb-3">Entering a New Workplace Culture</h3>
+    <p style="color:#374151" class="mb-4">Think about the placement you're entering (or will enter). Consider: What perspectives, backgrounds, or generations might be different from yours in that workplace? What assumptions might you carry into the environment — about how people communicate, what professionalism looks like, or what humor is appropriate? What's one thing you want to be actively aware of or curious about when you walk in?</p>
+    <textarea class="submit-input" rows="6" placeholder="Write your reflection here. Be honest — the goal isn't to sound perfect, it's to be genuinely thoughtful."></textarea>
+  </div>
+
+  <div class="mb-10"><h2 class="font-heading text-xl font-bold text-white mb-4">Where Are You Right Now?</h2>
+    <div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:16px;overflow:hidden;">
+      <div class="rubric-row px-5"><div class="rubric-num" style="background:#ef4444;color:#fff">1</div><div><p class="font-heading font-bold text-white text-sm">Developing</p><p class="text-sm mt-1" style="color:#6b7280">Limited awareness of how background and identity affect workplace dynamics. May make assumptions or miss how comments land differently on different people.</p></div></div>
+      <div class="rubric-row px-5"><div class="rubric-num" style="background:#f97316;color:#fff">2</div><div><p class="font-heading font-bold text-white text-sm">Approaching</p><p class="text-sm mt-1" style="color:#6b7280">Aware of diversity and generally respectful, but may not actively think about inclusion or notice when someone feels excluded. Doesn't yet act on moments that call for allyship.</p></div></div>
+      <div class="rubric-row px-5"><div class="rubric-num" style="background:#22c55e;color:#fff">3</div><div><p class="font-heading font-bold text-white text-sm">Meeting Expectations</p><p class="text-sm mt-1" style="color:#6b7280">Demonstrates genuine curiosity about different perspectives. Adjusts communication to be inclusive. Notices exclusion and responds appropriately for the situation.</p></div></div>
+      <div class="rubric-row px-5" style="border-bottom:none"><div class="rubric-num" style="background:#FBCD07;color:#000">4</div><div><p class="font-heading font-bold text-white text-sm">Exceeding Expectations</p><p class="text-sm mt-1" style="color:#6b7280">Actively creates inclusive environments. Solicits diverse perspectives before making decisions. Speaks up for others when needed. Regularly reflects on and challenges own assumptions.</p></div></div>
+    </div>
+  </div>
+
+  <div class="submit-section">
+    <h2 class="font-heading text-xl font-bold text-white mb-1">Mark This Skill Complete</h2>
+    <p class="text-sm mb-5" style="color:#6b7280">Submit your reflection to notify your teacher you've completed this module.</p>
+    <div class="grid sm:grid-cols-2 gap-3 mb-4">
+      <div><label class="block text-xs font-heading font-bold text-white mb-1.5" style="letter-spacing:.05em">YOUR NAME</label><input type="text" id="student-name" class="submit-input" placeholder="First and Last Name"></div>
+      <div><label class="block text-xs font-heading font-bold text-white mb-1.5" style="letter-spacing:.05em">PERIOD</label><select id="student-period" class="submit-input" style="cursor:pointer"><option value="" disabled selected>Select your period</option><option>1st Period</option><option>2nd Period</option><option>3rd Period</option><option>4th Period</option><option>5th Period</option><option>6th Period</option></select></div>
+    </div>
+    <div class="mb-4"><label class="block text-xs font-heading font-bold text-white mb-1.5" style="letter-spacing:.05em">REFLECTION — What's the most honest thing you learned about yourself from this module? Rate yourself 1–4 and explain.</label><textarea id="student-reflection" class="submit-input" rows="5" placeholder="Write your reflection here..."></textarea></div>
+    <button id="submit-btn" class="submit-btn" onclick="submitSkill()"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>Submit Completion</button>
+    <p class="text-xs mt-3" style="color:#9ca3af">A Google Form will open in a new tab to confirm your submission.</p>
+  </div>
+
+  <div class="flex justify-between items-center mt-10 pt-8" style="border-top:1px solid #e5e7eb">
+    <a href="skill-reliability.html" class="skill-nav-link"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>Reliability</a>
+    <a href="skill-planning.html" class="skill-nav-link" style="background:#92400e;color:#fff;border-color:#92400e">Next: Planning &amp; Organizing<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></a>
+  </div>
+</div>
+
+<footer style="background:#1e2d3d;border-top:1px solid rgba(255,255,255,.1);padding:2.5rem 1.5rem;margin-top:2rem"><div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4"><div class="flex items-center gap-3"><img src="https://res.cloudinary.com/dsbllwpbh/image/upload/v1770990807/field-study-logo-trans_kewube.png" alt="BHS Field Experience" class="h-8 w-auto brightness-0 invert opacity-70"/><div><p class="font-heading font-bold text-white text-sm">BHS Field Experience</p><p style="color:rgba(255,255,255,.4);font-size:.7rem;text-transform:uppercase;letter-spacing:.1em">Batavia High School</p></div></div><div class="flex gap-6"><a href="index.html" class="text-sm font-heading" style="color:rgba(255,255,255,.5)">Home</a><a href="bootcamp.html" class="text-sm font-heading" style="color:rgba(255,255,255,.5)">Bootcamp</a><a href="resources.html" class="text-sm font-heading" style="color:rgba(255,255,255,.5)">Resources</a></div></div></footer>
+</body></html>

@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script>if(sessionStorage.getItem('fe_teacher_auth')!=='1'){location.replace('index.html')}</script>
+  <title>Observation Rubric — Field Experience BHS</title>
+  <link rel="icon" type="image/png" href="https://res.cloudinary.com/dsbllwpbh/image/upload/v1771966521/fieldexperience-favicon_jgdotp.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Open+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={theme:{extend:{colors:{crimson:{800:'#AC161D'},gold:{400:'#fde020',500:'#FBCD07'}},fontFamily:{heading:['Montserrat','system-ui','sans-serif']}}}}</script>
+  <style>
+    *{box-sizing:border-box}body{font-family:'Open Sans',system-ui,sans-serif;background:#080e1a;color:#fff;overflow-x:hidden}
+    .font-heading{font-family:'Montserrat',system-ui,sans-serif}
+    .teacher-nav{position:fixed;top:0;left:0;right:0;background:rgba(8,14,26,.97);backdrop-filter:blur(12px);border-bottom:2px solid rgba(251,205,7,.25);z-index:50;}
+    .teacher-badge{background:rgba(251,205,7,.15);color:#FBCD07;font-family:'Montserrat',sans-serif;font-size:.65rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;padding:.25rem .75rem;border-radius:999px;border:1px solid rgba(251,205,7,.3);}
+    .section-label{font-family:'Montserrat',sans-serif;font-size:.7rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;}
+    .form-input{width:100%;background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.15);border-radius:10px;padding:.65rem 1rem;color:#fff;font-family:'Open Sans',sans-serif;font-size:.9rem;outline:none;transition:border-color .2s;}
+    .form-input::placeholder{color:rgba(255,255,255,.3);}.form-input:focus{border-color:#FBCD07;}
+    .form-label{display:block;font-family:'Montserrat',sans-serif;font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:.4rem;}
+    .skill-row{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:1.25rem;margin-bottom:.75rem;}
+    .skill-row:last-child{margin-bottom:0;}
+    .level-option{display:none;}
+    .level-label{display:inline-flex;flex-direction:column;align-items:center;gap:.25rem;padding:.6rem .75rem;border-radius:8px;border:1.5px solid rgba(255,255,255,.12);cursor:pointer;transition:all .2s;min-width:4rem;text-align:center;}
+    .level-label:hover{border-color:rgba(255,255,255,.3);}
+    .level-option:checked+.level-label{border-color:#FBCD07;background:rgba(251,205,7,.1);}
+    .level-num{font-family:'Montserrat',sans-serif;font-size:1rem;font-weight:800;color:#fff;}
+    .level-word{font-family:'Montserrat',sans-serif;font-size:.6rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:rgba(255,255,255,.5);}
+    .score-badge{display:inline-flex;align-items:center;justify-content:center;width:3.5rem;height:3.5rem;border-radius:50%;font-family:'Montserrat',sans-serif;font-size:1.25rem;font-weight:800;color:#fff;}
+    .notes-input{width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:.6rem .75rem;color:rgba(255,255,255,.7);font-family:'Open Sans',sans-serif;font-size:.8rem;outline:none;resize:vertical;min-height:48px;transition:border-color .2s;margin-top:.6rem;}
+    .notes-input:focus{border-color:rgba(251,205,7,.4);}
+    .btn{display:inline-flex;align-items:center;gap:.4rem;font-family:'Montserrat',sans-serif;font-size:.8rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:.6rem 1.25rem;border-radius:999px;border:none;cursor:pointer;transition:all .2s;}
+    .btn-purple{background:rgba(168,85,247,.15);color:#c084fc;border:1px solid rgba(168,85,247,.3);}.btn-purple:hover{background:rgba(168,85,247,.25);}
+    .btn-gray{background:rgba(255,255,255,.08);color:rgba(255,255,255,.7);}.btn-gray:hover{background:rgba(255,255,255,.14);}
+    .overall-bar{background:rgba(255,255,255,.06);border-radius:999px;height:8px;overflow:hidden;}
+    .overall-fill{height:100%;border-radius:999px;transition:width .4s;}
+
+    @media print {
+      body{background:#fff!important;color:#000!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+      .teacher-nav,.print-hide{display:none!important;}
+      .form-input{background:#f3f4f6!important;border:1px solid #ccc!important;color:#000!important;}
+      .notes-input{background:#f9fafb!important;border:1px solid #ddd!important;color:#000!important;min-height:60px!important;}
+      .form-label{color:#555!important;}
+      .skill-row{background:#f9fafb!important;border:1px solid #e5e7eb!important;page-break-inside:avoid;}
+      .level-label{border:1.5px solid #ccc!important;background:#fff!important;}
+      .level-option:checked+.level-label{border-color:#AC161D!important;background:#fff5f5!important;}
+      .level-num{color:#000!important;}
+      .level-word{color:#555!important;}
+      h1,h2,.font-heading{color:#000!important;}
+      section{padding:0.75rem 1rem!important;margin:0!important;}
+      .score-section{background:#f3f4f6!important;border:1px solid #ddd!important;page-break-inside:avoid;}
+      [style*="background:#080e1a"],[style*="background:rgba"],[style*="background:linear"]{background:#fff!important;}
+      .overall-bar{background:#e5e7eb!important;}
+      .overall-fill{background:#AC161D!important;}
+    }
+  </style>
+</head>
+<body>
+
+<nav class="teacher-nav print-hide"><div class="max-w-7xl mx-auto px-5 py-3 flex items-center justify-between">
+  <a href="teacher-hub.html" class="flex items-center gap-2 text-sm font-semibold text-gray-400 hover:text-white transition-colors font-heading">
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>Teacher Hub
+  </a>
+  <div class="flex items-center gap-3">
+    <a href="index.html"><img src="https://res.cloudinary.com/dikkdclum/image/upload/v1778676762/field-experience/logos/bps101.png" alt="BPS101" class="h-8 w-auto brightness-0 invert opacity-60"></a>
+    <span class="teacher-badge">Teacher</span>
+  </div>
+  <button onclick="logoutTeacher()" class="text-sm font-semibold text-gray-400 hover:text-white transition-colors font-heading">Log Out</button>
+</div></nav>
+
+<section style="margin-top:57px;background:linear-gradient(135deg,#080e1a 0%,#1a0d2e 100%);padding:2.5rem 1.5rem 2rem">
+  <div class="max-w-3xl mx-auto">
+    <span class="section-label mb-2 block" style="color:#c084fc">Teacher Resource</span>
+    <div class="flex flex-wrap items-center justify-between gap-4">
+      <div>
+        <h1 class="font-heading text-3xl font-black text-white tracking-tight">Observation Rubric</h1>
+        <p style="color:rgba(255,255,255,.5)">Site visit assessment — all 10 employability skills, NAF 4-point scale</p>
+      </div>
+      <div class="print-hide flex gap-2">
+        <button class="btn btn-gray" onclick="resetForm()">Reset</button>
+        <button class="btn btn-purple" onclick="window.print()">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
+          Print / Save PDF
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Header Info -->
+<section style="background:#0d1324;border-bottom:1px solid rgba(255,255,255,.07);padding:1.75rem 1.5rem">
+  <div class="max-w-3xl mx-auto">
+    <div class="grid sm:grid-cols-2 gap-4">
+      <div><label class="form-label">Student Name</label><input type="text" class="form-input" id="hdr-student" placeholder="First Last"></div>
+      <div><label class="form-label">Site / Employer</label><input type="text" class="form-input" id="hdr-site" placeholder="Site name"></div>
+      <div><label class="form-label">Observation Date</label><input type="date" class="form-input" id="hdr-date"></div>
+      <div><label class="form-label">Assessor</label><input type="text" class="form-input" id="hdr-assessor" placeholder="Your name"></div>
+    </div>
+  </div>
+</section>
+
+<!-- Rubric Key (screen only) -->
+<section style="background:#080e1a;padding:1.25rem 1.5rem" class="print-hide">
+  <div class="max-w-3xl mx-auto">
+    <div class="flex flex-wrap gap-3 text-xs">
+      <span style="color:rgba(255,255,255,.4)">NAF Scale:</span>
+      <span style="color:rgba(255,255,255,.5)"><strong class="text-white">1</strong> — Developing</span>
+      <span style="color:rgba(255,255,255,.5)"><strong class="text-white">2</strong> — Approaching</span>
+      <span style="color:rgba(255,255,255,.5)"><strong class="text-white">3</strong> — Meeting</span>
+      <span style="color:rgba(255,255,255,.5)"><strong class="text-white">4</strong> — Exceeding</span>
+      <span style="color:rgba(255,255,255,.3);margin-left:.5rem">N/O = Not Observed</span>
+    </div>
+  </div>
+</section>
+
+<!-- Skills -->
+<section style="background:#080e1a;padding:1.5rem 1.5rem 2rem">
+  <div class="max-w-3xl mx-auto" id="skills-container"></div>
+</section>
+
+<!-- Score Summary -->
+<section class="score-section" style="background:#0d1324;border-top:1px solid rgba(255,255,255,.07);padding:1.75rem 1.5rem 2rem">
+  <div class="max-w-3xl mx-auto">
+    <p class="section-label mb-4" style="color:#c084fc">Overall Score</p>
+    <div class="grid sm:grid-cols-3 gap-4 mb-5">
+      <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:1.25rem;text-align:center">
+        <p id="total-score" class="font-heading font-black text-white text-3xl">—</p>
+        <p class="text-xs mt-1" style="color:rgba(255,255,255,.4)">Total Points</p>
+        <p class="text-xs" style="color:rgba(255,255,255,.25)">out of <span id="max-score">40</span></p>
+      </div>
+      <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:1.25rem;text-align:center">
+        <p id="rated-count" class="font-heading font-black text-white text-3xl">0</p>
+        <p class="text-xs mt-1" style="color:rgba(255,255,255,.4)">Skills Rated</p>
+        <p class="text-xs" style="color:rgba(255,255,255,.25)">of 10</p>
+      </div>
+      <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:1.25rem;text-align:center">
+        <p id="overall-level" class="font-heading font-black text-white text-xl">—</p>
+        <p class="text-xs mt-1" style="color:rgba(255,255,255,.4)">Overall Level</p>
+      </div>
+    </div>
+    <div class="overall-bar mb-4"><div class="overall-fill" id="score-bar" style="width:0%;background:#AC161D"></div></div>
+    <div>
+      <label class="form-label">Overall Observation Notes</label>
+      <textarea class="notes-input" id="overall-notes" rows="4" placeholder="Narrative summary of the site visit — student demeanor, supervisor feedback, notable strengths or concerns..."></textarea>
+    </div>
+  </div>
+</section>
+
+<footer style="background:#060c18;border-top:1px solid rgba(255,255,255,.05);padding:1.5rem;text-align:center" class="print-hide">
+  <p class="text-xs" style="color:rgba(255,255,255,.2)">BHS Field Experience &bull; Teacher Area &bull; <a href="#" onclick="logoutTeacher();return false;" style="color:rgba(255,255,255,.35);text-decoration:none">Log Out</a></p>
+</footer>
+
+<script>
+  function logoutTeacher(){sessionStorage.removeItem('fe_teacher_auth');location.href='index.html';}
+
+  const SKILLS=[
+    {id:'teamwork',name:'Teamwork & Conflict Resolution',desc:'Collaborates effectively, navigates disagreement professionally, builds trust with coworkers'},
+    {id:'communication',name:'Communication',desc:'Speaks clearly, listens actively, writes with appropriate professionalism'},
+    {id:'problemsolving',name:'Problem Solving',desc:'Identifies root causes, generates options, acts on solutions with appropriate judgment'},
+    {id:'decisionmaking',name:'Decision Making',desc:'Weighs consequences, applies ethical reasoning, consults when appropriate'},
+    {id:'criticalthinking',name:'Critical Thinking',desc:'Questions assumptions, evaluates information before acting, reasons through complexity'},
+    {id:'adaptability',name:'Adaptability & Flexibility',desc:'Adjusts when plans change, maintains effectiveness under new or uncertain conditions'},
+    {id:'initiative',name:'Initiative & Self-Drive',desc:'Identifies what needs to be done and acts without being asked, within appropriate boundaries'},
+    {id:'reliability',name:'Reliability & Accountability',desc:'Arrives on time, follows through on commitments, owns mistakes without deflecting'},
+    {id:'cultural',name:'Cultural Competence',desc:'Works respectfully across differences in background, perspective, and identity'},
+    {id:'planning',name:'Planning & Organizing',desc:'Prioritizes based on deadlines and dependencies, tracks tasks, stays on top of deliverables'},
+  ];
+
+  const LEVELS=[
+    {val:1,word:'Developing'},
+    {val:2,word:'Approaching'},
+    {val:3,word:'Meeting'},
+    {val:4,word:'Exceeding'},
+  ];
+
+  function buildSkills(){
+    document.getElementById('skills-container').innerHTML=SKILLS.map((s,i)=>`
+      <div class="skill-row">
+        <div class="flex flex-wrap items-start justify-between gap-2 mb-2">
+          <div>
+            <p class="font-heading font-bold text-white text-sm">${i+1}. ${s.name}</p>
+            <p class="text-xs mt-0.5" style="color:rgba(255,255,255,.4)">${s.desc}</p>
+          </div>
+        </div>
+        <div class="flex flex-wrap gap-2 mt-2">
+          ${LEVELS.map(l=>`
+            <input type="radio" name="skill-${s.id}" id="skill-${s.id}-${l.val}" class="level-option" value="${l.val}" onchange="updateScore()">
+            <label for="skill-${s.id}-${l.val}" class="level-label">
+              <span class="level-num">${l.val}</span>
+              <span class="level-word">${l.word}</span>
+            </label>
+          `).join('')}
+          <input type="radio" name="skill-${s.id}" id="skill-${s.id}-no" class="level-option" value="no" onchange="updateScore()">
+          <label for="skill-${s.id}-no" class="level-label" style="min-width:3rem">
+            <span class="level-num" style="font-size:.75rem">N/O</span>
+            <span class="level-word">Not Obs.</span>
+          </label>
+        </div>
+        <textarea class="notes-input" id="notes-${s.id}" placeholder="Notes (optional)..."></textarea>
+      </div>
+    `).join('');
+  }
+
+  function updateScore(){
+    let total=0;let rated=0;
+    SKILLS.forEach(s=>{
+      const checked=document.querySelector(`input[name="skill-${s.id}"]:checked`);
+      if(checked&&checked.value!=='no'){total+=parseInt(checked.value);rated++;}
+    });
+    document.getElementById('total-score').textContent=rated>0?total:'—';
+    document.getElementById('max-score').textContent=rated*4||40;
+    document.getElementById('rated-count').textContent=rated;
+    const pct=rated>0?(total/(rated*4))*100:0;
+    document.getElementById('score-bar').style.width=pct+'%';
+    const barEl=document.getElementById('score-bar');
+    if(pct>=85)barEl.style.background='#22c55e';
+    else if(pct>=65)barEl.style.background='#FBCD07';
+    else if(pct>=40)barEl.style.background='#f97316';
+    else barEl.style.background='#ef4444';
+    let level='—';
+    if(rated>0){const avg=total/rated;if(avg>=3.5)level='Exceeding';else if(avg>=2.5)level='Meeting';else if(avg>=1.5)level='Approaching';else level='Developing';}
+    document.getElementById('overall-level').textContent=level;
+  }
+
+  function resetForm(){
+    if(!confirm('Reset all scores and notes?'))return;
+    document.querySelectorAll('input[type=radio]').forEach(r=>r.checked=false);
+    document.querySelectorAll('.notes-input').forEach(t=>t.value='');
+    document.querySelectorAll('.form-input').forEach(i=>i.value='');
+    document.getElementById('overall-notes').value='';
+    updateScore();
+  }
+
+  window.addEventListener('DOMContentLoaded',()=>{
+    buildSkills();
+    document.getElementById('hdr-date').valueAsDate=new Date();
+  });
+</script>
+</body>
+</html>

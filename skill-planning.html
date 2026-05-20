@@ -1,0 +1,238 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script>if(sessionStorage.getItem('fe_auth')!=='1'){location.replace('index.html')}</script>
+  <title>Planning &amp; Organizing — Field Experience BHS</title>
+  <link rel="icon" type="image/png" href="https://res.cloudinary.com/dsbllwpbh/image/upload/v1771966521/fieldexperience-favicon_jgdotp.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Open+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={theme:{extend:{colors:{crimson:{800:'#AC161D'},gold:{400:'#fde020',500:'#FBCD07'}},fontFamily:{heading:['Montserrat','system-ui','sans-serif']}}}}</script>
+  <script>
+    const SKILLS_FORM_URL='https://docs.google.com/forms/d/e/YOUR_FORM_ID_HERE/viewform';
+    const SKILL_ENTRY_ID='entry.XXXXXXXXXX';const SKILL_REFLECTION_ID='entry.XXXXXXXXXX';
+    const THIS_SKILL='Skill 10 — Planning & Organizing';
+    function submitSkill(){const name=document.getElementById('student-name').value.trim();const reflection=document.getElementById('student-reflection').value.trim();if(!name){alert('Please enter your name.');return;}if(!reflection){alert('Please write your reflection.');return;}window.open(SKILLS_FORM_URL+'?usp=pp_url&'+SKILL_ENTRY_ID+'='+encodeURIComponent(THIS_SKILL)+'&'+SKILL_REFLECTION_ID+'='+encodeURIComponent(name+' | '+reflection),'_blank');const btn=document.getElementById('submit-btn');btn.innerHTML='&#10003; Submitted — confirm in the Google Form tab';btn.disabled=true;}
+    function pickChoice(actId,chosen,correct,feedback){document.querySelectorAll('#act'+actId+' .choice-btn').forEach(b=>{b.classList.remove('chosen-right','chosen-wrong');if(b.getAttribute('data-val')===chosen)b.classList.add(b.getAttribute('data-val')===correct?'chosen-right':'chosen-wrong');});const fb=document.getElementById('feedback-'+actId);fb.style.display='block';fb.innerHTML=feedback;}
+  </script>
+  <style>
+    *{box-sizing:border-box}body{font-family:'Open Sans',system-ui,sans-serif;background:#f7f8fc;color:#1c1f2e;overflow-x:hidden}.font-heading{font-family:'Montserrat',system-ui,sans-serif}::selection{background:#AC161D;color:#fff}html{scroll-behavior:smooth}
+    .top-nav{position:fixed;top:0;left:0;right:0;background:rgba(255,255,255,.97);backdrop-filter:blur(12px);border-bottom:1px solid #e5e5e5;z-index:50;}
+    .section-label{font-family:'Montserrat',sans-serif;font-size:.7rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;}
+    .activity-card{background:#fff;border:1.5px solid #e5e7eb;border-radius:20px;padding:1.75rem;margin-bottom:1.5rem;}
+    .choice-btn{display:block;width:100%;text-align:left;padding:.875rem 1.25rem;border-radius:10px;border:1.5px solid #e5e7eb;background:#fff;color:#374151;font-family:'Open Sans',sans-serif;font-size:.9rem;cursor:pointer;transition:all .2s;margin-bottom:.5rem;}
+    .choice-btn:hover{border-color:#0891b2;background:rgba(8,145,178,.1);color:#1c1f2e;}
+    .choice-btn.chosen-right{border-color:#22c55e!important;background:rgba(34,197,94,.1)!important;color:#166534;}
+    .choice-btn.chosen-wrong{border-color:#e5e7eb!important;background:#f9fafb!important;color:#9ca3af;}
+    .feedback-box{display:none;padding:1.25rem;border-radius:10px;margin-top:.75rem;background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.25);}
+    .rubric-row{display:grid;grid-template-columns:3rem 1fr;gap:1rem;align-items:start;padding:.875rem 0;border-bottom:1px solid #e5e7eb;}
+    .rubric-num{width:2.5rem;height:2.5rem;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:.9rem;font-weight:800;flex-shrink:0;}
+    .submit-section{background:#fff;border:1.5px solid #e5e7eb;border-radius:20px;padding:2rem;}
+    .submit-input{width:100%;background:#fff;border:1.5px solid #d1d5db;border-radius:10px;padding:.75rem 1rem;color:#1c1f2e;font-family:'Open Sans',sans-serif;font-size:.9rem;outline:none;transition:border-color .2s;}
+    .submit-input::placeholder{color:#9ca3af;}.submit-input:focus{border-color:#FBCD07;}
+    .submit-btn{display:inline-flex;align-items:center;gap:.5rem;background:#0e7490;color:#fff;font-family:'Montserrat',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:.875rem 2rem;border-radius:999px;border:none;cursor:pointer;transition:all .2s;}
+    .submit-btn:hover{opacity:.88;transform:translateY(-1px);}.submit-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+    .skill-nav-link{display:flex;align-items:center;gap:.5rem;padding:.75rem 1.25rem;border-radius:999px;font-family:'Montserrat',sans-serif;font-size:.8rem;font-weight:700;text-decoration:none;transition:all .2s;background:#f3f4f6;color:#374151;border:1px solid #e5e7eb;}
+    .skill-nav-link:hover{background:#e5e7eb;color:#1c1f2e;}
+    section:not(:first-of-type) .text-white{color:#1c1f2e}
+    section:not(:first-of-type) label{color:#1c1f2e}
+    .priority-tag{display:inline-flex;align-items:center;gap:.4rem;padding:.35rem .85rem;border-radius:999px;font-family:'Montserrat',sans-serif;font-size:.7rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;}
+  </style>
+</head>
+<body>
+<nav class="top-nav"><div class="max-w-7xl mx-auto px-5 py-3 flex items-center justify-between"><a href="index.html#skills" class="flex items-center gap-2 text-sm font-semibold text-gray-600 hover:text-red-700 transition-colors font-heading"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>All Skills</a><a href="index.html" class="flex items-center gap-2.5"><img src="https://res.cloudinary.com/dikkdclum/image/upload/v1778676762/field-experience/logos/bps101.png" alt="BPS101" class="h-8 w-auto"><span class="font-heading font-bold text-sm text-black hidden sm:block">Field Experience</span></a></div></nav>
+
+<section style="margin-top:57px;background:linear-gradient(135deg,#1e2d3d 0%,#243447 100%);padding:4rem 1.5rem 3rem">
+  <div class="max-w-3xl mx-auto">
+    <div class="flex items-center gap-3 mb-4"><span class="section-label" style="color:#FBCD07">Employability Skill</span><span style="background:rgba(14,116,144,.4);color:#67e8f9;font-family:'Montserrat',sans-serif;font-size:.65rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:.3rem .75rem;border-radius:999px">10 of 10</span></div>
+    <div class="flex items-start gap-5">
+      <div class="w-16 h-16 rounded-2xl flex items-center justify-center flex-shrink-0" style="background:#0e7490"><svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg></div>
+      <div><h1 class="font-heading text-3xl md:text-5xl font-black tracking-tight text-white leading-tight mb-2">Planning &amp; Organizing</h1><p class="text-lg text-gray-300">Manage time, set priorities, and keep your work on track — so deadlines don't sneak up on you and nothing important falls through the cracks.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- Scenario -->
+<section style="background:#fff;padding:3rem 1.5rem">
+  <div class="max-w-3xl mx-auto">
+    <p class="section-label mb-3" style="color:#FBCD07">Opening Scenario</p>
+    <div style="background:#e8f7f9;border:1.5px solid #a5d8e0;border-radius:16px;padding:1.75rem 2rem">
+      <p class="text-white leading-relaxed mb-4">It's Tuesday at 10:00 AM. Your supervisor stops by before heading into a meeting and drops three tasks on your desk:</p>
+      <div class="space-y-3 mb-4">
+        <div class="flex items-start gap-3"><span class="priority-tag" style="background:rgba(239,68,68,.12);color:#991b1b;border:1px solid rgba(239,68,68,.3)">Task A</span><p style="color:#374151">Update the inventory spreadsheet with last week's numbers and email it to the warehouse team. <strong class="text-white">Due today by 3:00 PM.</strong></p></div>
+        <div class="flex items-start gap-3"><span class="priority-tag" style="background:rgba(251,191,36,.12);color:#92400e;border:1px solid rgba(251,191,36,.4)">Task B</span><p style="color:#374151">Go through the general inquiry inbox and respond to any emails that came in this week. No hard deadline — your supervisor just wants it cleared "sometime this week."</p></div>
+        <div class="flex items-start gap-3"><span class="priority-tag" style="background:rgba(59,130,246,.1);color:#1d4ed8;border:1px solid rgba(59,130,246,.3)">Task C</span><p style="color:#374151">Print and organize handouts for tomorrow's 9:00 AM all-staff meeting. Your supervisor needs them ready first thing in the morning.</p></div>
+      </div>
+      <p style="color:#4b5563">You have five hours before you leave today. You can't do all three at the same depth at the same time. Where do you start — and how do you think through it?</p>
+    </div>
+  </div>
+</section>
+
+<!-- Framework -->
+<section style="background:#f7f8fc;padding:3rem 1.5rem">
+  <div class="max-w-3xl mx-auto">
+    <p class="section-label mb-1" style="color:#FBCD07">The Framework</p>
+    <h2 class="font-heading text-2xl font-bold text-white mb-6">Three Questions That Cut Through the Noise</h2>
+
+    <div class="grid md:grid-cols-3 gap-4 mb-8">
+      <div style="background:#e8f7f9;border:1.5px solid #a5d8e0;border-radius:16px;padding:1.5rem">
+        <div class="w-10 h-10 rounded-full flex items-center justify-center mb-3 font-heading font-black text-lg" style="background:#0e7490;color:#fff">1</div>
+        <p class="font-heading font-bold text-white mb-1">What has a hard deadline today?</p>
+        <p class="text-sm" style="color:#4b5563">If you miss this, someone else is blocked or the work becomes useless. This goes first — always.</p>
+      </div>
+      <div style="background:#e8f7f9;border:1.5px solid #a5d8e0;border-radius:16px;padding:1.5rem">
+        <div class="w-10 h-10 rounded-full flex items-center justify-center mb-3 font-heading font-black text-lg" style="background:#0e7490;color:#fff">2</div>
+        <p class="font-heading font-bold text-white mb-1">What is someone else waiting on?</p>
+        <p class="text-sm" style="color:#4b5563">Even with no stated deadline, if your delay causes a ripple — a meeting that falls apart, a team that can't start — that task moves up.</p>
+      </div>
+      <div style="background:#e8f7f9;border:1.5px solid #a5d8e0;border-radius:16px;padding:1.5rem">
+        <div class="w-10 h-10 rounded-full flex items-center justify-center mb-3 font-heading font-black text-lg" style="background:#0e7490;color:#fff">3</div>
+        <p class="font-heading font-bold text-white mb-1">What can flex without consequence?</p>
+        <p class="text-sm" style="color:#4b5563">This isn't "ignore it." It's "this has room to breathe." Do it last, do it well — but don't let it crowd out what's urgent.</p>
+      </div>
+    </div>
+
+    <div style="background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:1.25rem 1.5rem">
+      <p class="font-heading font-semibold text-white mb-2">Why not just do the easiest thing first?</p>
+      <p class="text-sm leading-relaxed" style="color:#4b5563">It feels productive to knock off quick wins — but if a hard deadline task is sitting untouched while you clear easy tasks, you're building stress, not managing it. Professionals plan around deadlines and dependencies, not personal comfort.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Stats -->
+<section style="background:#fff;padding:2.5rem 1.5rem">
+  <div class="max-w-3xl mx-auto">
+    <div class="grid md:grid-cols-3 gap-4">
+      <div class="text-center p-5" style="background:#e8f7f9;border:1px solid #a5d8e0;border-radius:14px">
+        <p class="font-heading font-black text-white mb-1" style="font-size:2rem">82%</p>
+        <p class="text-xs leading-snug" style="color:#4b5563">of managers say new workers struggle most with prioritization — not the actual tasks</p>
+      </div>
+      <div class="text-center p-5" style="background:#e8f7f9;border:1px solid #a5d8e0;border-radius:14px">
+        <p class="font-heading font-black text-white mb-1" style="font-size:2rem">#2</p>
+        <p class="text-xs leading-snug" style="color:#4b5563">skill gap ranked by employers after communication — time management and organization</p>
+      </div>
+      <div class="text-center p-5" style="background:#e8f7f9;border:1px solid #a5d8e0;border-radius:14px">
+        <p class="font-heading font-black text-white mb-1" style="font-size:2rem">3×</p>
+        <p class="text-xs leading-snug" style="color:#4b5563">more likely to be trusted with bigger responsibilities when you consistently meet deadlines</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Activity 1 -->
+<section style="background:#f7f8fc;padding:3rem 1.5rem">
+  <div class="max-w-3xl mx-auto">
+    <p class="section-label mb-1" style="color:#FBCD07">Activity 1 of 2</p>
+    <h2 class="font-heading text-2xl font-bold text-white mb-2">Tuesday Morning Priorities</h2>
+    <p class="mb-6" style="color:#4b5563">Back to the scenario. Your supervisor left you Tasks A, B, and C. You have five hours. Apply the three-question framework — what's your order?</p>
+
+    <div class="activity-card" id="act1">
+      <p class="font-heading font-semibold text-white mb-4">How do you order your work for the day?</p>
+      <button class="choice-btn" data-val="A" onclick="pickChoice(1,'A','C','<strong style=\'color:#4b5563\'>A — Inbox first.</strong> Clearing emails feels productive, but none of those are time-sensitive. Meanwhile, the 3pm spreadsheet deadline is ticking. Starting here means you might run out of time for Task A, which has a real consequence — someone on the warehouse team is waiting on data that has a specific deadline.')">A) Clear the email inbox first — it&rsquo;s been building up and quick responses are satisfying. Then print the meeting materials, then tackle the spreadsheet.</button>
+      <button class="choice-btn" data-val="B" onclick="pickChoice(1,'B','C','<strong style=\'color:#4b5563\'>B — Materials first.</strong> Meeting materials do matter, but they&rsquo;re not due until tomorrow morning — you&rsquo;ll have time either later today or first thing tomorrow. The 3pm spreadsheet deadline is more urgent right now. Starting here puts you at risk of not finishing Task A in time.')">B) Start with the meeting materials — they take the most effort. Then the spreadsheet, then emails.</button>
+      <button class="choice-btn" data-val="C" onclick="pickChoice(1,'C','C','<strong style=\'color:#22c55e\'>C — Correct.</strong> This is deadline-driven prioritization. Task A has a hard deadline today at 3pm — do it first. Task C needs to be ready tomorrow morning — finish it today so you&rsquo;re not scrambling first thing. Task B has no hard deadline and no one is blocked waiting on it — do it last. You still complete all three; you just sequence them so nothing with a consequence falls through.')">C) Spreadsheet first (due at 3pm), then meeting materials (needed by 9am tomorrow), then clear the inbox.</button>
+      <button class="choice-btn" data-val="D" onclick="pickChoice(1,'D','C','<strong style=\'color:#4b5563\'>D — Multitask everything.</strong> Splitting attention across all three tasks at once is a trap. Context-switching has a real cost — it takes time to re-enter a task each time you switch. You&rsquo;re more likely to make errors in the spreadsheet and write weaker emails. In a professional setting, &ldquo;I was working on everything&rdquo; is not a defense when the deadline task isn&rsquo;t done.')">D) Work on all three at once — switch between them so nothing feels neglected.</button>
+      <div class="feedback-box" id="feedback-1"></div>
+    </div>
+  </div>
+</section>
+
+<!-- Activity 2 -->
+<section style="background:#fff;padding:3rem 1.5rem">
+  <div class="max-w-3xl mx-auto">
+    <p class="section-label mb-1" style="color:#FBCD07">Activity 2 of 2</p>
+    <h2 class="font-heading text-2xl font-bold text-white mb-2">Your First Monday Plan</h2>
+    <p class="mb-6" style="color:#4b5563">Good planning isn&rsquo;t reactive — it&rsquo;s something you do before the day hits you. Walk through what a well-organized first Monday at your placement could look like.</p>
+
+    <div class="activity-card">
+      <p class="font-heading font-semibold text-white mb-3">Draft a rough daily plan for your first Monday at your placement site.</p>
+      <p class="text-sm mb-5" style="color:#4b5563">Think through: What time do you arrive? What do you do in the first 30 minutes? When do you check in with your supervisor? What will you need to track or remember? How do you know if the day went well?</p>
+
+      <div style="background:#e8f7f9;border:1px solid #a5d8e0;border-radius:12px;padding:1.25rem 1.5rem;margin-bottom:1.25rem">
+        <p class="font-heading font-semibold text-white mb-3 text-sm">Prompts to guide you:</p>
+        <ul class="text-sm space-y-2" style="color:#4b5563">
+          <li>• Arrival: What time do you show up, and what do you do in the first 10 minutes?</li>
+          <li>• Morning block: What&rsquo;s one specific thing you want to accomplish before noon?</li>
+          <li>• Check-in: When do you connect with your supervisor to confirm priorities for the day?</li>
+          <li>• End of day: What do you wrap up, confirm, or hand off before you leave?</li>
+          <li>• Tracking: How will you remember what happened and what&rsquo;s next (notes, log, etc.)?</li>
+        </ul>
+      </div>
+
+      <p class="text-xs mb-1 font-heading font-semibold" style="color:#9ca3af">Your first Monday plan</p>
+      <textarea class="submit-input" rows="7" id="planning-draft" placeholder="Example: Arrive at 7:45am — a few minutes early. First 15 minutes: introduce myself to anyone new, get my badge/login if I haven't already. Ask supervisor: 'What's the priority for today and this week?' Morning: focus on [task]. Midday check-in: confirm I'm on track..."></textarea>
+    </div>
+  </div>
+</section>
+
+<!-- Rubric -->
+<section style="background:#f7f8fc;padding:3rem 1.5rem">
+  <div class="max-w-3xl mx-auto">
+    <p class="section-label mb-1" style="color:#FBCD07">Assessment</p>
+    <h2 class="font-heading text-2xl font-bold text-white mb-6">Rubric — Planning &amp; Organizing</h2>
+    <div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:16px;padding:1.5rem">
+      <div class="rubric-row">
+        <div class="rubric-num" style="background:#e5e7eb;color:#6b7280">1</div>
+        <div><p class="font-heading font-bold text-white text-sm mb-0.5">Developing</p><p class="text-sm" style="color:#4b5563">Tasks are completed in whatever order they come, without considering deadlines or dependencies. Frequently misses deadlines or forgets deliverables. Little or no advance planning evident.</p></div>
+      </div>
+      <div class="rubric-row">
+        <div class="rubric-num" style="background:rgba(239,68,68,.12);color:#991b1b">2</div>
+        <div><p class="font-heading font-bold text-white text-sm mb-0.5">Approaching</p><p class="text-sm" style="color:#4b5563">Shows awareness of deadlines and sometimes prioritizes accordingly, but inconsistently. May miss lower-priority tasks or get thrown off by interruptions. Planning is reactive rather than proactive.</p></div>
+      </div>
+      <div class="rubric-row">
+        <div class="rubric-num" style="background:rgba(251,205,7,.12);color:#92400e">3</div>
+        <div><p class="font-heading font-bold text-white text-sm mb-0.5">Meeting</p><p class="text-sm" style="color:#4b5563">Consistently prioritizes deadline-driven tasks first, communicates when workload is unclear, and completes assigned work on time. Uses a basic system (written list, calendar, notes) to track responsibilities.</p></div>
+      </div>
+      <div class="rubric-row" style="border-bottom:none">
+        <div class="rubric-num" style="background:rgba(34,197,94,.12);color:#166534">4</div>
+        <div><p class="font-heading font-bold text-white text-sm mb-0.5">Exceeding</p><p class="text-sm" style="color:#4b5563">Plans ahead for upcoming deadlines before being prompted. Proactively asks for priorities when multiple tasks are assigned. Flags potential conflicts early. Tracks progress in a way others can see and depend on.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Completion -->
+<section style="background:#fff;padding:3rem 1.5rem 4rem">
+  <div class="max-w-3xl mx-auto">
+    <p class="section-label mb-1" style="color:#FBCD07">Complete This Module</p>
+    <h2 class="font-heading text-2xl font-bold text-white mb-2">Submit Your Reflection</h2>
+    <p class="mb-6" style="color:#4b5563">Answer the reflection question below, then submit to log your completion in Google Sheets.</p>
+
+    <div class="submit-section">
+      <div class="mb-5">
+        <label class="block font-heading font-semibold text-white text-sm mb-2">Your Name</label>
+        <input type="text" id="student-name" class="submit-input" placeholder="First and last name">
+      </div>
+      <div class="mb-6">
+        <label class="block font-heading font-semibold text-white text-sm mb-1">Reflection</label>
+        <p class="text-xs mb-2" style="color:#6b7280">Describe a time — at school, in an activity, or in a job — when you had more to do than time allowed. What did you do first, and why? Looking back, would you prioritize differently now?</p>
+        <textarea class="submit-input" rows="5" id="student-reflection" placeholder="Write 3–5 sentences..."></textarea>
+      </div>
+      <button class="submit-btn" id="submit-btn" onclick="submitSkill()">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        Submit &amp; Complete Module
+      </button>
+      <p class="text-xs mt-3" style="color:#9ca3af">A Google Form will open in a new tab. Your name, module, and reflection will be pre-filled — confirm submission there.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Skill Nav -->
+<section style="background:#f0f4f8;padding:1.5rem;border-top:1px solid #e5e7eb">
+  <div class="max-w-3xl mx-auto flex items-center justify-between gap-4">
+    <a href="skill-cultural.html" class="skill-nav-link">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+      09 — Cultural Competence
+    </a>
+    <a href="index.html#skills" class="skill-nav-link" style="background:rgba(14,116,144,.12);border-color:rgba(14,116,144,.4);color:#0e7490">
+      All 10 Skills
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+    </a>
+  </div>
+</section>
+
+<footer style="background:#1e2d3d;padding:1.5rem;text-align:center"><p class="text-xs" style="color:rgba(255,255,255,.2)">BHS Field Experience &bull; Batavia Public Schools 101 &bull; Skill 10 of 10</p></footer>
+
+</body>
+</html>

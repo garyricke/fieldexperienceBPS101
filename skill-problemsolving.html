@@ -1,0 +1,127 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script>if(sessionStorage.getItem('fe_auth')!=='1'){location.replace('index.html')}</script>
+  <title>Problem Solving — Field Experience BHS</title>
+  <link rel="icon" type="image/png" href="https://res.cloudinary.com/dsbllwpbh/image/upload/v1771966521/fieldexperience-favicon_jgdotp.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Open+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={theme:{extend:{colors:{crimson:{800:'#AC161D'},gold:{400:'#fde020',500:'#FBCD07'}},fontFamily:{heading:['Montserrat','system-ui','sans-serif']}}}}</script>
+  <script>
+    const SKILLS_FORM_URL='https://docs.google.com/forms/d/e/YOUR_FORM_ID_HERE/viewform';
+    const SKILL_ENTRY_ID='entry.XXXXXXXXXX';const SKILL_REFLECTION_ID='entry.XXXXXXXXXX';
+    const THIS_SKILL='Skill 03 — Problem Solving';
+    function submitSkill(){const name=document.getElementById('student-name').value.trim();const reflection=document.getElementById('student-reflection').value.trim();if(!name){alert('Please enter your name.');return;}if(!reflection){alert('Please write your reflection before submitting.');return;}const url=SKILLS_FORM_URL+'?usp=pp_url&'+SKILL_ENTRY_ID+'='+encodeURIComponent(THIS_SKILL)+'&'+SKILL_REFLECTION_ID+'='+encodeURIComponent(name+' | '+reflection);window.open(url,'_blank');const btn=document.getElementById('submit-btn');btn.innerHTML='✓ Submitted — confirm in the Google Form tab';btn.disabled=true;}
+    function pickChoice(actId,chosen,correct,feedback){document.querySelectorAll('#act'+actId+' .choice-btn').forEach(b=>{b.classList.remove('chosen-right','chosen-wrong');if(b.getAttribute('data-val')===chosen)b.classList.add(b.getAttribute('data-val')===correct?'chosen-right':'chosen-wrong');});const fb=document.getElementById('feedback-'+actId);fb.style.display='block';fb.innerHTML=feedback;}
+  </script>
+  <style>
+    *{box-sizing:border-box}body{font-family:'Open Sans',system-ui,sans-serif;background:#f7f8fc;color:#1c1f2e;overflow-x:hidden}.font-heading{font-family:'Montserrat',system-ui,sans-serif}::selection{background:#AC161D;color:#fff}html{scroll-behavior:smooth}
+    .top-nav{position:fixed;top:0;left:0;right:0;background:rgba(255,255,255,.97);backdrop-filter:blur(12px);border-bottom:1px solid #e5e5e5;z-index:50;}
+    .section-label{font-family:'Montserrat',sans-serif;font-size:.7rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;}
+    .activity-card{background:#fff;border:1.5px solid #e5e7eb;border-radius:20px;padding:1.75rem;margin-bottom:1.5rem;}
+    .choice-btn{display:block;width:100%;text-align:left;padding:.875rem 1.25rem;border-radius:10px;border:1.5px solid #e5e7eb;background:#fff;color:#374151;font-family:'Open Sans',sans-serif;font-size:.9rem;cursor:pointer;transition:all .2s;margin-bottom:.5rem;}
+    .choice-btn:hover{border-color:#2d6a4f;background:rgba(45,106,79,.12);color:#1c1f2e;}
+    .choice-btn.chosen-right{border-color:#22c55e!important;background:rgba(34,197,94,.1)!important;color:#1c1f2e;}
+    .choice-btn.chosen-wrong{border-color:#e5e7eb!important;background:#f9fafb!important;color:#9ca3af;}
+    .feedback-box{display:none;padding:1.25rem;border-radius:10px;margin-top:.75rem;background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.25);}
+    .rubric-row{display:grid;grid-template-columns:3rem 1fr;gap:1rem;align-items:start;padding:.875rem 0;border-bottom:1px solid #e5e7eb;}
+    .rubric-num{width:2.5rem;height:2.5rem;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:.9rem;font-weight:800;flex-shrink:0;}
+    .submit-section{background:#fff;border:1.5px solid #e5e7eb;border-radius:20px;padding:2rem;}
+    .submit-input{width:100%;background:#fff;border:1.5px solid #d1d5db;border-radius:10px;padding:.75rem 1rem;color:#1c1f2e;font-family:'Open Sans',sans-serif;font-size:.9rem;outline:none;transition:border-color .2s;}
+    .submit-input::placeholder{color:#9ca3af;}.submit-input:focus{border-color:#FBCD07;}
+    .submit-btn{display:inline-flex;align-items:center;gap:.5rem;background:#2d6a4f;color:#fff;font-family:'Montserrat',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:.875rem 2rem;border-radius:999px;border:none;cursor:pointer;transition:all .2s;}
+    .submit-btn:hover{opacity:.88;transform:translateY(-1px);}.submit-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+    .skill-nav-link{display:flex;align-items:center;gap:.5rem;padding:.75rem 1.25rem;border-radius:999px;font-family:'Montserrat',sans-serif;font-size:.8rem;font-weight:700;text-decoration:none;transition:all .2s;background:#f3f4f6;color:#374151;border:1px solid #e5e7eb;}
+    .skill-nav-link:hover{background:#e5e7eb;color:#1c1f2e;}
+    .max-w-3xl.px-5 h2,.max-w-3xl.px-5 h3{color:#1c1f2e}
+    .max-w-3xl.px-5 .text-white{color:#1c1f2e}
+    .max-w-3xl.px-5 label{color:#1c1f2e}
+  </style>
+</head>
+<body>
+<nav class="top-nav"><div class="max-w-7xl mx-auto px-5 py-3 flex items-center justify-between"><a href="index.html#skills" class="flex items-center gap-2 text-sm font-semibold text-gray-600 hover:text-red-700 transition-colors font-heading"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>All Skills</a><a href="index.html" class="flex items-center gap-2.5"><img src="https://res.cloudinary.com/dikkdclum/image/upload/v1778676762/field-experience/logos/bps101.png" alt="BPS101" class="h-8 w-auto"><span class="font-heading font-bold text-sm text-black hidden sm:block">Field Experience</span></a></div></nav>
+
+<section style="margin-top:57px;background:linear-gradient(135deg,#1e2d3d 0%,#243447 100%);padding:4rem 1.5rem 3rem">
+  <div class="max-w-3xl mx-auto">
+    <div class="flex items-center gap-3 mb-4"><span class="section-label" style="color:#FBCD07">Employability Skill</span><span style="background:rgba(45,106,79,.35);color:#86efac;font-family:'Montserrat',sans-serif;font-size:.65rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:.3rem .75rem;border-radius:999px">03 of 10</span></div>
+    <div class="flex items-start gap-5">
+      <div class="w-16 h-16 rounded-2xl flex items-center justify-center flex-shrink-0" style="background:#2d6a4f"><svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg></div>
+      <div><h1 class="font-heading text-3xl md:text-5xl font-black tracking-tight text-white leading-tight mb-2">Problem Solving</h1><p class="text-lg text-gray-300">Identify the real issue, analyze the causes, and take action — even when the path forward isn't obvious.</p></div>
+    </div>
+  </div>
+</section>
+
+<div class="max-w-3xl mx-auto px-5 py-12">
+
+  <div class="p-5 rounded-2xl mb-10" style="background:#f8fafc;border-left:4px solid #2d6a4f">
+    <p class="section-label mb-2" style="color:#AC161D">Real Workplace Scenario</p>
+    <p style="color:#374151" class="leading-relaxed">You're covering the front desk alone. A customer walks in clearly upset — their appointment was cancelled but nobody told them. You didn't cancel it. You don't know who did. Your supervisor is in a meeting with the door closed. The customer is staring at you, waiting.</p>
+    <p class="mt-3 font-heading font-bold text-white text-sm">What do you do?</p>
+  </div>
+
+  <div class="mb-10"><h2 class="font-heading text-2xl font-bold text-white mb-4">Why This Skill Matters</h2>
+    <div class="grid sm:grid-cols-3 gap-4">
+      <div class="p-4 rounded-xl text-center" style="background:#f9fafb;border:1px solid #e5e7eb"><p class="font-heading font-black text-3xl" style="color:#AC161D">Top 3</p><p class="text-xs mt-1" style="color:#6b7280">skill employers rank as most critical for interns and new hires in every sector</p></div>
+      <div class="p-4 rounded-xl text-center" style="background:#f9fafb;border:1px solid #e5e7eb"><p class="font-heading font-black text-3xl" style="color:#FBCD07">Zero</p><p class="text-xs mt-1" style="color:#6b7280">manuals cover every workplace problem. You will face situations nobody prepared you for.</p></div>
+      <div class="p-4 rounded-xl text-center" style="background:#f9fafb;border:1px solid #e5e7eb"><p class="font-heading font-black text-3xl text-white">Action</p><p class="text-xs mt-1" style="color:#6b7280">is the output. Identifying a problem is step one — doing something about it is what counts.</p></div>
+    </div>
+  </div>
+
+  <div class="mb-10 p-6 rounded-2xl" style="background:#fff;border:1.5px solid #e5e7eb">
+    <h2 class="font-heading text-xl font-bold text-white mb-3">What This Skill Actually Is</h2>
+    <p style="color:#374151" class="leading-relaxed mb-3">Problem solving is the ability to identify what the real problem is (not just the symptom), analyze its possible causes, generate options, and act on the best one — even when you don't have complete information.</p>
+    <p style="color:#374151" class="leading-relaxed">In a workplace, most problems don't announce themselves clearly. What looks like a customer complaint is often a process breakdown. What looks like a conflict is often a miscommunication. Good problem solvers slow down to ask "what's actually happening here?" before jumping to solutions.</p>
+    <div class="mt-4 p-3 rounded-xl" style="background:#f0fdf4;border:1px solid #bbf7d0">
+      <p class="text-sm font-heading font-bold mb-1" style="color:#AC161D">A simple framework:</p>
+      <p class="text-sm" style="color:#4b5563"><strong class="text-white">1. Name it</strong> — What is the actual problem? <strong class="text-white">2. Analyze it</strong> — What caused it? <strong class="text-white">3. Options</strong> — What could I do? <strong class="text-white">4. Act</strong> — Pick the best option and try it. <strong class="text-white">5. Evaluate</strong> — Did it work? What would I do differently?</p>
+    </div>
+  </div>
+
+  <div class="activity-card" id="act1">
+    <div class="flex items-center gap-2 mb-1"><span class="section-label" style="color:#FBCD07">Activity 1</span><span class="text-xs font-heading font-bold" style="color:#9ca3af">Scenario — Choose Your Response</span></div>
+    <h3 class="font-heading font-bold text-white text-lg mb-3">The Jammed Printer</h3>
+    <p style="color:#374151" class="mb-4">You need a document printed for a meeting in 20 minutes. The printer is jammed. You've cleared it twice and it still won't print. What's the most professional next step?</p>
+    <button class="choice-btn" data-val="A" onclick="pickChoice('1','A','C','<strong style=\'color:#22c55e\'>C is the right move.</strong><br><br>A: Skipping the meeting or showing up empty-handed without warning is a reliability failure, not a problem-solving response.<br><br>B: Waiting and hoping rarely solves workplace problems. If something is broken, action is needed.<br><br><strong>C works because:</strong> you\'ve already tried twice (that\'s good), now you\'re escalating appropriately — finding an alternative (email, another printer, someone else\'s copy) AND telling your supervisor proactively so they\'re not surprised. Good problem solvers look for workarounds while communicating transparently.')">A — Skip the meeting — you can't attend without the document</button>
+    <button class="choice-btn" data-val="B" onclick="pickChoice('1','B','C','<strong style=\'color:#22c55e\'>C is the right move.</strong><br><br>A: Skipping the meeting or showing up empty-handed without warning is a reliability failure, not a problem-solving response.<br><br>B: Waiting and hoping rarely solves workplace problems. If something is broken, action is needed.<br><br><strong>C works because:</strong> you\'ve already tried twice (that\'s good), now you\'re escalating appropriately — finding an alternative (email, another printer, someone else\'s copy) AND telling your supervisor proactively so they\'re not surprised. Good problem solvers look for workarounds while communicating transparently.')">B — Keep trying to unjam it until the meeting starts</button>
+    <button class="choice-btn" data-val="C" onclick="pickChoice('1','C','C','<strong style=\'color:#22c55e\'>C is the right move.</strong><br><br>A: Skipping the meeting or showing up empty-handed without warning is a reliability failure, not a problem-solving response.<br><br>B: Waiting and hoping rarely solves workplace problems. If something is broken, action is needed.<br><br><strong>C works because:</strong> you\'ve already tried twice (that\'s good), now you\'re escalating appropriately — finding an alternative (email, another printer, someone else\'s copy) AND telling your supervisor proactively so they\'re not surprised. Good problem solvers look for workarounds while communicating transparently.')">C — Look for an alternative (email the doc, try another printer, ask a coworker) and inform your supervisor</button>
+    <div class="feedback-box" id="feedback-1"></div>
+  </div>
+
+  <div class="activity-card">
+    <div class="flex items-center gap-2 mb-1"><span class="section-label" style="color:#FBCD07">Activity 2</span><span class="text-xs font-heading font-bold" style="color:#9ca3af">Written Response</span></div>
+    <h3 class="font-heading font-bold text-white text-lg mb-3">Walk Through a Problem</h3>
+    <p style="color:#374151" class="mb-4">Think of a real problem you've faced — at school, in a job, on a team, or at home. Use the 5-step framework (Name it → Analyze → Options → Act → Evaluate) to walk through exactly how you handled it. What did you do well? What would you do differently now?</p>
+    <textarea class="submit-input" rows="7" placeholder="Name it: What was the actual problem?&#10;Analyze: What caused it?&#10;Options: What could you do?&#10;Act: What did you do?&#10;Evaluate: Did it work? What would you change?"></textarea>
+  </div>
+
+  <div class="mb-10"><h2 class="font-heading text-xl font-bold text-white mb-4">Where Are You Right Now?</h2>
+    <div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:16px;overflow:hidden;">
+      <div class="rubric-row px-5"><div class="rubric-num" style="background:#ef4444;color:#fff">1</div><div><p class="font-heading font-bold text-white text-sm">Developing</p><p class="text-sm mt-1" style="color:#6b7280">Tends to freeze, escalate immediately, or give up when something doesn't work. Focuses on obstacles instead of options.</p></div></div>
+      <div class="rubric-row px-5"><div class="rubric-num" style="background:#f97316;color:#fff">2</div><div><p class="font-heading font-bold text-white text-sm">Approaching</p><p class="text-sm mt-1" style="color:#6b7280">Attempts to solve problems but may miss the root cause or jump to the first solution without evaluating alternatives.</p></div></div>
+      <div class="rubric-row px-5"><div class="rubric-num" style="background:#22c55e;color:#fff">3</div><div><p class="font-heading font-bold text-white text-sm">Meeting Expectations</p><p class="text-sm mt-1" style="color:#6b7280">Consistently identifies the real problem, considers multiple options, acts decisively, and communicates transparently about the process.</p></div></div>
+      <div class="rubric-row px-5" style="border-bottom:none"><div class="rubric-num" style="background:#FBCD07;color:#000">4</div><div><p class="font-heading font-bold text-white text-sm">Exceeding Expectations</p><p class="text-sm mt-1" style="color:#6b7280">Anticipates problems before they fully develop. Uses structured frameworks. Helps others work through problems. Reflects systematically on what worked and adjusts.</p></div></div>
+    </div>
+  </div>
+
+  <div class="submit-section">
+    <h2 class="font-heading text-xl font-bold text-white mb-1">Mark This Skill Complete</h2>
+    <p class="text-sm mb-5" style="color:#6b7280">Submit your reflection to notify your teacher you've completed this module.</p>
+    <div class="grid sm:grid-cols-2 gap-3 mb-4">
+      <div><label class="block text-xs font-heading font-bold text-white mb-1.5" style="letter-spacing:.05em">YOUR NAME</label><input type="text" id="student-name" class="submit-input" placeholder="First and Last Name"></div>
+      <div><label class="block text-xs font-heading font-bold text-white mb-1.5" style="letter-spacing:.05em">PERIOD</label><select id="student-period" class="submit-input" style="cursor:pointer"><option value="" disabled selected>Select your period</option><option>1st Period</option><option>2nd Period</option><option>3rd Period</option><option>4th Period</option><option>5th Period</option><option>6th Period</option></select></div>
+    </div>
+    <div class="mb-4"><label class="block text-xs font-heading font-bold text-white mb-1.5" style="letter-spacing:.05em">REFLECTION — Return to the opening scenario. Now what would you do? Rate yourself 1–4 and explain.</label><textarea id="student-reflection" class="submit-input" rows="5" placeholder="Write your reflection here..."></textarea></div>
+    <button id="submit-btn" class="submit-btn" onclick="submitSkill()"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>Submit Completion</button>
+    <p class="text-xs mt-3" style="color:#9ca3af">A Google Form will open in a new tab to confirm your submission.</p>
+  </div>
+
+  <div class="flex justify-between items-center mt-10 pt-8" style="border-top:1px solid #e5e7eb">
+    <a href="skill-communication.html" class="skill-nav-link"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>Communication</a>
+    <a href="skill-decisionmaking.html" class="skill-nav-link" style="background:#2d6a4f;color:#fff;border-color:#2d6a4f">Next: Decision Making<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></a>
+  </div>
+</div>
+
+<footer style="background:#1e2d3d;border-top:1px solid rgba(255,255,255,.1);padding:2.5rem 1.5rem;margin-top:2rem"><div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4"><div class="flex items-center gap-3"><img src="https://res.cloudinary.com/dsbllwpbh/image/upload/v1770990807/field-study-logo-trans_kewube.png" alt="BHS Field Experience" class="h-8 w-auto brightness-0 invert opacity-70"/><div><p class="font-heading font-bold text-white text-sm">BHS Field Experience</p><p style="color:rgba(255,255,255,.4);font-size:.7rem;text-transform:uppercase;letter-spacing:.1em">Batavia High School</p></div></div><div class="flex gap-6"><a href="index.html" class="text-sm font-heading" style="color:rgba(255,255,255,.5)">Home</a><a href="bootcamp.html" class="text-sm font-heading" style="color:rgba(255,255,255,.5)">Bootcamp</a><a href="resources.html" class="text-sm font-heading" style="color:rgba(255,255,255,.5)">Resources</a></div></div></footer>
+</body></html>

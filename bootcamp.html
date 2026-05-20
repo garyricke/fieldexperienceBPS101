@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script>if(sessionStorage.getItem('fe_auth')!=='1'){location.replace('index.html')}</script>
+  <title>Bootcamp — Field Experience BHS</title>
+  <link rel="icon" type="image/png" href="https://res.cloudinary.com/dsbllwpbh/image/upload/v1771966521/fieldexperience-favicon_jgdotp.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Open+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: { extend: {
+        colors: {
+          crimson: { 50:'#fef2f2',100:'#fee2e2',200:'#fdcbcb',300:'#fba5a6',400:'#f56d6f',500:'#eb4044',600:'#d72429',700:'#b91c22',800:'#AC161D',900:'#851519',950:'#490808' },
+          navy:    { 50:'#f5f5f5',100:'#e5e5e5',200:'#D9D9D9',300:'#b3b3b3',400:'#8a8a8a',500:'#5D5D5D',600:'#4a4a4a',700:'#333333',800:'#1a1a1a',900:'#000000' },
+          gold:    { 50:'#fffde6',100:'#fffabd',200:'#fff48a',300:'#ffe94d',400:'#fde020',500:'#FBCD07',600:'#DAB107',700:'#9a7305',800:'#7d5c0b',900:'#66490f' },
+        },
+        fontFamily: { heading: ['Montserrat','system-ui','sans-serif'], body: ['Open Sans','system-ui','sans-serif'] }
+      }}
+    }
+  </script>
+
+  <!--
+  ============================================================
+  COMPLETION FORM SETUP (Google Sheets Integration)
+  ============================================================
+  1. Go to forms.google.com and create a new form called
+     "Field Experience Bootcamp Completions"
+  2. Add these fields:
+     - Student Name (Short answer, required)
+     - Period (Dropdown: 1st, 2nd, 3rd, 4th, 5th, 6th, required)
+     - Week Completed (Short answer — this will be pre-filled)
+     - Reflection Response (Paragraph, required)
+  3. In form settings, link responses to your Google Sheet
+  4. Click the share/send button → copy the form link
+  5. Replace BOOTCAMP_FORM_URL below with your form link
+  6. To get pre-fill entry IDs: click the 3-dot menu →
+     "Get pre-filled link", fill dummy values, copy the URL,
+     and extract the entry.XXXXXXXX IDs
+  7. Replace WEEK_ENTRY_ID and REFLECTION_ENTRY_ID below
+  ============================================================
+  -->
+  <script>
+    const BOOTCAMP_FORM_URL  = 'https://docs.google.com/forms/d/e/YOUR_FORM_ID_HERE/viewform';
+    const WEEK_ENTRY_ID       = 'entry.XXXXXXXXXX'; // pre-fills "Week Completed" field
+    const REFLECTION_ENTRY_ID = 'entry.XXXXXXXXXX'; // pre-fills "Reflection Response" field
+
+    function submitWeek(weekLabel) {
+      const textarea = document.getElementById('reflection-' + weekLabel.replace(/\s+/g, ''));
+      const reflection = textarea ? textarea.value.trim() : '';
+      const name = document.getElementById('name-' + weekLabel.replace(/\s+/g, '')).value.trim();
+      if (!name) { alert('Please enter your name before submitting.'); return; }
+      if (!reflection) { alert('Please write your reflection before submitting.'); return; }
+      const url = BOOTCAMP_FORM_URL +
+        '?usp=pp_url' +
+        '&' + WEEK_ENTRY_ID + '=' + encodeURIComponent(weekLabel) +
+        '&' + REFLECTION_ENTRY_ID + '=' + encodeURIComponent(reflection);
+      window.open(url, '_blank');
+      const btn = document.getElementById('btn-' + weekLabel.replace(/\s+/g, ''));
+      if (btn) { btn.textContent = '✓ Submitted — Check Google Form tab to confirm'; btn.disabled = true; }
+    }
+
+    function showWeek(n) {
+      [1,2,3].forEach(i => {
+        document.getElementById('week-content-'+i).style.display = i===n ? 'block' : 'none';
+        document.getElementById('week-tab-'+i).classList.toggle('active-tab', i===n);
+      });
+      window.scrollTo({top: document.getElementById('week-nav').offsetTop - 70, behavior:'smooth'});
+    }
+
+    function toggleLesson(id) {
+      const body = document.getElementById(id);
+      const icon = document.getElementById('icon-'+id);
+      const open = body.style.display === 'block';
+      body.style.display = open ? 'none' : 'block';
+      if (icon) icon.textContent = open ? '+' : '−';
+    }
+  </script>
+
+  <style>
+    *{box-sizing:border-box}
+    body{font-family:'Open Sans',system-ui,sans-serif;background:#0e1520;color:#fff;overflow-x:hidden}
+    .font-heading{font-family:'Montserrat',system-ui,sans-serif}
+    ::selection{background:#AC161D;color:#fff}
+    html{scroll-behavior:smooth}
+
+    .top-nav{position:fixed;top:0;left:0;right:0;background:rgba(255,255,255,0.97);backdrop-filter:blur(12px);border-bottom:1px solid #e5e5e5;z-index:50;}
+    .section-label{font-family:'Montserrat',sans-serif;font-size:.7rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;}
+
+    .week-tab{padding:.6rem 1.5rem;border-radius:999px;font-family:'Montserrat',sans-serif;font-size:.85rem;font-weight:700;cursor:pointer;transition:all .2s;border:2px solid rgba(255,255,255,.15);color:rgba(255,255,255,.6);background:transparent;}
+    .week-tab:hover{border-color:rgba(255,255,255,.4);color:#fff;}
+    .active-tab{background:#AC161D;border-color:#AC161D;color:#fff;}
+
+    .lesson-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:16px;margin-bottom:1rem;overflow:hidden;}
+    .lesson-header{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 1.5rem;cursor:pointer;gap:1rem;}
+    .lesson-header:hover{background:rgba(255,255,255,.04);}
+    .lesson-body{padding:0 1.5rem 1.5rem;display:none;border-top:1px solid rgba(255,255,255,.07);}
+    .lesson-num{width:2rem;height:2rem;border-radius:50%;background:#AC161D;color:#fff;font-family:'Montserrat',sans-serif;font-size:.75rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+    .lesson-toggle{width:2rem;height:2rem;border-radius:50%;background:rgba(255,255,255,.1);color:rgba(255,255,255,.7);font-size:1.25rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-weight:300;}
+
+    .activity-box{background:rgba(251,205,7,.08);border:1px solid rgba(251,205,7,.3);border-radius:16px;padding:1.5rem;}
+    .choice-btn{display:block;width:100%;text-align:left;padding:.875rem 1.25rem;border-radius:10px;border:1.5px solid rgba(255,255,255,.15);background:rgba(255,255,255,.04);color:rgba(255,255,255,.8);font-family:'Open Sans',sans-serif;font-size:.9rem;cursor:pointer;transition:all .2s;margin-bottom:.5rem;}
+    .choice-btn:hover{border-color:#AC161D;background:rgba(172,22,29,.1);color:#fff;}
+    .choice-btn.chosen-right{border-color:#22c55e;background:rgba(34,197,94,.1);color:#fff;}
+    .choice-btn.chosen-wrong{border-color:#ef4444;background:rgba(239,68,68,.08);color:rgba(255,255,255,.7);}
+    .feedback-box{display:none;padding:1.25rem;border-radius:10px;margin-top:.75rem;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3);}
+
+    .rubric-row{display:grid;grid-template-columns:2.5rem 1fr;gap:1rem;align-items:start;padding:.875rem 0;border-bottom:1px solid rgba(255,255,255,.07);}
+    .rubric-num{width:2.5rem;height:2.5rem;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:.9rem;font-weight:800;flex-shrink:0;}
+
+    .submit-section{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:20px;padding:2rem;}
+    .submit-input{width:100%;background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.15);border-radius:10px;padding:.75rem 1rem;color:#fff;font-family:'Open Sans',sans-serif;font-size:.9rem;outline:none;transition:border-color .2s;}
+    .submit-input::placeholder{color:rgba(255,255,255,.35);}
+    .submit-input:focus{border-color:#FBCD07;}
+    .submit-btn{display:inline-flex;align-items:center;gap:.5rem;background:#AC161D;color:#fff;font-family:'Montserrat',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:.875rem 2rem;border-radius:999px;border:none;cursor:pointer;transition:all .2s;}
+    .submit-btn:hover{opacity:.88;transform:translateY(-1px);}
+    .submit-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+
+    .progress-pip{width:.75rem;height:.75rem;border-radius:50%;background:rgba(255,255,255,.2);}
+    .progress-pip.done{background:#FBCD07;}
+
+    @media(max-width:640px){
+      .week-tab{padding:.5rem 1rem;font-size:.8rem;}
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── TOP NAV ── -->
+<nav class="top-nav">
+  <div class="max-w-7xl mx-auto px-5 py-3 flex items-center justify-between">
+    <a href="index.html#bootcamp" class="flex items-center gap-2 text-sm font-semibold text-gray-600 hover:text-crimson-800 transition-colors font-heading">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+      Back to Home
+    </a>
+    <a href="index.html" class="flex items-center gap-2.5">
+      <img src="https://res.cloudinary.com/dikkdclum/image/upload/v1778676762/field-experience/logos/bps101.png" alt="BPS101" class="h-8 w-auto">
+      <span class="font-heading font-bold text-sm text-navy-900 hidden sm:block">Field Experience</span>
+    </a>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<section style="margin-top:57px;background:linear-gradient(135deg,#111827 0%,#1a2740 100%);padding:4rem 1.5rem 3rem">
+  <div class="max-w-4xl mx-auto text-center">
+    <p class="section-label mb-3" style="color:#FBCD07">Step 2 — Prepare</p>
+    <h1 class="font-heading text-4xl md:text-5xl lg:text-6xl font-black tracking-tight text-white mb-5 leading-tight">The Bootcamp</h1>
+    <p class="text-lg leading-relaxed max-w-2xl mx-auto" style="color:rgba(255,255,255,.65)">
+      Before you step into your placement, you'll complete this 3-week foundational course. Everything you need to show up ready, professional, and confident on day one.
+    </p>
+    <div class="flex flex-wrap justify-center gap-4 mt-8">
+      <div class="flex items-center gap-2 px-4 py-2 rounded-full" style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12)">
+        <svg class="w-4 h-4 text-gold-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+        <span class="font-heading font-semibold text-white text-sm">3 Weeks</span>
+      </div>
+      <div class="flex items-center gap-2 px-4 py-2 rounded-full" style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12)">
+        <svg class="w-4 h-4 text-gold-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+        <span class="font-heading font-semibold text-white text-sm">9 Lessons</span>
+      </div>
+      <div class="flex items-center gap-2 px-4 py-2 rounded-full" style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12)">
+        <svg class="w-4 h-4 text-gold-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+        <span class="font-heading font-semibold text-white text-sm">3 Reflections</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── WEEK NAVIGATION ── -->
+<div id="week-nav" style="background:#111827;border-bottom:1px solid rgba(255,255,255,.08);padding:1rem 1.5rem;position:sticky;top:57px;z-index:40;">
+  <div class="max-w-4xl mx-auto flex flex-wrap gap-3 justify-center">
+    <button id="week-tab-1" class="week-tab active-tab" onclick="showWeek(1)">Week 1 — Mindset</button>
+    <button id="week-tab-2" class="week-tab" onclick="showWeek(2)">Week 2 — Professional Skills</button>
+    <button id="week-tab-3" class="week-tab" onclick="showWeek(3)">Week 3 — Launch Ready</button>
+  </div>
+</div>
+
+<div class="max-w-4xl mx-auto px-5 py-12">
+
+<!-- ═══════════════════════════════════════════════════
+     WEEK 1: STUDENT OWNERSHIP & MINDSET
+═══════════════════════════════════════════════════ -->
+<div id="week-content-1">
+
+  <div class="mb-10">
+    <p class="section-label mb-2" style="color:#FBCD07">Week 1 of 3</p>
+    <h2 class="font-heading text-3xl md:text-4xl font-bold text-white mb-3">Student Ownership &amp; Mindset</h2>
+    <p style="color:rgba(255,255,255,.6)" class="text-lg leading-relaxed">This week is about you. Before you walk into any workplace, you need to understand who you are as a worker, what you want to get out of this experience, and how to take ownership of your learning. Nobody is going to hand you a great semester — you build it.</p>
+  </div>
+
+  <!-- Lessons -->
+  <div class="mb-10">
+    <h3 class="font-heading font-bold text-white text-lg mb-4 flex items-center gap-2">
+      <svg class="w-5 h-5 text-gold-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+      Lessons
+    </h3>
+
+    <div class="lesson-card">
+      <div class="lesson-header" onclick="toggleLesson('w1l1')">
+        <div class="flex items-center gap-3">
+          <span class="lesson-num">1</span>
+          <div>
+            <p class="font-heading font-bold text-white">What is Field Experience — Really?</p>
+            <p class="text-xs mt-0.5" style="color:rgba(255,255,255,.45)">The difference between showing up and actually growing</p>
+          </div>
+        </div>
+        <span class="lesson-toggle" id="icon-w1l1">+</span>
+      </div>
+      <div class="lesson-body" id="w1l1">
+        <div class="pt-4 space-y-4" style="color:rgba(255,255,255,.75)">
+          <p>Field Experience is not a job shadow. It's not just "going somewhere for class." It's a real placement — at a real organization — where real professionals will expect real things from you. The way you perform here can shape references, recommendations, and your own understanding of what you want to do after high school.</p>
+          <p>Illinois BPS101 built this program specifically to meet the <strong class="text-white">College and Career Pathway Endorsement (CCPE)</strong> requirements, which means completing your placement earns you a formal credential on your diploma. Employers and colleges recognize it. That's not nothing.</p>
+          <p>But here's the truth: you will get exactly as much out of this as you put in. Students who treat it like a class they have to survive get very little. Students who treat it like an opportunity they chose — who show up curious, ask questions, and push themselves — leave with something real.</p>
+          <div class="p-4 rounded-xl mt-2" style="background:rgba(251,205,7,.08);border:1px solid rgba(251,205,7,.2)">
+            <p class="font-heading font-bold text-gold-400 text-sm mb-1">The Core Idea</p>
+            <p class="text-sm" style="color:rgba(255,255,255,.7)">This semester isn't happening to you. You're the one driving. Your supervisor, your school, and this curriculum are resources — but the ownership is yours.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="lesson-card">
+      <div class="lesson-header" onclick="toggleLesson('w1l2')">
+        <div class="flex items-center gap-3">
+          <span class="lesson-num">2</span>
+          <div>
+            <p class="font-heading font-bold text-white">Know Yourself First</p>
+            <p class="text-xs mt-0.5" style="color:rgba(255,255,255,.45)">Self-assessment before your placement</p>
+          </div>
+        </div>
+        <span class="lesson-toggle" id="icon-w1l2">+</span>
+      </div>
+      <div class="lesson-body" id="w1l2">
+        <div class="pt-4 space-y-4" style="color:rgba(255,255,255,.75)">
+          <p>The most self-aware workers outperform workers with more experience. Self-awareness means you know your strengths and you know your gaps — and you're honest about both.</p>
+          <p>Before you walk into your placement, think about these honestly:</p>
+          <div class="grid sm:grid-cols-2 gap-3 mt-2">
+            <div class="p-3 rounded-xl" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1)">
+              <p class="font-heading font-bold text-white text-sm mb-2">Your Strengths</p>
+              <ul class="text-sm space-y-1" style="color:rgba(255,255,255,.65)">
+                <li>• What do you do well naturally?</li>
+                <li>• Where have teachers said you shine?</li>
+                <li>• What do you bring to a team?</li>
+              </ul>
+            </div>
+            <div class="p-3 rounded-xl" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1)">
+              <p class="font-heading font-bold text-white text-sm mb-2">Growth Areas</p>
+              <ul class="text-sm space-y-1" style="color:rgba(255,255,255,.65)">
+                <li>• Where do you tend to check out?</li>
+                <li>• What feedback do you usually get?</li>
+                <li>• What feels hardest about "being professional"?</li>
+              </ul>
+            </div>
+          </div>
+          <p>Neither list makes you more or less ready for this. Knowing both makes you far more ready than someone who hasn't thought about it at all.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="lesson-card">
+      <div class="lesson-header" onclick="toggleLesson('w1l3')">
+        <div class="flex items-center gap-3">
+          <span class="lesson-num">3</span>
+          <div>
+            <p class="font-heading font-bold text-white">Setting Goals That Actually Work</p>
+            <p class="text-xs mt-0.5" style="color:rgba(255,255,255,.45)">SMART goals for your semester</p>
+          </div>
+        </div>
+        <span class="lesson-toggle" id="icon-w1l3">+</span>
+      </div>
+      <div class="lesson-body" id="w1l3">
+        <div class="pt-4 space-y-4" style="color:rgba(255,255,255,.75)">
+          <p>Most people set vague goals. "I want to do well." "I want to learn stuff." These goals can't be measured, which means you'll never know if you hit them.</p>
+          <p>SMART goals are: <strong class="text-white">Specific, Measurable, Achievable, Relevant, Time-bound.</strong> They sound corporate, but they work — and your supervisor will be thinking in terms like these when they evaluate you.</p>
+          <p>For your placement, try setting <strong class="text-white">three types of goals:</strong></p>
+          <div class="space-y-3 mt-1">
+            <div class="flex gap-3 p-3 rounded-xl" style="background:rgba(172,22,29,.1);border:1px solid rgba(172,22,29,.25)">
+              <div class="w-8 h-8 rounded-lg bg-crimson-800 text-white flex items-center justify-center text-xs font-bold font-heading flex-shrink-0">L</div>
+              <div>
+                <p class="font-heading font-bold text-white text-sm">Learning Goal</p>
+                <p class="text-sm mt-0.5" style="color:rgba(255,255,255,.65)">Something you want to understand or learn to do. <em>"By the end of Week 4, I will understand how [specific task] works."</em></p>
+              </div>
+            </div>
+            <div class="flex gap-3 p-3 rounded-xl" style="background:rgba(251,205,7,.07);border:1px solid rgba(251,205,7,.2)">
+              <div class="w-8 h-8 rounded-lg bg-gold-500 text-navy-900 flex items-center justify-center text-xs font-bold font-heading flex-shrink-0">R</div>
+              <div>
+                <p class="font-heading font-bold text-white text-sm">Relationship Goal</p>
+                <p class="text-sm mt-0.5" style="color:rgba(255,255,255,.65)">Someone you want to connect with. <em>"I will introduce myself to three coworkers and have a real conversation with each one."</em></p>
+              </div>
+            </div>
+            <div class="flex gap-3 p-3 rounded-xl" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1)">
+              <div class="w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold font-heading flex-shrink-0" style="background:rgba(255,255,255,.15)">S</div>
+              <div>
+                <p class="font-heading font-bold text-white text-sm">Skill Goal</p>
+                <p class="text-sm mt-0.5" style="color:rgba(255,255,255,.65)">Something you want to get better at. <em>"I will practice asking follow-up questions instead of just saying 'okay' when I get instructions."</em></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Week 1 Activity -->
+  <div class="activity-box mb-10">
+    <p class="section-label mb-2" style="color:#FBCD07">Week 1 Activity</p>
+    <h3 class="font-heading font-bold text-white text-xl mb-3">Write Your Work Bio</h3>
+    <p style="color:rgba(255,255,255,.7)" class="mb-4">A Work Bio is a 2–3 sentence professional introduction you could say out loud on your first day. It answers: Who are you? What are you here to do? What are you hoping to learn? Write it like you'd say it to your supervisor — professional, confident, and real.</p>
+    <div class="p-4 rounded-xl mb-4" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1)">
+      <p class="font-heading font-bold text-white text-sm mb-2">Example (not yours — write your own):</p>
+      <p class="text-sm italic" style="color:rgba(255,255,255,.6)">"Hi, I'm Jordan. I'm a junior at Batavia High School and I'm in the Field Experience program this semester. I'm really interested in healthcare and I'm hoping to get a better sense of how hospitals actually run day-to-day. I'm a hard worker and I learn fast — I'm excited to contribute wherever I can."</p>
+    </div>
+    <textarea id="reflectionWeek1Mindset" class="submit-input" rows="4" placeholder="Write your Work Bio here..."></textarea>
+    <p class="text-xs mt-2" style="color:rgba(255,255,255,.4)">This will be included in your Week 1 completion submission.</p>
+  </div>
+
+  <!-- Week 1 Completion -->
+  <div class="submit-section">
+    <h3 class="font-heading font-bold text-white text-xl mb-1">Complete Week 1</h3>
+    <p class="text-sm mb-5" style="color:rgba(255,255,255,.55)">Submit your Week 1 reflection to mark this week complete. Your teacher will be able to see your submission.</p>
+    <div class="grid sm:grid-cols-2 gap-3 mb-4">
+      <div>
+        <label class="block text-xs font-heading font-bold text-white mb-1.5" style="letter-spacing:.05em">YOUR NAME</label>
+        <input type="text" id="nameWeek1Mindset" class="submit-input" placeholder="First and Last Name">
+      </div>
+      <div>
+        <label class="block text-xs font-heading font-bold text-white mb-1.5" style="letter-spacing:.05em">PERIOD</label>
+        <select id="periodWeek1Mindset" class="submit-input" style="cursor:pointer">
+          <option value="" disabled selected>Select your period</option>
+          <option>1st Period</option><option>2nd Period</option><option>3rd Period</option>
+          <option>4th Period</option><option>5th Period</option><option>6th Period</option>
+        </select>
+      </div>
+    </div>
+    <div class="mb-4">
+      <label class="block text-xs font-heading font-bold text-white mb-1.5" style="letter-spacing:.05em">WEEK 1 REFLECTION — What did you learn about yourself this week? What are your three goals?</label>
+      <textarea id="reflectionWeek1Mindset2" class="submit-input" rows="5" placeholder="Write your reflection here..."></textarea>
+    </div>
+    <button id="btnWeek1Mindset" class="submit-btn" onclick="submitWeekFull('Week 1 — Mindset', 'nameWeek1Mindset', 'reflectionWeek1Mindset2', 'btnWeek1Mindset')">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      Submit Week 1 Completion
+    </button>
+    <p class="text-xs mt-3" style="color:rgba(255,255,255,.3)">A Google Form will open in a new tab to confirm your submission.</p>
+  </div>
+
+  <div class="flex justify-end mt-8">
+    <button onclick="showWeek(2)" class="flex items-center gap-2 px-6 py-3 rounded-full font-heading font-bold text-sm" style="background:#FBCD07;color:#000">
+      Continue to Week 2
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+    </button>
+  </div>
+
+</div><!-- /week-1 -->
+
+
+<!-- ═══════════════════════════════════════════════════
+     WEEK 2: PROFESSIONAL SKILLS
+═══════════════════════════════════════════════════ -->
+<div id="week-content-2" style="display:none">
+
+  <div class="mb-10">
+    <p class="section-label mb-2" style="color:#FBCD07">Week 2 of 3</p>
+    <h2 class="font-heading text-3xl md:text-4xl font-bold text-white mb-3">Professional Skills &amp; Workplace Readiness</h2>
+    <p style="color:rgba(255,255,255,.6)" class="text-lg leading-relaxed">This week is about the unwritten rules. Every workplace has a culture — norms around how you communicate, how you show up, and how you carry yourself. The students who learn these quickly are the ones who get opportunities. This week gives you the foundation.</p>
+  </div>
+
+  <!-- Lessons -->
+  <div class="mb-10">
+    <h3 class="font-heading font-bold text-white text-lg mb-4 flex items-center gap-2">
+      <svg class="w-5 h-5 text-gold-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+      Lessons
+    </h3>
+
+    <div class="lesson-card">
+      <div class="lesson-header" onclick="toggleLesson('w2l1')">
+        <div class="flex items-center gap-3">
+          <span class="lesson-num">4</span>
+          <div>
+            <p class="font-heading font-bold text-white">Professionalism — What It Actually Looks Like</p>
+            <p class="text-xs mt-0.5" style="color:rgba(255,255,255,.45)">Beyond "dress nicely and be on time"</p>
+          </div>
+        </div>
+        <span class="lesson-toggle" id="icon-w2l1">+</span>
+      </div>
+      <div class="lesson-body" id="w2l1">
+        <div class="pt-4 space-y-4" style="color:rgba(255,255,255,.75)">
+          <p>When people say "be professional," they usually mean something much bigger than clothes and punctuality. Professionalism is how you carry yourself across every situation — especially the hard ones.</p>
+          <p>Illinois's Essential Employability Skills Framework identifies four pillars of professionalism that every employer uses to evaluate interns and new employees:</p>
+          <div class="grid sm:grid-cols-2 gap-3 mt-2">
+            <div class="p-3 rounded-xl" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1)">
+              <p class="font-heading font-bold text-crimson-400 text-sm mb-1">Personal Ethic</p>
+              <p class="text-sm" style="color:rgba(255,255,255,.65)">Integrity, respect for people and property, positive attitude, accepting accountability for your decisions.</p>
+            </div>
+            <div class="p-3 rounded-xl" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1)">
+              <p class="font-heading font-bold text-gold-400 text-sm mb-1">Work Ethic</p>
+              <p class="text-sm" style="color:rgba(255,255,255,.65)">Dependability, predictable behavior, meeting deadlines, showing up prepared. Communicating proactively when you can't.</p>
+            </div>
+            <div class="p-3 rounded-xl" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1)">
+              <p class="font-heading font-bold text-blue-400 text-sm mb-1">Communication</p>
+              <p class="text-sm" style="color:rgba(255,255,255,.65)">Active listening, clear verbal and written communication, professional email and digital etiquette.</p>
+            </div>
+            <div class="p-3 rounded-xl" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1)">
+              <p class="font-heading font-bold text-green-400 text-sm mb-1">Teamwork</p>
+              <p class="text-sm" style="color:rgba(255,255,255,.65)">Cooperating toward shared goals, asking questions to clarify, handling conflict respectfully and constructively.</p>
+            </div>
+          </div>
+          <p>These four pillars aren't just concepts — they're what your supervisor will use to evaluate you at the end of the semester.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="lesson-card">
+      <div class="lesson-header" onclick="toggleLesson('w2l2')">
+        <div class="flex items-center gap-3">
+          <span class="lesson-num">5</span>
+          <div>
+            <p class="font-heading font-bold text-white">Communication in the Workplace</p>
+            <p class="text-xs mt-0.5" style="color:rgba(255,255,255,.45)">Email, speaking up, and listening well</p>
+          </div>
+        </div>
+        <span class="lesson-toggle" id="icon-w2l2">+</span>
+      </div>
+      <div class="lesson-body" id="w2l2">
+        <div class="pt-4 space-y-4" style="color:rgba(255,255,255,.75)">
+          <p>The #1 complaint employers have about new workers — including interns — is poor communication. Not showing up. Not asking for help when stuck. Sending unclear or informal messages. Not listening.</p>
+          <p>Communication at work looks different from communication with friends:</p>
+          <div class="space-y-2 mt-1">
+            <div class="flex gap-3 p-3 rounded-lg" style="background:rgba(239,68,68,.08);border-left:3px solid #ef4444">
+              <div class="flex-1">
+                <p class="font-heading font-bold text-red-400 text-xs mb-1">DON'T</p>
+                <p class="text-sm" style="color:rgba(255,255,255,.7)">"hey so i was gonna do the thing u told me but i forgot lol. when can we meet? also idk if i can come in thursday just a heads up"</p>
+              </div>
+            </div>
+            <div class="flex gap-3 p-3 rounded-lg" style="background:rgba(34,197,94,.08);border-left:3px solid #22c55e">
+              <div class="flex-1">
+                <p class="font-heading font-bold text-green-400 text-xs mb-1">DO</p>
+                <p class="text-sm" style="color:rgba(255,255,255,.7)">"Hi [Name], I wanted to follow up on the filing task we discussed on Monday. I have a question about Step 2 — would you have 5 minutes this week to clarify? Also, I may not be able to come in this Thursday due to a family commitment. I'll keep you updated. Thanks, [Your name]"</p>
+              </div>
+            </div>
+          </div>
+          <p>Key email rules: clear subject line, proper greeting, one topic per email, direct request, your name at the end. No slang, no lowercase "i," no "lol."</p>
+          <p>Also: <strong class="text-white">asking for help is professional, not weak.</strong> The fastest way to waste time is to spend an hour doing a task wrong because you didn't want to "bother" your supervisor. Ask, confirm, then do it.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="lesson-card">
+      <div class="lesson-header" onclick="toggleLesson('w2l3')">
+        <div class="flex items-center gap-3">
+          <span class="lesson-num">6</span>
+          <div>
+            <p class="font-heading font-bold text-white">Workplace Rules You Need to Know</p>
+            <p class="text-xs mt-0.5" style="color:rgba(255,255,255,.45)">Attendance, phones, and what actually gets people in trouble</p>
+          </div>
+        </div>
+        <span class="lesson-toggle" id="icon-w2l3">+</span>
+      </div>
+      <div class="lesson-body" id="w2l3">
+        <div class="pt-4 space-y-4" style="color:rgba(255,255,255,.75)">
+          <p>Every workplace has rules. Some are posted. Most aren't. Here are the ones that trip up interns most often:</p>
+          <div class="space-y-3">
+            <div class="p-3 rounded-xl" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1)">
+              <p class="font-heading font-bold text-white text-sm">Attendance &amp; tardiness</p>
+              <p class="text-sm mt-1" style="color:rgba(255,255,255,.65)">Not showing up without warning is one of the fastest ways to damage your reputation. If you're going to be late or miss a day, contact your supervisor <em>before</em> it happens — not after. One text or email, as early as possible.</p>
+            </div>
+            <div class="p-3 rounded-xl" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1)">
+              <p class="font-heading font-bold text-white text-sm">Phone use</p>
+              <p class="text-sm mt-1" style="color:rgba(255,255,255,.65)">Unless your supervisor has explicitly said phones are okay, treat your placement like a class — your phone stays away. If you're given a task, the expectation is that you're doing that task. Scrolling is visible and remembered.</p>
+            </div>
+            <div class="p-3 rounded-xl" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1)">
+              <p class="font-heading font-bold text-white text-sm">Confidentiality</p>
+              <p class="text-sm mt-1" style="color:rgba(255,255,255,.65)">Some workplaces — especially in healthcare, law, and finance — have strict rules about what you can share. If you see patient info, client names, financial data, or internal documents: they stay at work. Don't post, screenshot, or tell friends.</p>
+            </div>
+            <div class="p-3 rounded-xl" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1)">
+              <p class="font-heading font-bold text-white text-sm">Social media</p>
+              <p class="text-sm mt-1" style="color:rgba(255,255,255,.65)">Never post about your placement without permission — even positive stuff. Never tag the company, the staff, or share anything that happened during your day. Your supervisor may check.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Week 2 Activity -->
+  <div class="activity-box mb-10">
+    <p class="section-label mb-2" style="color:#FBCD07">Week 2 Activity</p>
+    <h3 class="font-heading font-bold text-white text-xl mb-3">Write a Professional Email</h3>
+    <p style="color:rgba(255,255,255,.7)" class="mb-4">You've been at your placement for two weeks. Your supervisor gave you a task last Friday, but you realized over the weekend that you misunderstood part of the instructions. It's Monday morning. Write a professional email to your supervisor explaining the situation and asking for clarification.</p>
+    <div class="p-4 rounded-xl mb-4" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1)">
+      <p class="font-heading font-bold text-white text-sm mb-2">Remember to include:</p>
+      <ul class="text-sm space-y-1" style="color:rgba(255,255,255,.65)">
+        <li>• A clear subject line</li>
+        <li>• A professional greeting</li>
+        <li>• A brief explanation (no excuses, just facts)</li>
+        <li>• A specific question</li>
+        <li>• Your name</li>
+      </ul>
+    </div>
+    <textarea id="reflectionWeek2PS" class="submit-input" rows="6" placeholder="Write your professional email here..."></textarea>
+  </div>
+
+  <!-- Week 2 Completion -->
+  <div class="submit-section">
+    <h3 class="font-heading font-bold text-white text-xl mb-1">Complete Week 2</h3>
+    <p class="text-sm mb-5" style="color:rgba(255,255,255,.55)">Submit your Week 2 reflection to mark this week complete.</p>
+    <div class="grid sm:grid-cols-2 gap-3 mb-4">
+      <div>
+        <label class="block text-xs font-heading font-bold text-white mb-1.5" style="letter-spacing:.05em">YOUR NAME</label>
+        <input type="text" id="nameWeek2PS" class="submit-input" placeholder="First and Last Name">
+      </div>
+      <div>
+        <label class="block text-xs font-heading font-bold text-white mb-1.5" style="letter-spacing:.05em">PERIOD</label>
+        <select id="periodWeek2PS" class="submit-input" style="cursor:pointer">
+          <option value="" disabled selected>Select your period</option>
+          <option>1st Period</option><option>2nd Period</option><option>3rd Period</option>
+          <option>4th Period</option><option>5th Period</option><option>6th Period</option>
+        </select>
+      </div>
+    </div>
+    <div class="mb-4">
+      <label class="block text-xs font-heading font-bold text-white mb-1.5" style="letter-spacing:.05em">WEEK 2 REFLECTION — What's one professional norm or rule that surprised you? How will you apply what you learned this week?</label>
+      <textarea id="reflectionWeek2PS2" class="submit-input" rows="5" placeholder="Write your reflection here..."></textarea>
+    </div>
+    <button id="btnWeek2PS" class="submit-btn" onclick="submitWeekFull('Week 2 — Professional Skills', 'nameWeek2PS', 'reflectionWeek2PS2', 'btnWeek2PS')">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      Submit Week 2 Completion
+    </button>
+    <p class="text-xs mt-3" style="color:rgba(255,255,255,.3)">A Google Form will open in a new tab to confirm your submission.</p>
+  </div>
+
+  <div class="flex justify-between mt-8">
+    <button onclick="showWeek(1)" class="flex items-center gap-2 px-5 py-3 rounded-full font-heading font-bold text-sm" style="background:rgba(255,255,255,.08);color:#fff">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+      Week 1
+    </button>
+    <button onclick="showWeek(3)" class="flex items-center gap-2 px-6 py-3 rounded-full font-heading font-bold text-sm" style="background:#FBCD07;color:#000">
+      Continue to Week 3
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+    </button>
+  </div>
+
+</div><!-- /week-2 -->
+
+
+<!-- ═══════════════════════════════════════════════════
+     WEEK 3: LAUNCH READY
+═══════════════════════════════════════════════════ -->
+<div id="week-content-3" style="display:none">
+
+  <div class="mb-10">
+    <p class="section-label mb-2" style="color:#FBCD07">Week 3 of 3</p>
+    <h2 class="font-heading text-3xl md:text-4xl font-bold text-white mb-3">Your Placement — Launch Ready</h2>
+    <p style="color:rgba(255,255,255,.6)" class="text-lg leading-relaxed">You've got the mindset. You've got the professional foundation. Now let's talk about what actually happens when you walk in on Day One — your supervisor relationship, your first week on the ground, and how to track your experience all semester long.</p>
+  </div>
+
+  <!-- Lessons -->
+  <div class="mb-10">
+    <h3 class="font-heading font-bold text-white text-lg mb-4 flex items-center gap-2">
+      <svg class="w-5 h-5 text-gold-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+      Lessons
+    </h3>
+
+    <div class="lesson-card">
+      <div class="lesson-header" onclick="toggleLesson('w3l1')">
+        <div class="flex items-center gap-3">
+          <span class="lesson-num">7</span>
+          <div>
+            <p class="font-heading font-bold text-white">Your Supervisor Relationship</p>
+            <p class="text-xs mt-0.5" style="color:rgba(255,255,255,.45)">What they need from you, and what you need from them</p>
+          </div>
+        </div>
+        <span class="lesson-toggle" id="icon-w3l1">+</span>
+      </div>
+      <div class="lesson-body" id="w3l1">
+        <div class="pt-4 space-y-4" style="color:rgba(255,255,255,.75)">
+          <p>Your supervisor is not your teacher, your parent, or your friend. They're a professional who is investing time and trust in you. Here's what they actually need from you:</p>
+          <div class="space-y-2">
+            <div class="flex items-start gap-2"><span class="text-gold-400 mt-0.5">→</span><p class="text-sm"><strong class="text-white">Reliability.</strong> Show up when you said you would. Do what you said you'd do. They need to trust your word.</p></div>
+            <div class="flex items-start gap-2"><span class="text-gold-400 mt-0.5">→</span><p class="text-sm"><strong class="text-white">Low maintenance.</strong> This doesn't mean never asking questions. It means not needing to be managed every second. Try things first, then ask.</p></div>
+            <div class="flex items-start gap-2"><span class="text-gold-400 mt-0.5">→</span><p class="text-sm"><strong class="text-white">Honest communication.</strong> If something is wrong — you're confused, overwhelmed, or made a mistake — tell them. Finding out later is always worse.</p></div>
+          </div>
+          <p>And here's what you need from them: <strong class="text-white">clarity on expectations.</strong> If you don't know what "doing a good job" looks like in their eyes, ask them directly in your first week: <em>"What would a great semester look like from your perspective?"</em></p>
+          <p>Getting feedback is part of the job. When they give you critical feedback, <strong class="text-white">don't get defensive — get curious.</strong> "Can you show me what that would look like?" is one of the best responses to constructive criticism.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="lesson-card">
+      <div class="lesson-header" onclick="toggleLesson('w3l2')">
+        <div class="flex items-center gap-3">
+          <span class="lesson-num">8</span>
+          <div>
+            <p class="font-heading font-bold text-white">Navigating Day One</p>
+            <p class="text-xs mt-0.5" style="color:rgba(255,255,255,.45)">First impressions, logistics, and what to expect</p>
+          </div>
+        </div>
+        <span class="lesson-toggle" id="icon-w3l2">+</span>
+      </div>
+      <div class="lesson-body" id="w3l2">
+        <div class="pt-4 space-y-4" style="color:rgba(255,255,255,.75)">
+          <p>First impressions form in seconds and take weeks to change. Your first day sets the tone for everything after it.</p>
+          <div class="grid sm:grid-cols-3 gap-3 mt-2">
+            <div class="p-3 rounded-xl" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1)">
+              <p class="font-heading font-bold text-white text-sm mb-2">Before You Go</p>
+              <ul class="text-xs space-y-1.5" style="color:rgba(255,255,255,.65)">
+                <li>✓ Know the address and how long it takes to get there</li>
+                <li>✓ Arrive 10 minutes early</li>
+                <li>✓ Dress appropriately for the industry</li>
+                <li>✓ Bring a notebook and pen</li>
+                <li>✓ Charge your phone the night before</li>
+              </ul>
+            </div>
+            <div class="p-3 rounded-xl" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1)">
+              <p class="font-heading font-bold text-white text-sm mb-2">When You Arrive</p>
+              <ul class="text-xs space-y-1.5" style="color:rgba(255,255,255,.65)">
+                <li>✓ Introduce yourself confidently</li>
+                <li>✓ Make eye contact and shake hands</li>
+                <li>✓ Say your Work Bio (you practiced it in Week 1)</li>
+                <li>✓ Take notes on names, locations, procedures</li>
+                <li>✓ Observe before you opine</li>
+              </ul>
+            </div>
+            <div class="p-3 rounded-xl" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1)">
+              <p class="font-heading font-bold text-white text-sm mb-2">Questions to Ask</p>
+              <ul class="text-xs space-y-1.5" style="color:rgba(255,255,255,.65)">
+                <li>• "What does a great intern look like to you?"</li>
+                <li>• "What should I prioritize this first week?"</li>
+                <li>• "How do you prefer to communicate — email or text?"</li>
+                <li>• "Is there anything I should know about how things work here?"</li>
+              </ul>
+            </div>
+          </div>
+          <p class="text-sm" style="color:rgba(255,255,255,.65)">You will feel awkward. That is normal. Push through it anyway.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="lesson-card">
+      <div class="lesson-header" onclick="toggleLesson('w3l3')">
+        <div class="flex items-center gap-3">
+          <span class="lesson-num">9</span>
+          <div>
+            <p class="font-heading font-bold text-white">Tracking Your Experience</p>
+            <p class="text-xs mt-0.5" style="color:rgba(255,255,255,.45)">Hours, reflections, and building your portfolio</p>
+          </div>
+        </div>
+        <span class="lesson-toggle" id="icon-w3l3">+</span>
+      </div>
+      <div class="lesson-body" id="w3l3">
+        <div class="pt-4 space-y-4" style="color:rgba(255,255,255,.75)">
+          <p>The Illinois CCPE requirement is a minimum of 60 hours of supervised placement. Your school tracks this — but so should you.</p>
+          <p>Beyond hours, your placement is a story you're building. Each week, document:</p>
+          <div class="space-y-2 mt-1">
+            <div class="flex items-start gap-2"><span class="text-gold-400 mt-0.5">→</span><p class="text-sm"><strong class="text-white">What did you actually do?</strong> Specific tasks, not "helped out."</p></div>
+            <div class="flex items-start gap-2"><span class="text-gold-400 mt-0.5">→</span><p class="text-sm"><strong class="text-white">What did you learn?</strong> Something about the industry, the workplace, or yourself.</p></div>
+            <div class="flex items-start gap-2"><span class="text-gold-400 mt-0.5">→</span><p class="text-sm"><strong class="text-white">What challenged you?</strong> A moment where you had to figure something out or push past discomfort.</p></div>
+            <div class="flex items-start gap-2"><span class="text-gold-400 mt-0.5">→</span><p class="text-sm"><strong class="text-white">What's your goal for next week?</strong> One specific, actionable thing.</p></div>
+          </div>
+          <p>By the end of the semester, this is your portfolio — evidence of real growth in a real environment. It's the difference between saying "I did an internship" and being able to describe exactly what you built and who you became.</p>
+          <div class="p-4 rounded-xl mt-2" style="background:rgba(251,205,7,.08);border:1px solid rgba(251,205,7,.2)">
+            <p class="font-heading font-bold text-gold-400 text-sm mb-1">Your weekly check-ins with your teacher are also part of this.</p>
+            <p class="text-sm" style="color:rgba(255,255,255,.7)">Come with something real to say. The more honestly you reflect, the more support you'll get navigating challenges as they come up.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Week 3 Activity -->
+  <div class="activity-box mb-10">
+    <p class="section-label mb-2" style="color:#FBCD07">Week 3 Activity</p>
+    <h3 class="font-heading font-bold text-white text-xl mb-3">Your First Week Plan</h3>
+    <p style="color:rgba(255,255,255,.7)" class="mb-4">Before you go to your placement for the first time, create a brief written plan. This isn't a schedule — it's an intention. What do you want to accomplish in your first week? What impressions do you want to make? What questions will you ask?</p>
+    <div class="p-4 rounded-xl mb-4" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1)">
+      <p class="font-heading font-bold text-white text-sm mb-2">Your plan should include:</p>
+      <ul class="text-sm space-y-1" style="color:rgba(255,255,255,.65)">
+        <li>• One thing you want your supervisor to know about you after Week 1</li>
+        <li>• Two questions you will ask in your first week</li>
+        <li>• One thing you're nervous about and how you'll handle it</li>
+      </ul>
+    </div>
+    <textarea id="reflectionWeek3Launch" class="submit-input" rows="6" placeholder="Write your first week plan here..."></textarea>
+  </div>
+
+  <!-- Week 3 Completion -->
+  <div class="submit-section" style="border-color:rgba(251,205,7,.3);background:rgba(251,205,7,.04)">
+    <div class="flex items-center gap-3 mb-1">
+      <h3 class="font-heading font-bold text-white text-xl">Complete the Bootcamp</h3>
+      <span style="background:#FBCD07;color:#000;font-family:'Montserrat',sans-serif;font-size:.65rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:.3rem .75rem;border-radius:999px">Final Step</span>
+    </div>
+    <p class="text-sm mb-5" style="color:rgba(255,255,255,.55)">You made it. Submit your Week 3 reflection — this marks your bootcamp complete and signals you're cleared for your placement.</p>
+    <div class="grid sm:grid-cols-2 gap-3 mb-4">
+      <div>
+        <label class="block text-xs font-heading font-bold text-white mb-1.5" style="letter-spacing:.05em">YOUR NAME</label>
+        <input type="text" id="nameWeek3Launch" class="submit-input" placeholder="First and Last Name">
+      </div>
+      <div>
+        <label class="block text-xs font-heading font-bold text-white mb-1.5" style="letter-spacing:.05em">PERIOD</label>
+        <select id="periodWeek3Launch" class="submit-input" style="cursor:pointer">
+          <option value="" disabled selected>Select your period</option>
+          <option>1st Period</option><option>2nd Period</option><option>3rd Period</option>
+          <option>4th Period</option><option>5th Period</option><option>6th Period</option>
+        </select>
+      </div>
+    </div>
+    <div class="mb-4">
+      <label class="block text-xs font-heading font-bold text-white mb-1.5" style="letter-spacing:.05em">FINAL REFLECTION — What are you most ready for? What are you still nervous about? What does a successful semester look like for you?</label>
+      <textarea id="reflectionWeek3Launch2" class="submit-input" rows="5" placeholder="Write your final reflection here..."></textarea>
+    </div>
+    <button id="btnWeek3Launch" class="submit-btn" style="background:#FBCD07;color:#000" onclick="submitWeekFull('Week 3 — Launch Ready (Bootcamp Complete)', 'nameWeek3Launch', 'reflectionWeek3Launch2', 'btnWeek3Launch')">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      Submit &amp; Complete Bootcamp
+    </button>
+    <p class="text-xs mt-3" style="color:rgba(255,255,255,.3)">A Google Form will open in a new tab to confirm your submission.</p>
+  </div>
+
+  <div class="flex justify-between mt-8">
+    <button onclick="showWeek(2)" class="flex items-center gap-2 px-5 py-3 rounded-full font-heading font-bold text-sm" style="background:rgba(255,255,255,.08);color:#fff">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+      Week 2
+    </button>
+    <a href="index.html#skills" class="flex items-center gap-2 px-6 py-3 rounded-full font-heading font-bold text-sm" style="background:rgba(255,255,255,.08);color:#fff">
+      Next: Employability Skills
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+
+</div><!-- /week-3 -->
+
+</div><!-- /main content -->
+
+<!-- ── FOOTER ── -->
+<footer style="background:#111827;border-top:1px solid rgba(255,255,255,.08);padding:2.5rem 1.5rem;margin-top:4rem">
+  <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+    <div class="flex items-center gap-3">
+      <img src="https://res.cloudinary.com/dsbllwpbh/image/upload/v1770990807/field-study-logo-trans_kewube.png" alt="BHS Field Experience" class="h-8 w-auto brightness-0 invert opacity-70"/>
+      <div>
+        <p class="font-heading font-bold text-white text-sm">BHS Field Experience</p>
+        <p style="color:rgba(255,255,255,.4);font-size:.7rem;text-transform:uppercase;letter-spacing:.1em">Batavia High School</p>
+      </div>
+    </div>
+    <div class="flex gap-6">
+      <a href="index.html" class="text-sm font-heading" style="color:rgba(255,255,255,.5)">Home</a>
+      <a href="index.html#skills" class="text-sm font-heading" style="color:rgba(255,255,255,.5)">Skills</a>
+      <a href="resources.html" class="text-sm font-heading" style="color:rgba(255,255,255,.5)">Resources</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  function submitWeekFull(weekLabel, nameId, reflectionId, btnId) {
+    const name = document.getElementById(nameId).value.trim();
+    const reflection = document.getElementById(reflectionId).value.trim();
+    if (!name) { alert('Please enter your name before submitting.'); return; }
+    if (!reflection) { alert('Please write your reflection before submitting.'); return; }
+    const url = BOOTCAMP_FORM_URL +
+      '?usp=pp_url' +
+      '&' + WEEK_ENTRY_ID + '=' + encodeURIComponent(weekLabel) +
+      '&' + REFLECTION_ENTRY_ID + '=' + encodeURIComponent(name + ' | ' + reflection);
+    window.open(url, '_blank');
+    const btn = document.getElementById(btnId);
+    if (btn) {
+      btn.innerHTML = '✓ Submitted — confirm in the Google Form tab';
+      btn.disabled = true;
+    }
+  }
+</script>
+
+</body>
+</html>

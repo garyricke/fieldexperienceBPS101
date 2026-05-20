@@ -1,0 +1,133 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script>if(sessionStorage.getItem('fe_auth')!=='1'){location.replace('index.html')}</script>
+  <title>Critical Thinking — Field Experience BHS</title>
+  <link rel="icon" type="image/png" href="https://res.cloudinary.com/dsbllwpbh/image/upload/v1771966521/fieldexperience-favicon_jgdotp.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Open+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={theme:{extend:{colors:{crimson:{800:'#AC161D'},gold:{400:'#fde020',500:'#FBCD07'}},fontFamily:{heading:['Montserrat','system-ui','sans-serif']}}}}</script>
+  <script>
+    const SKILLS_FORM_URL='https://docs.google.com/forms/d/e/YOUR_FORM_ID_HERE/viewform';
+    const SKILL_ENTRY_ID='entry.XXXXXXXXXX';const SKILL_REFLECTION_ID='entry.XXXXXXXXXX';
+    const THIS_SKILL='Skill 05 — Critical Thinking';
+    function submitSkill(){const name=document.getElementById('student-name').value.trim();const reflection=document.getElementById('student-reflection').value.trim();if(!name){alert('Please enter your name.');return;}if(!reflection){alert('Please write your reflection.');return;}window.open(SKILLS_FORM_URL+'?usp=pp_url&'+SKILL_ENTRY_ID+'='+encodeURIComponent(THIS_SKILL)+'&'+SKILL_REFLECTION_ID+'='+encodeURIComponent(name+' | '+reflection),'_blank');const btn=document.getElementById('submit-btn');btn.innerHTML='✓ Submitted — confirm in the Google Form tab';btn.disabled=true;}
+    function pickChoice(actId,chosen,correct,feedback){document.querySelectorAll('#act'+actId+' .choice-btn').forEach(b=>{b.classList.remove('chosen-right','chosen-wrong');if(b.getAttribute('data-val')===chosen)b.classList.add(b.getAttribute('data-val')===correct?'chosen-right':'chosen-wrong');});const fb=document.getElementById('feedback-'+actId);fb.style.display='block';fb.innerHTML=feedback;}
+  </script>
+  <style>
+    *{box-sizing:border-box}body{font-family:'Open Sans',system-ui,sans-serif;background:#f7f8fc;color:#1c1f2e;overflow-x:hidden}.font-heading{font-family:'Montserrat',system-ui,sans-serif}::selection{background:#AC161D;color:#fff}html{scroll-behavior:smooth}
+    .top-nav{position:fixed;top:0;left:0;right:0;background:rgba(255,255,255,.97);backdrop-filter:blur(12px);border-bottom:1px solid #e5e5e5;z-index:50;}
+    .section-label{font-family:'Montserrat',sans-serif;font-size:.7rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;}
+    .activity-card{background:#fff;border:1.5px solid #e5e7eb;border-radius:20px;padding:1.75rem;margin-bottom:1.5rem;}
+    .choice-btn{display:block;width:100%;text-align:left;padding:.875rem 1.25rem;border-radius:10px;border:1.5px solid #e5e7eb;background:#fff;color:#374151;font-family:'Open Sans',sans-serif;font-size:.9rem;cursor:pointer;transition:all .2s;margin-bottom:.5rem;}
+    .choice-btn:hover{border-color:#7b2d8b;background:rgba(123,45,139,.1);color:#1c1f2e;}
+    .choice-btn.chosen-right{border-color:#22c55e!important;background:rgba(34,197,94,.1)!important;color:#1c1f2e;}
+    .choice-btn.chosen-wrong{border-color:#e5e7eb!important;background:#f9fafb!important;color:#9ca3af;}
+    .feedback-box{display:none;padding:1.25rem;border-radius:10px;margin-top:.75rem;background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.25);}
+    .rubric-row{display:grid;grid-template-columns:3rem 1fr;gap:1rem;align-items:start;padding:.875rem 0;border-bottom:1px solid #e5e7eb;}
+    .rubric-num{width:2.5rem;height:2.5rem;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:.9rem;font-weight:800;flex-shrink:0;}
+    .submit-section{background:#fff;border:1.5px solid #e5e7eb;border-radius:20px;padding:2rem;}
+    .submit-input{width:100%;background:#fff;border:1.5px solid #d1d5db;border-radius:10px;padding:.75rem 1rem;color:#1c1f2e;font-family:'Open Sans',sans-serif;font-size:.9rem;outline:none;transition:border-color .2s;}
+    .submit-input::placeholder{color:#9ca3af;}.submit-input:focus{border-color:#FBCD07;}
+    .submit-btn{display:inline-flex;align-items:center;gap:.5rem;background:#5b21b6;color:#fff;font-family:'Montserrat',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:.875rem 2rem;border-radius:999px;border:none;cursor:pointer;transition:all .2s;}
+    .submit-btn:hover{opacity:.88;transform:translateY(-1px);}.submit-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+    .skill-nav-link{display:flex;align-items:center;gap:.5rem;padding:.75rem 1.25rem;border-radius:999px;font-family:'Montserrat',sans-serif;font-size:.8rem;font-weight:700;text-decoration:none;transition:all .2s;background:#f3f4f6;color:#374151;border:1px solid #e5e7eb;}
+    .skill-nav-link:hover{background:#e5e7eb;color:#1c1f2e;}
+    .max-w-3xl.px-5 h2,.max-w-3xl.px-5 h3{color:#1c1f2e}
+    .max-w-3xl.px-5 .text-white{color:#1c1f2e}
+    .max-w-3xl.px-5 label{color:#1c1f2e}
+  </style>
+</head>
+<body>
+<nav class="top-nav"><div class="max-w-7xl mx-auto px-5 py-3 flex items-center justify-between"><a href="index.html#skills" class="flex items-center gap-2 text-sm font-semibold text-gray-600 hover:text-red-700 transition-colors font-heading"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>All Skills</a><a href="index.html" class="flex items-center gap-2.5"><img src="https://res.cloudinary.com/dikkdclum/image/upload/v1778676762/field-experience/logos/bps101.png" alt="BPS101" class="h-8 w-auto"><span class="font-heading font-bold text-sm text-black hidden sm:block">Field Experience</span></a></div></nav>
+
+<section style="margin-top:57px;background:linear-gradient(135deg,#1e2d3d 0%,#243447 100%);padding:4rem 1.5rem 3rem">
+  <div class="max-w-3xl mx-auto">
+    <div class="flex items-center gap-3 mb-4"><span class="section-label" style="color:#FBCD07">Employability Skill</span><span style="background:rgba(91,33,182,.4);color:#c4b5fd;font-family:'Montserrat',sans-serif;font-size:.65rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:.3rem .75rem;border-radius:999px">05 of 10</span></div>
+    <div class="flex items-start gap-5">
+      <div class="w-16 h-16 rounded-2xl flex items-center justify-center flex-shrink-0" style="background:#5b21b6"><svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg></div>
+      <div><h1 class="font-heading text-3xl md:text-5xl font-black tracking-tight text-white leading-tight mb-2">Critical Thinking</h1><p class="text-lg text-gray-300">Question assumptions, evaluate evidence, and reason through complexity before acting or drawing conclusions.</p></div>
+    </div>
+  </div>
+</section>
+
+<div class="max-w-3xl mx-auto px-5 py-12">
+
+  <div class="p-5 rounded-2xl mb-10" style="background:#f8fafc;border-left:4px solid #5b21b6">
+    <p class="section-label mb-2" style="color:#AC161D">Real Workplace Scenario</p>
+    <p style="color:#374151" class="leading-relaxed">You receive an email that looks like it's from your company's IT department. The subject line says "Urgent: Account Upgrade Required." It asks you to click a link and enter your username and password to avoid losing system access. The email looks real, but the sender's address ends in @gmail.com instead of the company domain.</p>
+    <p class="mt-3 font-heading font-bold text-white text-sm">What do you do?</p>
+  </div>
+
+  <div class="mb-10"><h2 class="font-heading text-2xl font-bold text-white mb-4">Why This Skill Matters</h2>
+    <div class="grid sm:grid-cols-3 gap-4">
+      <div class="p-4 rounded-xl text-center" style="background:#f9fafb;border:1px solid #e5e7eb"><p class="font-heading font-black text-3xl" style="color:#AC161D">AI Age</p><p class="text-xs mt-1" style="color:#6b7280">As AI generates more content, the ability to evaluate what's true and what to trust is more valuable than ever</p></div>
+      <div class="p-4 rounded-xl text-center" style="background:#f9fafb;border:1px solid #e5e7eb"><p class="font-heading font-black text-3xl" style="color:#FBCD07">Slow</p><p class="text-xs mt-1" style="color:#6b7280">Critical thinkers slow down when something feels off — that pause prevents most major mistakes</p></div>
+      <div class="p-4 rounded-xl text-center" style="background:#f9fafb;border:1px solid #e5e7eb"><p class="font-heading font-black text-3xl text-white">Rare</p><p class="text-xs mt-1" style="color:#6b7280">Employers say genuine critical thinking is hard to find — those who demonstrate it get promoted faster</p></div>
+    </div>
+  </div>
+
+  <div class="mb-10 p-6 rounded-2xl" style="background:#fff;border:1.5px solid #e5e7eb">
+    <h2 class="font-heading text-xl font-bold text-white mb-3">What This Skill Actually Is</h2>
+    <p style="color:#374151" class="leading-relaxed mb-3">Critical thinking is the ability to analyze information objectively — questioning assumptions, checking sources, identifying what's missing, and reasoning through complexity before reaching a conclusion or taking action.</p>
+    <p style="color:#374151" class="leading-relaxed">In a workplace, this means you don't just accept what you're told at face value, and you don't react to every piece of information as if it's definitely true. You ask: <em>Does this make sense? What's the source? What's missing? What would happen if I acted on this?</em></p>
+    <div class="mt-4 p-3 rounded-xl" style="background:#faf5ff;border:1px solid #ddd6fe">
+      <p class="text-sm font-heading font-bold mb-1" style="color:#5b21b6">The NACE Framework says it this way:</p>
+      <p class="text-sm italic" style="color:#4b5563">"Exercise sound reasoning to analyze issues, make decisions, and overcome problems. Gather and synthesize information from diverse sources. Anticipate organizational needs and interpret data while maintaining awareness of personal biases."</p>
+    </div>
+  </div>
+
+  <div class="activity-card" id="act1">
+    <div class="flex items-center gap-2 mb-1"><span class="section-label" style="color:#FBCD07">Activity 1</span><span class="text-xs font-heading font-bold" style="color:#9ca3af">Scenario — Choose Your Response</span></div>
+    <h3 class="font-heading font-bold text-white text-lg mb-3">The Suspicious Email</h3>
+    <p style="color:#374151" class="mb-4">Return to the opening scenario: a suspicious "IT" email from a Gmail address asks for your login credentials. What do you do?</p>
+    <button class="choice-btn" data-val="A" onclick="pickChoice('1','A','C','<strong style=\'color:#22c55e\'>C is the right move, and this is one of the clearest real-world critical thinking tests.</strong><br><br>A: Clicking the link is exactly what the attacker wants. This is called phishing — a common social engineering attack. Company IT departments never ask for passwords via email.<br><br>B: Deleting it and moving on leaves the problem unaddressed. Others at the company may get the same email.<br><br><strong>C works because:</strong> you\'ve spotted the red flag (Gmail address, urgency, credential request), you\'re not acting on it, and you\'re reporting it to IT through a verified channel. This protects you AND your coworkers. Critically, you\'re verifying through a separate channel — not replying to the suspicious email itself.')">A — Click the link and log in — it looks urgent and official</button>
+    <button class="choice-btn" data-val="B" onclick="pickChoice('1','B','C','<strong style=\'color:#22c55e\'>C is the right move, and this is one of the clearest real-world critical thinking tests.</strong><br><br>A: Clicking the link is exactly what the attacker wants. This is called phishing — a common social engineering attack. Company IT departments never ask for passwords via email.<br><br>B: Deleting it and moving on leaves the problem unaddressed. Others at the company may get the same email.<br><br><strong>C works because:</strong> you\'ve spotted the red flag (Gmail address, urgency, credential request), you\'re not acting on it, and you\'re reporting it to IT through a verified channel. This protects you AND your coworkers. Critically, you\'re verifying through a separate channel — not replying to the suspicious email itself.')">B — Delete it and assume it was spam</button>
+    <button class="choice-btn" data-val="C" onclick="pickChoice('1','C','C','<strong style=\'color:#22c55e\'>C is the right move, and this is one of the clearest real-world critical thinking tests.</strong><br><br>A: Clicking the link is exactly what the attacker wants. This is called phishing — a common social engineering attack. Company IT departments never ask for passwords via email.<br><br>B: Deleting it and moving on leaves the problem unaddressed. Others at the company may get the same email.<br><br><strong>C works because:</strong> you\'ve spotted the red flag (Gmail address, urgency, credential request), you\'re not acting on it, and you\'re reporting it to IT through a verified channel. This protects you AND your coworkers. Critically, you\'re verifying through a separate channel — not replying to the suspicious email itself.')">C — Don't click the link — flag the red flag (Gmail address) and report it to your supervisor or IT directly</button>
+    <div class="feedback-box" id="feedback-1"></div>
+  </div>
+
+  <div class="activity-card">
+    <div class="flex items-center gap-2 mb-1"><span class="section-label" style="color:#FBCD07">Activity 2</span><span class="text-xs font-heading font-bold" style="color:#9ca3af">Analysis Scenario</span></div>
+    <h3 class="font-heading font-bold text-white text-lg mb-3">Read the Situation — Ask Better Questions</h3>
+    <p style="color:#374151" class="mb-4 leading-relaxed">Your supervisor shares a summary report with you before a meeting. The report says customer satisfaction is up 15% this quarter. Great news — but your supervisor asks: "Does this look right to you?"</p>
+    <p style="color:#374151" class="mb-4">Before you answer, a critical thinker asks questions. Answer these in writing:</p>
+    <div class="space-y-2 mb-4">
+      <div class="p-3 rounded-lg" style="background:#f9fafb;border:1px solid #e5e7eb"><p class="text-sm text-white">1. What information would you need to verify this claim?</p></div>
+      <div class="p-3 rounded-lg" style="background:#f9fafb;border:1px solid #e5e7eb"><p class="text-sm text-white">2. What could make this number misleading even if it's technically accurate?</p></div>
+      <div class="p-3 rounded-lg" style="background:#f9fafb;border:1px solid #e5e7eb"><p class="text-sm text-white">3. What would you want to check before presenting this to clients?</p></div>
+    </div>
+    <textarea class="submit-input" rows="6" placeholder="Answer the three questions above..."></textarea>
+  </div>
+
+  <div class="mb-10"><h2 class="font-heading text-xl font-bold text-white mb-4">Where Are You Right Now?</h2>
+    <div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:16px;overflow:hidden;">
+      <div class="rubric-row px-5"><div class="rubric-num" style="background:#ef4444;color:#fff">1</div><div><p class="font-heading font-bold text-white text-sm">Developing</p><p class="text-sm mt-1" style="color:#6b7280">Accepts information at face value without questioning. Tends to react to first impressions. Doesn't consistently check sources or identify what's missing.</p></div></div>
+      <div class="rubric-row px-5"><div class="rubric-num" style="background:#f97316;color:#fff">2</div><div><p class="font-heading font-bold text-white text-sm">Approaching</p><p class="text-sm mt-1" style="color:#6b7280">Sometimes questions information but inconsistently. May notice something seems off but not follow through. Analysis is sometimes surface-level.</p></div></div>
+      <div class="rubric-row px-5"><div class="rubric-num" style="background:#22c55e;color:#fff">3</div><div><p class="font-heading font-bold text-white text-sm">Meeting Expectations</p><p class="text-sm mt-1" style="color:#6b7280">Consistently questions assumptions. Checks sources before acting. Identifies what information is missing. Reasons logically from evidence before drawing conclusions.</p></div></div>
+      <div class="rubric-row px-5" style="border-bottom:none"><div class="rubric-num" style="background:#FBCD07;color:#000">4</div><div><p class="font-heading font-bold text-white text-sm">Exceeding Expectations</p><p class="text-sm mt-1" style="color:#6b7280">Anticipates flaws in arguments and data. Recognizes and names personal biases that could affect analysis. Helps others think more rigorously. Communicates complex reasoning clearly to others.</p></div></div>
+    </div>
+  </div>
+
+  <div class="submit-section">
+    <h2 class="font-heading text-xl font-bold text-white mb-1">Mark This Skill Complete</h2>
+    <p class="text-sm mb-5" style="color:#6b7280">Submit your reflection to notify your teacher you've completed this module.</p>
+    <div class="grid sm:grid-cols-2 gap-3 mb-4">
+      <div><label class="block text-xs font-heading font-bold text-white mb-1.5" style="letter-spacing:.05em">YOUR NAME</label><input type="text" id="student-name" class="submit-input" placeholder="First and Last Name"></div>
+      <div><label class="block text-xs font-heading font-bold text-white mb-1.5" style="letter-spacing:.05em">PERIOD</label><select id="student-period" class="submit-input" style="cursor:pointer"><option value="" disabled selected>Select your period</option><option>1st Period</option><option>2nd Period</option><option>3rd Period</option><option>4th Period</option><option>5th Period</option><option>6th Period</option></select></div>
+    </div>
+    <div class="mb-4"><label class="block text-xs font-heading font-bold text-white mb-1.5" style="letter-spacing:.05em">REFLECTION — Describe a time you accepted something without questioning it and it turned out to be wrong. What would you do differently? Rate yourself 1–4.</label><textarea id="student-reflection" class="submit-input" rows="5" placeholder="Write your reflection here..."></textarea></div>
+    <button id="submit-btn" class="submit-btn" onclick="submitSkill()"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>Submit Completion</button>
+    <p class="text-xs mt-3" style="color:#9ca3af">A Google Form will open in a new tab to confirm your submission.</p>
+  </div>
+
+  <div class="flex justify-between items-center mt-10 pt-8" style="border-top:1px solid #e5e7eb">
+    <a href="skill-decisionmaking.html" class="skill-nav-link"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>Decision Making</a>
+    <a href="skill-adaptability.html" class="skill-nav-link" style="background:#5b21b6;color:#fff;border-color:#5b21b6">Next: Adaptability<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></a>
+  </div>
+</div>
+
+<footer style="background:#1e2d3d;border-top:1px solid rgba(255,255,255,.1);padding:2.5rem 1.5rem;margin-top:2rem"><div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4"><div class="flex items-center gap-3"><img src="https://res.cloudinary.com/dsbllwpbh/image/upload/v1770990807/field-study-logo-trans_kewube.png" alt="BHS Field Experience" class="h-8 w-auto brightness-0 invert opacity-70"/><div><p class="font-heading font-bold text-white text-sm">BHS Field Experience</p><p style="color:rgba(255,255,255,.4);font-size:.7rem;text-transform:uppercase;letter-spacing:.1em">Batavia High School</p></div></div><div class="flex gap-6"><a href="index.html" class="text-sm font-heading" style="color:rgba(255,255,255,.5)">Home</a><a href="bootcamp.html" class="text-sm font-heading" style="color:rgba(255,255,255,.5)">Bootcamp</a><a href="resources.html" class="text-sm font-heading" style="color:rgba(255,255,255,.5)">Resources</a></div></div></footer>
+</body></html>
