@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weekly Reflection — Field Experience</title>
+  <link rel="icon" type="image/png" href="https://res.cloudinary.com/dikkdclum/image/upload/v1778676762/field-experience/logos/bps101.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Open Sans',system-ui,sans-serif;background:#f5f6fa;color:#1c1f2e;min-height:100vh}
+    .font-heading{font-family:'Montserrat',system-ui,sans-serif}
+
+    nav{background:#fff;border-bottom:1px solid #e5e7eb;position:sticky;top:0;z-index:50;
+        display:flex;align-items:center;justify-content:space-between;padding:0 1.5rem;height:60px}
+    .nav-logo{display:flex;align-items:center;gap:.75rem;text-decoration:none}
+    .nav-logo img{height:2rem}
+    .nav-logo-text{font-family:'Montserrat',sans-serif;font-weight:800;font-size:.8rem;
+                   letter-spacing:.04em;text-transform:uppercase;color:#0e1520}
+    .nav-right{display:flex;align-items:center;gap:1rem}
+    .nav-greeting{font-size:.82rem;color:#6b7280}
+    .nav-greeting strong{color:#1c1f2e}
+    .btn-ghost{font-family:'Montserrat',sans-serif;font-size:.7rem;font-weight:700;
+               letter-spacing:.08em;text-transform:uppercase;color:#6b7280;background:none;
+               border:1px solid #e5e7eb;border-radius:6px;padding:.4rem .875rem;cursor:pointer;
+               transition:all .15s;display:inline-flex;align-items:center;gap:.4rem}
+    .btn-ghost:hover{border-color:#AC161D;color:#AC161D}
+
+    main{max-width:720px;margin:0 auto;padding:2rem 1.5rem}
+
+    .back-link{display:inline-flex;align-items:center;gap:.4rem;font-family:'Montserrat',sans-serif;
+               font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+               color:#6b7280;text-decoration:none;margin-bottom:1.25rem;transition:color .15s}
+    .back-link:hover{color:#AC161D}
+    .page-title{font-family:'Montserrat',sans-serif;font-weight:900;font-size:1.75rem;
+                color:#0e1520;letter-spacing:-.02em;margin-bottom:.375rem}
+    .page-sub{font-size:.875rem;color:#6b7280;margin-bottom:.5rem}
+    .week-line{font-family:'Montserrat',sans-serif;font-weight:700;font-size:.8rem;
+               color:#AC161D;letter-spacing:.04em;margin-bottom:2rem}
+
+    /* Form card */
+    .form-card{background:#fff;border-radius:14px;border:1px solid #e5e7eb;padding:2rem;margin-bottom:1.5rem}
+
+    /* Question */
+    .question-block{margin-bottom:1.75rem}
+    .question-block:last-child{margin-bottom:0}
+    .q-num{font-family:'Montserrat',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:.12em;
+           text-transform:uppercase;color:#AC161D;margin-bottom:.4rem}
+    .q-label{font-family:'Montserrat',sans-serif;font-weight:700;font-size:.9rem;color:#0e1520;
+             margin-bottom:.25rem;line-height:1.4}
+    .q-hint{font-size:.78rem;color:#9ca3af;margin-bottom:.625rem;line-height:1.5;font-style:italic}
+    .q-textarea{width:100%;padding:.75rem 1rem;border:1.5px solid #e5e7eb;border-radius:8px;
+                font-size:.875rem;color:#1c1f2e;resize:vertical;min-height:90px;
+                font-family:'Open Sans',sans-serif;transition:border-color .15s;line-height:1.6}
+    .q-textarea:focus{outline:none;border-color:#AC161D;box-shadow:0 0 0 3px rgba(172,22,29,.08)}
+    .q-textarea:disabled{background:#f9fafb;color:#6b7280;cursor:default}
+    .q-textarea::placeholder{color:#d1d5db}
+
+    /* Skill selector */
+    .skill-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:.5rem}
+    .skill-pill{display:flex;align-items:center;gap:.5rem;padding:.625rem .875rem;border:1.5px solid #e5e7eb;
+                border-radius:8px;cursor:pointer;transition:all .15s;font-size:.82rem;color:#374151}
+    .skill-pill input{display:none}
+    .skill-pill:has(input:checked){border-color:#AC161D;background:#fef2f2;color:#AC161D;font-weight:600}
+    .skill-pill .dot{width:.5rem;height:.5rem;border-radius:50%;background:#e5e7eb;flex-shrink:0;transition:background .15s}
+    .skill-pill:has(input:checked) .dot{background:#AC161D}
+    .skill-pill.disabled-pill{cursor:default;opacity:.7}
+
+    /* Optional field */
+    .optional-tag{font-family:'Montserrat',sans-serif;font-size:.62rem;font-weight:700;
+                  letter-spacing:.08em;text-transform:uppercase;color:#9ca3af;
+                  border:1px solid #e5e7eb;border-radius:4px;padding:.15rem .45rem;margin-left:.5rem;vertical-align:middle}
+
+    /* Submit */
+    .submit-btn{display:flex;align-items:center;justify-content:center;gap:.5rem;width:100%;
+                padding:1rem 1.5rem;background:#AC161D;color:#fff;border:none;border-radius:9px;
+                font-family:'Montserrat',sans-serif;font-size:.85rem;font-weight:800;
+                letter-spacing:.06em;text-transform:uppercase;cursor:pointer;transition:all .2s;margin-top:1.5rem}
+    .submit-btn:hover{background:#b91c22;transform:translateY(-1px);box-shadow:0 4px 16px rgba(172,22,29,.25)}
+    .submit-btn:disabled{background:#d1d5db;cursor:not-allowed;transform:none;box-shadow:none}
+
+    .status-msg{padding:.875rem 1rem;border-radius:8px;font-size:.82rem;font-weight:600;margin-top:1rem;display:none}
+    .status-msg.error{background:#fef2f2;color:#991b1b;border:1px solid #fecaca;display:block}
+    .status-msg.success{background:#dcfce7;color:#166534;border:1px solid #bbf7d0;display:block}
+
+    /* Already submitted state */
+    .submitted-banner{background:linear-gradient(135deg,#0e1520,#1a2540);border-radius:14px;
+                      padding:2rem;text-align:center;margin-bottom:1.5rem}
+    .submitted-icon{font-size:2.5rem;margin-bottom:.75rem}
+    .submitted-title{font-family:'Montserrat',sans-serif;font-weight:900;font-size:1.25rem;
+                     color:#fff;margin-bottom:.5rem}
+    .submitted-sub{font-size:.875rem;color:rgba(255,255,255,.55)}
+    .submitted-link{display:inline-flex;align-items:center;gap:.4rem;margin-top:1.25rem;
+                    padding:.75rem 1.5rem;background:#AC161D;color:#fff;border-radius:8px;
+                    font-family:'Montserrat',sans-serif;font-size:.78rem;font-weight:700;
+                    letter-spacing:.06em;text-transform:uppercase;text-decoration:none;transition:background .15s}
+    .submitted-link:hover{background:#b91c22}
+
+    /* Loading */
+    #loading-overlay{position:fixed;inset:0;background:#f5f6fa;z-index:999;
+                     display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1rem}
+    .spinner{width:36px;height:36px;border:3px solid #e5e7eb;border-top-color:#AC161D;
+             border-radius:50%;animation:spin .8s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .loading-text{font-family:'Montserrat',sans-serif;font-size:.75rem;font-weight:600;
+                  color:#9ca3af;letter-spacing:.06em;text-transform:uppercase}
+
+    .char-count{font-size:.72rem;color:#9ca3af;text-align:right;margin-top:.25rem}
+  </style>
+</head>
+<body>
+
+<div id="loading-overlay">
+  <div class="spinner"></div>
+  <p class="loading-text">Loading reflection…</p>
+</div>
+
+<nav>
+  <a href="dashboard.html" class="nav-logo">
+    <img src="https://res.cloudinary.com/dikkdclum/image/upload/v1778676762/field-experience/logos/bps101.png" alt="BPS101">
+    <span class="nav-logo-text font-heading">Field Experience</span>
+  </a>
+  <div class="nav-right">
+    <span class="nav-greeting">Welcome, <strong id="nav-name">—</strong></span>
+    <button class="btn-ghost" onclick="signOut()">Sign out</button>
+  </div>
+</nav>
+
+<main>
+  <a href="dashboard.html" class="back-link">
+    <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/></svg>
+    Back to Dashboard
+  </a>
+  <h1 class="page-title font-heading">Weekly Reflection</h1>
+  <p class="page-sub">Reflect on your week at your placement. Be specific and honest — this is your growth journal.</p>
+  <p class="week-line font-heading" id="week-line">Week of —</p>
+
+  <!-- Already submitted state -->
+  <div id="submitted-state" style="display:none">
+    <div class="submitted-banner">
+      <div class="submitted-icon">✅</div>
+      <div class="submitted-title font-heading">Reflection Submitted</div>
+      <div class="submitted-sub">You already submitted your reflection for this week. Great work staying on track.</div>
+      <a href="dashboard.html" class="submitted-link font-heading">Back to Dashboard →</a>
+    </div>
+  </div>
+
+  <!-- Form -->
+  <div id="form-state">
+    <form id="reflection-form" onsubmit="submitReflection(event)">
+      <div class="form-card">
+
+        <div class="question-block">
+          <div class="q-num font-heading">Question 1 of 9</div>
+          <div class="q-label font-heading">What did you work on this week?</div>
+          <div class="q-hint">Describe the tasks, activities, or responsibilities you had.</div>
+          <textarea class="q-textarea" id="q-tasks" placeholder="This week I worked on…" required oninput="updateChar(this,'c-tasks')"></textarea>
+          <div class="char-count" id="c-tasks">0 characters</div>
+        </div>
+
+        <div class="question-block">
+          <div class="q-num font-heading">Question 2 of 9</div>
+          <div class="q-label font-heading">What is one key thing you learned or observed?</div>
+          <div class="q-hint">This could be a skill, workplace behavior, process, or something new you hadn't noticed before.</div>
+          <textarea class="q-textarea" id="q-learning" placeholder="One thing I learned was…" required oninput="updateChar(this,'c-learning')"></textarea>
+          <div class="char-count" id="c-learning">0 characters</div>
+        </div>
+
+        <div class="question-block">
+          <div class="q-num font-heading">Question 3 of 9</div>
+          <div class="q-label font-heading">What was a highlight from your week?</div>
+          <div class="q-hint">Why did it stand out to you?</div>
+          <textarea class="q-textarea" id="q-highlight" placeholder="A highlight was…" required oninput="updateChar(this,'c-highlight')"></textarea>
+          <div class="char-count" id="c-highlight">0 characters</div>
+        </div>
+
+        <div class="question-block">
+          <div class="q-num font-heading">Question 4 of 9</div>
+          <div class="q-label font-heading">Did you face any challenges this week?</div>
+          <div class="q-hint">If yes, what was challenging and how did you handle it? If not, explain why the week went smoothly.</div>
+          <textarea class="q-textarea" id="q-challenges" placeholder="I faced…  /  The week went smoothly because…" required oninput="updateChar(this,'c-challenges')"></textarea>
+          <div class="char-count" id="c-challenges">0 characters</div>
+        </div>
+
+        <div class="question-block">
+          <div class="q-num font-heading">Question 5 of 9</div>
+          <div class="q-label font-heading">How did this week's experience impact you?</div>
+          <div class="q-hint">Examples: your confidence, communication skills, work habits, or understanding of the career field.</div>
+          <textarea class="q-textarea" id="q-impact" placeholder="This experience impacted me by…" required oninput="updateChar(this,'c-impact')"></textarea>
+          <div class="char-count" id="c-impact">0 characters</div>
+        </div>
+
+        <div class="question-block">
+          <div class="q-num font-heading">Question 6 of 9</div>
+          <div class="q-label font-heading">What is one area you want to improve next week?</div>
+          <div class="q-hint">Based on this week's experience.</div>
+          <textarea class="q-textarea" id="q-improve" placeholder="Next week I want to focus on…" required oninput="updateChar(this,'c-improve')"></textarea>
+          <div class="char-count" id="c-improve">0 characters</div>
+        </div>
+
+      </div>
+
+      <div class="form-card">
+
+        <div class="question-block">
+          <div class="q-num font-heading">Question 7 of 9</div>
+          <div class="q-label font-heading">Which employability skill did you work on this week?</div>
+          <div class="q-hint">Choose a different skill each week to track your growth across all 10.</div>
+          <div class="skill-grid" id="skill-grid">
+            <label class="skill-pill"><input type="radio" name="skill" value="Communication" required><span class="dot"></span>Communication</label>
+            <label class="skill-pill"><input type="radio" name="skill" value="Critical Thinking"><span class="dot"></span>Critical Thinking</label>
+            <label class="skill-pill"><input type="radio" name="skill" value="Teamwork"><span class="dot"></span>Teamwork</label>
+            <label class="skill-pill"><input type="radio" name="skill" value="Problem Solving"><span class="dot"></span>Problem Solving</label>
+            <label class="skill-pill"><input type="radio" name="skill" value="Adaptability"><span class="dot"></span>Adaptability</label>
+            <label class="skill-pill"><input type="radio" name="skill" value="Initiative"><span class="dot"></span>Initiative</label>
+            <label class="skill-pill"><input type="radio" name="skill" value="Decision Making"><span class="dot"></span>Decision Making</label>
+            <label class="skill-pill"><input type="radio" name="skill" value="Cultural Awareness"><span class="dot"></span>Cultural Awareness</label>
+            <label class="skill-pill"><input type="radio" name="skill" value="Reliability"><span class="dot"></span>Reliability</label>
+            <label class="skill-pill"><input type="radio" name="skill" value="Planning"><span class="dot"></span>Planning</label>
+          </div>
+        </div>
+
+        <div class="question-block">
+          <div class="q-num font-heading">Question 8 of 9</div>
+          <div class="q-label font-heading">How did you demonstrate and grow in that skill?</div>
+          <div class="q-hint">Give a specific example from this week.</div>
+          <textarea class="q-textarea" id="q-skill-demo" placeholder="I demonstrated this skill when…" required oninput="updateChar(this,'c-skill-demo')"></textarea>
+          <div class="char-count" id="c-skill-demo">0 characters</div>
+        </div>
+
+        <div class="question-block">
+          <div class="q-num font-heading">Question 9 of 9</div>
+          <div class="q-label font-heading">
+            Is there anything your teacher should know?
+            <span class="optional-tag font-heading">Optional</span>
+          </div>
+          <div class="q-hint">Concerns, questions, or support you may need.</div>
+          <textarea class="q-textarea" id="q-teacher-note" placeholder="Something my teacher should know…" rows="2" oninput="updateChar(this,'c-teacher-note')"></textarea>
+          <div class="char-count" id="c-teacher-note">0 characters</div>
+        </div>
+
+      </div>
+
+      <button type="submit" class="submit-btn font-heading" id="submit-btn">
+        Submit Reflection
+      </button>
+      <div class="status-msg" id="form-status"></div>
+    </form>
+  </div>
+</main>
+
+<script>
+const SUPABASE_URL = 'https://bsgrkpykysvqcdqikcym.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJzZ3JrcHlreXN2cWNkcWlrY3ltIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk1MTE5NzUsImV4cCI6MjA5NTA4Nzk3NX0.brdA4f7v0GC89fRXPTVPZV11KIdZxXyCkLTWWsoe0o0';
+const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+let currentUser = null;
+let currentWeekStart = null;
+
+function getMondayOf(date) {
+  const d = new Date(date);
+  const day = d.getDay();
+  const diff = d.getDate() - day + (day === 0 ? -6 : 1);
+  d.setDate(diff); d.setHours(0,0,0,0);
+  return d;
+}
+
+function fmtDate(d) {
+  return d.toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' });
+}
+
+function updateChar(el, countId) {
+  document.getElementById(countId).textContent = el.value.length + ' characters';
+}
+
+async function signOut() {
+  await db.auth.signOut();
+  window.location.href = 'login.html';
+}
+
+async function submitReflection(e) {
+  e.preventDefault();
+  const btn = document.getElementById('submit-btn');
+  const statusEl = document.getElementById('form-status');
+  btn.disabled = true;
+  btn.textContent = 'Submitting…';
+  statusEl.className = 'status-msg';
+
+  const skillEl = document.querySelector('input[name="skill"]:checked');
+
+  const payload = {
+    student_id:          currentUser.id,
+    week_start:          currentWeekStart,
+    tasks_worked_on:     document.getElementById('q-tasks').value,
+    key_learning:        document.getElementById('q-learning').value,
+    highlight:           document.getElementById('q-highlight').value,
+    challenges:          document.getElementById('q-challenges').value,
+    impact:              document.getElementById('q-impact').value,
+    improvement_focus:   document.getElementById('q-improve').value,
+    employability_skill: skillEl ? skillEl.value : null,
+    skill_demonstration: document.getElementById('q-skill-demo').value,
+    teacher_note:        document.getElementById('q-teacher-note').value || null,
+  };
+
+  const { error } = await db.from('weekly_reflections').upsert(payload, { onConflict: 'student_id,week_start' });
+
+  if (error) {
+    statusEl.textContent = 'Error submitting: ' + error.message;
+    statusEl.className = 'status-msg error';
+    btn.disabled = false;
+    btn.textContent = 'Submit Reflection';
+  } else {
+    document.getElementById('form-state').style.display = 'none';
+    document.getElementById('submitted-state').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+}
+
+db.auth.onAuthStateChange(async (event, session) => {
+  if (!session) { window.location.href = 'login.html'; return; }
+  currentUser = session.user;
+
+  const firstName = session.user.user_metadata?.given_name || session.user.email.split('@')[0];
+  document.getElementById('nav-name').textContent = firstName;
+
+  const monday = getMondayOf(new Date());
+  currentWeekStart = monday.toISOString().split('T')[0];
+  const sunday = new Date(monday); sunday.setDate(monday.getDate() + 6);
+  document.getElementById('week-line').textContent = `Week of ${fmtDate(monday)} – ${fmtDate(sunday)}`;
+
+  const { data: existing } = await db.from('weekly_reflections').select('id').eq('student_id', currentUser.id).eq('week_start', currentWeekStart).maybeSingle();
+
+  if (existing) {
+    document.getElementById('form-state').style.display = 'none';
+    document.getElementById('submitted-state').style.display = 'block';
+  }
+
+  document.getElementById('loading-overlay').style.display = 'none';
+});
+</script>
+</body>
+</html>

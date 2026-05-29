@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weekly Log — Field Experience</title>
+  <link rel="icon" type="image/png" href="https://res.cloudinary.com/dikkdclum/image/upload/v1778676762/field-experience/logos/bps101.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Open Sans',system-ui,sans-serif;background:#f5f6fa;color:#1c1f2e;min-height:100vh}
+    .font-heading{font-family:'Montserrat',system-ui,sans-serif}
+
+    nav{background:#fff;border-bottom:1px solid #e5e7eb;position:sticky;top:0;z-index:50;
+        display:flex;align-items:center;justify-content:space-between;padding:0 1.5rem;height:60px}
+    .nav-logo{display:flex;align-items:center;gap:.75rem;text-decoration:none}
+    .nav-logo img{height:2rem}
+    .nav-logo-text{font-family:'Montserrat',sans-serif;font-weight:800;font-size:.8rem;
+                   letter-spacing:.04em;text-transform:uppercase;color:#0e1520}
+    .nav-right{display:flex;align-items:center;gap:1rem}
+    .nav-greeting{font-size:.82rem;color:#6b7280}
+    .nav-greeting strong{color:#1c1f2e}
+    .btn-ghost{font-family:'Montserrat',sans-serif;font-size:.7rem;font-weight:700;
+               letter-spacing:.08em;text-transform:uppercase;color:#6b7280;background:none;
+               border:1px solid #e5e7eb;border-radius:6px;padding:.4rem .875rem;cursor:pointer;transition:all .15s;text-decoration:none;display:inline-flex;align-items:center;gap:.4rem}
+    .btn-ghost:hover{border-color:#AC161D;color:#AC161D}
+
+    main{max-width:860px;margin:0 auto;padding:2rem 1.5rem}
+
+    .page-header{margin-bottom:2rem}
+    .back-link{display:inline-flex;align-items:center;gap:.4rem;font-family:'Montserrat',sans-serif;
+               font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+               color:#6b7280;text-decoration:none;margin-bottom:1.25rem;transition:color .15s}
+    .back-link:hover{color:#AC161D}
+    .page-title{font-family:'Montserrat',sans-serif;font-weight:900;font-size:1.75rem;
+                color:#0e1520;letter-spacing:-.02em;margin-bottom:.375rem}
+    .page-sub{font-size:.875rem;color:#6b7280}
+
+    .week-selector{display:flex;align-items:center;gap:.75rem;margin-bottom:2rem}
+    .week-label{font-family:'Montserrat',sans-serif;font-weight:700;font-size:.78rem;
+                letter-spacing:.08em;text-transform:uppercase;color:#6b7280}
+    .week-display{font-family:'Montserrat',sans-serif;font-weight:800;font-size:1rem;color:#0e1520}
+    .week-badge{font-family:'Montserrat',sans-serif;font-size:.65rem;font-weight:700;
+                letter-spacing:.08em;text-transform:uppercase;padding:.3rem .75rem;border-radius:999px}
+    .badge-open{background:#f3f4f6;color:#6b7280}
+    .badge-partial{background:#fef3c7;color:#92400e}
+    .badge-done{background:#dcfce7;color:#166534}
+
+    /* Phase cards */
+    .phase-card{background:#fff;border-radius:14px;border:1px solid #e5e7eb;margin-bottom:1.5rem;overflow:hidden}
+    .phase-header{padding:1.25rem 1.5rem;border-bottom:1px solid #f3f4f6;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+    .phase-title{font-family:'Montserrat',sans-serif;font-weight:800;font-size:.9rem;color:#0e1520}
+    .phase-sub{font-size:.78rem;color:#9ca3af;margin-top:.15rem}
+    .phase-check{width:1.75rem;height:1.75rem;border-radius:50%;display:flex;align-items:center;
+                 justify-content:center;font-size:.75rem;flex-shrink:0}
+    .phase-check.done{background:#dcfce7;color:#22c55e}
+    .phase-check.pending{background:#f3f4f6;color:#d1d5db}
+    .phase-body{padding:1.5rem}
+
+    /* Day grid */
+    .day-grid{display:grid;grid-template-columns:80px 1fr 1fr 110px 90px;gap:.5rem;align-items:center}
+    @media(max-width:600px){.day-grid{grid-template-columns:70px 1fr 1fr;gap:.375rem}}
+    .day-grid-header{display:grid;grid-template-columns:80px 1fr 1fr 110px 90px;gap:.5rem;margin-bottom:.5rem}
+    @media(max-width:600px){.day-grid-header{grid-template-columns:70px 1fr 1fr;gap:.375rem}}
+    .grid-col-label{font-family:'Montserrat',sans-serif;font-size:.65rem;font-weight:700;
+                    letter-spacing:.08em;text-transform:uppercase;color:#9ca3af;padding:0 .5rem}
+    .day-label{font-family:'Montserrat',sans-serif;font-weight:700;font-size:.78rem;
+               color:#374151;padding:.5rem .5rem}
+    .day-label.weekend{color:#9ca3af}
+
+    .grid-input{width:100%;padding:.5rem .625rem;border:1px solid #e5e7eb;border-radius:7px;
+                font-size:.82rem;color:#1c1f2e;background:#fff;transition:border-color .15s;font-family:'Open Sans',sans-serif}
+    .grid-input:focus{outline:none;border-color:#AC161D;box-shadow:0 0 0 3px rgba(172,22,29,.08)}
+    .grid-input::placeholder{color:#d1d5db}
+    .grid-input:disabled{background:#f9fafb;color:#9ca3af;cursor:default}
+    .grid-input.hours{text-align:center}
+
+    .day-row{display:contents}
+    .day-row:hover .day-label{color:#AC161D}
+    @media(max-width:600px){.hide-mobile{display:none}}
+
+    /* Totals row */
+    .totals-row{display:flex;align-items:center;justify-content:flex-end;gap:1.5rem;
+                margin-top:1rem;padding-top:1rem;border-top:1px solid #f3f4f6}
+    .total-item{text-align:right}
+    .total-num{font-family:'Montserrat',sans-serif;font-weight:900;font-size:1.5rem;color:#0e1520}
+    .total-label{font-size:.7rem;color:#9ca3af;margin-top:.125rem}
+
+    /* Key task */
+    .field-wrap{margin-top:1.25rem}
+    .field-label{font-family:'Montserrat',sans-serif;font-size:.72rem;font-weight:700;
+                 letter-spacing:.08em;text-transform:uppercase;color:#6b7280;margin-bottom:.5rem;display:block}
+    .field-textarea{width:100%;padding:.75rem 1rem;border:1px solid #e5e7eb;border-radius:8px;
+                    font-size:.875rem;color:#1c1f2e;resize:vertical;min-height:80px;font-family:'Open Sans',sans-serif;
+                    transition:border-color .15s}
+    .field-textarea:focus{outline:none;border-color:#AC161D;box-shadow:0 0 0 3px rgba(172,22,29,.08)}
+
+    /* Submit button */
+    .submit-btn{display:flex;align-items:center;justify-content:center;gap:.5rem;width:100%;
+                padding:1rem 1.5rem;background:#AC161D;color:#fff;border:none;border-radius:9px;
+                font-family:'Montserrat',sans-serif;font-size:.85rem;font-weight:800;
+                letter-spacing:.06em;text-transform:uppercase;cursor:pointer;transition:all .2s;margin-top:1.5rem}
+    .submit-btn:hover{background:#b91c22;transform:translateY(-1px);box-shadow:0 4px 16px rgba(172,22,29,.25)}
+    .submit-btn:disabled{background:#d1d5db;cursor:not-allowed;transform:none;box-shadow:none}
+
+    /* Success state */
+    .success-banner{background:#dcfce7;border:1px solid #bbf7d0;border-radius:10px;
+                    padding:1rem 1.25rem;display:flex;align-items:center;gap:.875rem;margin-top:1rem}
+    .success-icon{width:2rem;height:2rem;background:#22c55e;border-radius:50%;display:flex;
+                  align-items:center;justify-content:center;color:#fff;font-size:.9rem;flex-shrink:0}
+    .success-text{font-size:.875rem;color:#166534;font-weight:600}
+
+    /* Done summary */
+    .summary-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:.75rem}
+    .summary-item{background:#f9fafb;border-radius:8px;padding:.875rem 1rem}
+    .summary-day{font-family:'Montserrat',sans-serif;font-weight:700;font-size:.72rem;
+                 letter-spacing:.06em;text-transform:uppercase;color:#6b7280;margin-bottom:.25rem}
+    .summary-val{font-size:.875rem;color:#1c1f2e;font-weight:600}
+    .summary-sub{font-size:.75rem;color:#9ca3af;margin-top:.125rem}
+
+    /* Loading overlay */
+    #loading-overlay{position:fixed;inset:0;background:#f5f6fa;z-index:999;
+                     display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1rem}
+    .spinner{width:36px;height:36px;border:3px solid #e5e7eb;border-top-color:#AC161D;
+             border-radius:50%;animation:spin .8s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .loading-text{font-family:'Montserrat',sans-serif;font-size:.75rem;font-weight:600;
+                  color:#9ca3af;letter-spacing:.06em;text-transform:uppercase}
+
+    .status-msg{padding:.875rem 1rem;border-radius:8px;font-size:.82rem;font-weight:600;margin-top:1rem;display:none}
+    .status-msg.error{background:#fef2f2;color:#991b1b;border:1px solid #fecaca;display:block}
+    .status-msg.success{background:#dcfce7;color:#166534;border:1px solid #bbf7d0;display:block}
+  </style>
+</head>
+<body>
+
+<div id="loading-overlay">
+  <div class="spinner"></div>
+  <p class="loading-text">Loading your log…</p>
+</div>
+
+<nav>
+  <a href="dashboard.html" class="nav-logo">
+    <img src="https://res.cloudinary.com/dikkdclum/image/upload/v1778676762/field-experience/logos/bps101.png" alt="BPS101">
+    <span class="nav-logo-text font-heading">Field Experience</span>
+  </a>
+  <div class="nav-right">
+    <span class="nav-greeting">Welcome, <strong id="nav-name">—</strong></span>
+    <button class="btn-ghost" onclick="signOut()">Sign out</button>
+  </div>
+</nav>
+
+<main>
+  <div class="page-header">
+    <a href="dashboard.html" class="back-link">
+      <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/></svg>
+      Back to Dashboard
+    </a>
+    <h1 class="page-title font-heading">Weekly Work Log</h1>
+    <p class="page-sub">Track your hours, location, and supervisor for each day of your placement.</p>
+  </div>
+
+  <div class="week-selector">
+    <span class="week-label font-heading">Week of</span>
+    <span class="week-display font-heading" id="week-display">—</span>
+    <span class="week-badge font-heading" id="week-status-badge">Loading…</span>
+  </div>
+
+  <!-- Phase 1: Projected Schedule -->
+  <div class="phase-card" id="phase1-card">
+    <div class="phase-header">
+      <div>
+        <div class="phase-title font-heading">Phase 1 — Plan Your Week</div>
+        <div class="phase-sub">Fill out before the week starts (Sunday night). Record where you'll be and who your supervisor is.</div>
+      </div>
+      <div class="phase-check" id="phase1-check">○</div>
+    </div>
+    <div class="phase-body" id="phase1-body">
+      <div class="day-grid-header">
+        <div class="grid-col-label font-heading">Day</div>
+        <div class="grid-col-label font-heading">Location / Site</div>
+        <div class="grid-col-label font-heading">Supervisor</div>
+        <div class="grid-col-label font-heading hide-mobile">Expected Time</div>
+        <div class="grid-col-label font-heading hide-mobile">Est. Hours</div>
+      </div>
+      <div id="projected-grid"></div>
+      <div class="totals-row">
+        <div class="total-item">
+          <div class="total-num font-heading" id="total-projected-display">0</div>
+          <div class="total-label font-heading">Projected Hours</div>
+        </div>
+      </div>
+      <button class="submit-btn font-heading" id="submit-projected-btn" onclick="submitProjected()">
+        Save Projected Schedule
+      </button>
+      <div class="status-msg" id="proj-status"></div>
+    </div>
+  </div>
+
+  <!-- Phase 2: Actual Hours -->
+  <div class="phase-card" id="phase2-card">
+    <div class="phase-header">
+      <div>
+        <div class="phase-title font-heading">Phase 2 — Log Your Hours</div>
+        <div class="phase-sub">Fill out after the week ends (Sunday night). Record actual hours worked and your key accomplishment.</div>
+      </div>
+      <div class="phase-check" id="phase2-check">○</div>
+    </div>
+    <div class="phase-body" id="phase2-body">
+      <div class="day-grid-header">
+        <div class="grid-col-label font-heading">Day</div>
+        <div class="grid-col-label font-heading">Location / Site</div>
+        <div class="grid-col-label font-heading">Supervisor</div>
+        <div class="grid-col-label font-heading hide-mobile">Expected</div>
+        <div class="grid-col-label font-heading">Actual Hours</div>
+      </div>
+      <div id="actual-grid"></div>
+      <div class="totals-row">
+        <div class="total-item">
+          <div class="total-num font-heading" id="total-actual-display">0</div>
+          <div class="total-label font-heading">Total Hours This Week</div>
+        </div>
+      </div>
+      <div class="field-wrap">
+        <label class="field-label font-heading" for="key-task">Key Task / Accomplishment This Week</label>
+        <textarea class="field-textarea" id="key-task" placeholder="Describe the most important thing you worked on or accomplished this week…" rows="3"></textarea>
+      </div>
+      <button class="submit-btn font-heading" id="submit-actual-btn" onclick="submitActual()">
+        Submit Hours Log
+      </button>
+      <div class="status-msg" id="actual-status"></div>
+    </div>
+  </div>
+
+</main>
+
+<script>
+const SUPABASE_URL = 'https://bsgrkpykysvqcdqikcym.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJzZ3JrcHlreXN2cWNkcWlrY3ltIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk1MTE5NzUsImV4cCI6MjA5NTA4Nzk3NX0.brdA4f7v0GC89fRXPTVPZV11KIdZxXyCkLTWWsoe0o0';
+const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+const DAYS = [
+  { key:'mon', label:'Monday' },
+  { key:'tue', label:'Tuesday' },
+  { key:'wed', label:'Wednesday' },
+  { key:'thu', label:'Thursday' },
+  { key:'fri', label:'Friday' },
+  { key:'sat', label:'Saturday', weekend:true },
+  { key:'sun', label:'Sunday', weekend:true },
+];
+
+let currentUser = null;
+let currentWeekStart = null;
+let existingLog = null;
+
+function getMondayOf(date) {
+  const d = new Date(date);
+  const day = d.getDay();
+  const diff = d.getDate() - day + (day === 0 ? -6 : 1);
+  d.setDate(diff); d.setHours(0,0,0,0);
+  return d;
+}
+
+function fmtDate(d) {
+  return d.toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' });
+}
+
+function buildProjectedGrid(log) {
+  const container = document.getElementById('projected-grid');
+  container.innerHTML = '';
+  DAYS.forEach(({key, label, weekend}) => {
+    const row = document.createElement('div');
+    row.className = 'day-grid';
+    row.style.marginBottom = '.375rem';
+    const isDone = !!log?.projected_submitted_at;
+    row.innerHTML = `
+      <div class="day-label font-heading${weekend?' weekend':''}">${label.slice(0,3)}</div>
+      <input class="grid-input" id="p-${key}-loc" placeholder="Location" value="${log?.[key+'_location']||''}" ${isDone?'disabled':''}>
+      <input class="grid-input" id="p-${key}-sup" placeholder="Supervisor" value="${log?.[key+'_supervisor']||''}" ${isDone?'disabled':''}>
+      <input class="grid-input hide-mobile" id="p-${key}-exp" placeholder="e.g. 8am–2pm" value="${log?.[key+'_expected']||''}" ${isDone?'disabled':''}>
+      <input class="grid-input hours hide-mobile" id="p-${key}-hrs" type="number" min="0" max="24" step="0.5" placeholder="0" value="${log?.[key+'_actual']||''}" ${isDone?'disabled':''} oninput="recalcProjected()">
+    `;
+    container.appendChild(row);
+  });
+}
+
+function buildActualGrid(log) {
+  const container = document.getElementById('actual-grid');
+  container.innerHTML = '';
+  DAYS.forEach(({key, label, weekend}) => {
+    const row = document.createElement('div');
+    row.className = 'day-grid';
+    row.style.marginBottom = '.375rem';
+    const isDone = !!log?.actual_submitted_at;
+    row.innerHTML = `
+      <div class="day-label font-heading${weekend?' weekend':''}">${label.slice(0,3)}</div>
+      <input class="grid-input" id="a-${key}-loc" placeholder="Location" value="${log?.[key+'_location']||''}" ${isDone?'disabled':''}>
+      <input class="grid-input" id="a-${key}-sup" placeholder="Supervisor" value="${log?.[key+'_supervisor']||''}" ${isDone?'disabled':''}>
+      <input class="grid-input hide-mobile" id="a-${key}-exp" placeholder="Expected" value="${log?.[key+'_expected']||''}" disabled style="background:#f9fafb;color:#9ca3af">
+      <input class="grid-input hours" id="a-${key}-hrs" type="number" min="0" max="24" step="0.5" placeholder="0" value="${log?.[key+'_actual']||''}" ${isDone?'disabled':''} oninput="recalcActual()">
+    `;
+    container.appendChild(row);
+  });
+  if (log) {
+    const kt = document.getElementById('key-task');
+    if (kt) kt.value = log.key_task || '';
+    if (log.actual_submitted_at) kt.disabled = true;
+  }
+}
+
+function recalcProjected() {
+  let total = 0;
+  DAYS.forEach(({key}) => {
+    const el = document.getElementById(`p-${key}-hrs`);
+    if (el) total += parseFloat(el.value) || 0;
+  });
+  document.getElementById('total-projected-display').textContent = total.toFixed(1);
+}
+
+function recalcActual() {
+  let total = 0;
+  DAYS.forEach(({key}) => {
+    const el = document.getElementById(`a-${key}-hrs`);
+    if (el) total += parseFloat(el.value) || 0;
+  });
+  document.getElementById('total-actual-display').textContent = total.toFixed(1);
+}
+
+function updatePhaseUI(log) {
+  const projDone = !!log?.projected_submitted_at;
+  const actDone  = !!log?.actual_submitted_at;
+
+  // Phase 1 check indicator
+  const p1check = document.getElementById('phase1-check');
+  p1check.textContent = projDone ? '✓' : '○';
+  p1check.className = 'phase-check ' + (projDone ? 'done' : 'pending');
+
+  // Phase 2 check indicator
+  const p2check = document.getElementById('phase2-check');
+  p2check.textContent = actDone ? '✓' : '○';
+  p2check.className = 'phase-check ' + (actDone ? 'done' : 'pending');
+
+  // Submit buttons
+  const projBtn = document.getElementById('submit-projected-btn');
+  if (projDone) {
+    projBtn.textContent = '✓ Projected Schedule Saved';
+    projBtn.disabled = true;
+  }
+
+  const actBtn = document.getElementById('submit-actual-btn');
+  if (actDone) {
+    actBtn.textContent = '✓ Hours Log Submitted';
+    actBtn.disabled = true;
+  }
+
+  // Week badge
+  const badge = document.getElementById('week-status-badge');
+  if (actDone && projDone) {
+    badge.textContent = 'Complete'; badge.className = 'week-badge badge-done font-heading';
+  } else if (projDone) {
+    badge.textContent = 'In Progress'; badge.className = 'week-badge badge-partial font-heading';
+  } else {
+    badge.textContent = 'Not Started'; badge.className = 'week-badge badge-open font-heading';
+  }
+
+  // Pre-fill actual grid location/supervisor from projected if empty
+  if (projDone && !actDone && log) {
+    DAYS.forEach(({key}) => {
+      const locEl = document.getElementById(`a-${key}-loc`);
+      const supEl = document.getElementById(`a-${key}-sup`);
+      const expEl = document.getElementById(`a-${key}-exp`);
+      if (locEl && !locEl.value) locEl.value = log[key+'_location'] || '';
+      if (supEl && !supEl.value) supEl.value = log[key+'_supervisor'] || '';
+      if (expEl) expEl.value = log[key+'_expected'] || '';
+    });
+  }
+
+  // Recalc totals
+  recalcProjected();
+  recalcActual();
+  if (log) {
+    document.getElementById('total-projected-display').textContent = (log.total_projected || 0).toFixed(1);
+    document.getElementById('total-actual-display').textContent = (log.total_actual || 0).toFixed(1);
+  }
+}
+
+async function submitProjected() {
+  const btn = document.getElementById('submit-projected-btn');
+  const statusEl = document.getElementById('proj-status');
+  btn.disabled = true;
+  btn.textContent = 'Saving…';
+  statusEl.className = 'status-msg';
+
+  const payload = { student_id: currentUser.id, week_start: currentWeekStart, projected_submitted_at: new Date().toISOString() };
+  let totalProj = 0;
+  DAYS.forEach(({key}) => {
+    payload[key+'_location']   = document.getElementById(`p-${key}-loc`)?.value || null;
+    payload[key+'_supervisor'] = document.getElementById(`p-${key}-sup`)?.value || null;
+    payload[key+'_expected']   = document.getElementById(`p-${key}-exp`)?.value || null;
+    const hrs = parseFloat(document.getElementById(`p-${key}-hrs`)?.value) || 0;
+    payload[key+'_actual'] = hrs;
+    totalProj += hrs;
+  });
+  payload.total_projected = totalProj;
+
+  const { error } = await db.from('weekly_logs').upsert(payload, { onConflict: 'student_id,week_start' });
+
+  if (error) {
+    statusEl.textContent = 'Error saving: ' + error.message;
+    statusEl.className = 'status-msg error';
+    btn.disabled = false;
+    btn.textContent = 'Save Projected Schedule';
+  } else {
+    const { data } = await db.from('weekly_logs').select('*').eq('student_id', currentUser.id).eq('week_start', currentWeekStart).maybeSingle();
+    existingLog = data;
+    buildProjectedGrid(data);
+    buildActualGrid(data);
+    updatePhaseUI(data);
+    statusEl.textContent = 'Projected schedule saved!';
+    statusEl.className = 'status-msg success';
+  }
+}
+
+async function submitActual() {
+  const btn = document.getElementById('submit-actual-btn');
+  const statusEl = document.getElementById('actual-status');
+  btn.disabled = true;
+  btn.textContent = 'Submitting…';
+  statusEl.className = 'status-msg';
+
+  const payload = { student_id: currentUser.id, week_start: currentWeekStart, actual_submitted_at: new Date().toISOString() };
+  let totalActual = 0;
+  DAYS.forEach(({key}) => {
+    payload[key+'_location']   = document.getElementById(`a-${key}-loc`)?.value || null;
+    payload[key+'_supervisor'] = document.getElementById(`a-${key}-sup`)?.value || null;
+    const hrs = parseFloat(document.getElementById(`a-${key}-hrs`)?.value) || 0;
+    payload[key+'_actual'] = hrs;
+    totalActual += hrs;
+  });
+  payload.total_actual = totalActual;
+  payload.key_task = document.getElementById('key-task')?.value || null;
+
+  const { error } = await db.from('weekly_logs').upsert(payload, { onConflict: 'student_id,week_start' });
+
+  if (error) {
+    statusEl.textContent = 'Error submitting: ' + error.message;
+    statusEl.className = 'status-msg error';
+    btn.disabled = false;
+    btn.textContent = 'Submit Hours Log';
+  } else {
+    const { data } = await db.from('weekly_logs').select('*').eq('student_id', currentUser.id).eq('week_start', currentWeekStart).maybeSingle();
+    existingLog = data;
+    buildActualGrid(data);
+    updatePhaseUI(data);
+    statusEl.textContent = `Hours logged! Total this week: ${totalActual.toFixed(1)} hours. Don't forget to submit your weekly reflection.`;
+    statusEl.className = 'status-msg success';
+  }
+}
+
+async function signOut() {
+  await db.auth.signOut();
+  window.location.href = 'login.html';
+}
+
+db.auth.onAuthStateChange(async (event, session) => {
+  if (!session) { window.location.href = 'login.html'; return; }
+  currentUser = session.user;
+
+  const firstName = session.user.user_metadata?.given_name || session.user.email.split('@')[0];
+  document.getElementById('nav-name').textContent = firstName;
+
+  const monday = getMondayOf(new Date());
+  currentWeekStart = monday.toISOString().split('T')[0];
+  const sunday = new Date(monday); sunday.setDate(monday.getDate() + 6);
+  document.getElementById('week-display').textContent = `${fmtDate(monday)} – ${fmtDate(sunday)}`;
+
+  const { data: log } = await db.from('weekly_logs').select('*').eq('student_id', currentUser.id).eq('week_start', currentWeekStart).maybeSingle();
+  existingLog = log;
+
+  buildProjectedGrid(log);
+  buildActualGrid(log);
+  updatePhaseUI(log);
+
+  document.getElementById('loading-overlay').style.display = 'none';
+});
+</script>
+</body>
+</html>
