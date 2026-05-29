@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Open+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
   <script>
     tailwind.config = {
       theme: { extend: {
@@ -158,6 +159,11 @@
 <script>
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxeHACK_6TtpOYYpo32qM5AGa962uiHOnE8-UF13x8hDqjeozKwpXbYtL7bOqTbZoBwNg/exec';
 
+const _SB = supabase.createClient(
+  'https://bsgrkpykysvqcdqikcym.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJzZ3JrcHlreXN2cWNkcWlrY3ltIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk1MTE5NzUsImV4cCI6MjA5NTA4Nzk3NX0.brdA4f7v0GC89fRXPTVPZV11KIdZxXyCkLTWWsoe0o0'
+);
+
 const BPS_LOGO    = 'https://res.cloudinary.com/dikkdclum/image/upload/v1778676762/field-experience/logos/bps101.png';
 const LIB_LOGO    = 'https://res.cloudinary.com/dikkdclum/image/upload/v1778676763/field-experience/logos/batavia-library.png';
 const ORGANIC_LOGO= 'https://res.cloudinary.com/dikkdclum/image/upload/v1778676763/field-experience/logos/organic-life.png';
@@ -232,7 +238,7 @@ function normalizeCluster(raw) {
 let allPositions = [];
 
 function buildCard(b, idx) {
-  const logoUrl = getLogoUrl(b);
+  const logoUrl = b.logo || getLogoUrl(b);
   const isBps = isBpsLogo(b);
   const logoBg = isBps ? '#AC161D' : '#f9fafb';
   const clusterId = normalizeCluster(b.clusterId || b.sector || '');
@@ -358,49 +364,85 @@ function downloadAll() {
   window.print();
 }
 
-async function loadPositions() {
-  try {
-    const res = await fetch(APPS_SCRIPT_URL);
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const rows = await res.json();
-    const data = Array.isArray(rows) ? rows : [];
+function normalizeRow(row) {
+  const sector = (row['Industry/Sector:'] || '').trim();
+  return {
+    name:            (row['Company Name']||'').trim(),
+    sector,
+    website:         (row['Company Website']||'').trim(),
+    logo:            (row['Company Logo ']||'').trim(),
+    mission:         (row['Brief Mission Statement']||'').trim(),
+    role:            (row['Internship Role Title  (e.g., marketing assistant, shadow, architect). ']||'').trim(),
+    tasks:           (row['Primary Tasks & Responsibilities (Use Bullet Points)']||'').trim(),
+    skills:          (row['Top Skills Student will develop']||row['Top 3 Skills Student will develop']||'').trim(),
+    environment:     (row['Work Environment']||'').trim(),
+    compensation:    (row['Compensation - Hourly, Scholarship, stipend, etc']||'').trim(),
+    hours:           (row['Weekly Time Commitment']||'').trim(),
+    reqs:            (row['Student Requirements']||'').trim(),
+    specificReqs:    (row['What are the specific requirements?']||'').trim(),
+    numStudents:     (row['Number of students Requested']||'').trim(),
+    mentorName:      (row['Primary Mentor Name']||'').trim(),
+    mentorEmail:     (row['Mentor Email']||'').trim(),
+    appLink:         (row['Direct Application Link (If you have your own portal that you require).']||'').trim(),
+    appInstructions: (row['Application Instructions']||'').trim(),
+    idealCandidate:  (row['What is your ideal candidate?']||'').trim(),
+    otherInfo:       (row['Any other important information to share']||'').trim(),
+    clusterId:       normalizeCluster(sector),
+  };
+}
 
-    const normalized = data.map((row, idx) => {
-      const sector = (row['Industry/Sector:'] || '').trim();
+async function loadFromSupabase() {
+  try {
+    const { data, error } = await _SB.from('job_listings').select('*').eq('is_active', true);
+    if (error || !data || !data.length) return [];
+    return data.map(row => {
+      const sector = (row.industry || '').split(',')[0].trim();
       return {
-        idx,
-        name:            (row['Company Name']||'').trim(),
+        name:            (row.company_name || '').trim(),
         sector,
-        website:         (row['Company Website']||'').trim(),
-        logo:            (row['Company Logo ']||'').trim(),
-        mission:         (row['Brief Mission Statement']||'').trim(),
-        role:            (row['Internship Role Title  (e.g., marketing assistant, shadow, architect). ']||'').trim(),
-        tasks:           (row['Primary Tasks & Responsibilities (Use Bullet Points)']||'').trim(),
-        skills:          (row['Top Skills Student will develop']||row['Top 3 Skills Student will develop']||'').trim(),
-        environment:     (row['Work Environment']||'').trim(),
-        compensation:    (row['Compensation - Hourly, Scholarship, stipend, etc']||'').trim(),
-        hours:           (row['Weekly Time Commitment']||'').trim(),
-        reqs:            (row['Student Requirements']||'').trim(),
-        specificReqs:    (row['What are the specific requirements?']||'').trim(),
-        numStudents:     (row['Number of students Requested']||'').trim(),
-        mentorName:      (row['Primary Mentor Name']||'').trim(),
-        mentorEmail:     (row['Mentor Email']||'').trim(),
-        appLink:         (row['Direct Application Link (If you have your own portal that you require).']||'').trim(),
-        appInstructions: (row['Application Instructions']||'').trim(),
-        idealCandidate:  (row['What is your ideal candidate?']||'').trim(),
-        otherInfo:       (row['Any other important information to share']||'').trim(),
+        website:         (row.company_website || '').trim(),
+        logo:            (row.company_logo || '').trim(),
+        mission:         (row.mission_statement || '').trim(),
+        role:            (row.role_title || '').trim(),
+        tasks:           (row.tasks || '').trim(),
+        skills:          (row.top_skills || '').trim(),
+        environment:     (row.work_environment || '').trim(),
+        compensation:    (row.compensation || '').trim(),
+        hours:           (row.weekly_commitment || '').trim(),
+        reqs:            (row.student_requirements || '').trim(),
+        specificReqs:    (row.specific_requirements || '').trim(),
+        numStudents:     row.num_students ? String(row.num_students) : '',
+        mentorName:      (row.mentor_name || '').trim(),
+        mentorEmail:     (row.mentor_email || '').trim(),
+        appLink:         (row.application_link || '').trim(),
+        appInstructions: (row.application_instructions || '').trim(),
+        idealCandidate:  (row.ideal_candidate || '').trim(),
+        otherInfo:       (row.other_info || '').trim(),
         clusterId:       normalizeCluster(sector),
       };
-    }).filter(b => b.name);
+    });
+  } catch(e) { return []; }
+}
 
-    if (normalized.length > 0) {
-      allPositions = normalized;
-      render();
-    } else {
-      throw new Error('empty response');
-    }
-  } catch(e) {
-    console.warn('Sheet fetch failed, using static data:', e.message);
+async function loadPositions() {
+  const [sbRows, sheetRows] = await Promise.allSettled([
+    loadFromSupabase(),
+    fetch(APPS_SCRIPT_URL).then(r => r.ok ? r.json() : Promise.reject()).then(rows =>
+      (Array.isArray(rows) ? rows : []).map(normalizeRow).filter(b => b.name)
+    ),
+  ]).then(results => results.map(r => r.status === 'fulfilled' ? r.value : []));
+
+  // Supabase wins on name collision
+  const sbNames = new Set(sbRows.map(r => r.name.toLowerCase()));
+  const merged = [
+    ...sbRows,
+    ...sheetRows.filter(r => !sbNames.has(r.name.toLowerCase())),
+  ].map((p, idx) => ({ ...p, idx }));
+
+  if (merged.length > 0) {
+    allPositions = merged;
+    render();
+  } else {
     allPositions = [...STATIC_BUSINESSES];
     render();
   }
