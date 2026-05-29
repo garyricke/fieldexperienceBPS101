@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Submissions — Field Experience</title>
+  <link rel="icon" type="image/png" href="https://res.cloudinary.com/dsbllwpbh/image/upload/v1771966521/fieldexperience-favicon_jgdotp.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Open Sans',system-ui,sans-serif;background:#080e1a;color:#fff;min-height:100vh}
+    .font-heading{font-family:'Montserrat',system-ui,sans-serif}
+
+    /* Nav */
+    nav{background:rgba(8,14,26,.97);backdrop-filter:blur(12px);border-bottom:2px solid rgba(251,205,7,.2);
+        position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;
+        padding:0 1.5rem;height:56px}
+    .nav-left{display:flex;align-items:center;gap:1rem}
+    .back-btn{display:flex;align-items:center;gap:.4rem;font-family:'Montserrat',sans-serif;font-size:.7rem;
+              font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.4);
+              text-decoration:none;transition:color .15s}
+    .back-btn:hover{color:#fff}
+    .nav-title{font-family:'Montserrat',sans-serif;font-weight:800;font-size:.85rem;
+               letter-spacing:.04em;text-transform:uppercase;color:#fff}
+    .teacher-badge{background:rgba(251,205,7,.15);color:#FBCD07;font-family:'Montserrat',sans-serif;
+                   font-size:.62rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
+                   padding:.25rem .6rem;border-radius:999px;border:1px solid rgba(251,205,7,.3)}
+    .logout-btn{font-family:'Montserrat',sans-serif;font-size:.7rem;font-weight:700;letter-spacing:.08em;
+                text-transform:uppercase;color:rgba(255,255,255,.35);background:none;border:none;
+                cursor:pointer;transition:color .15s}
+    .logout-btn:hover{color:#fff}
+
+    main{max-width:1100px;margin:0 auto;padding:2rem 1.5rem}
+
+    /* Header */
+    .page-header{margin-bottom:2rem}
+    .page-title{font-family:'Montserrat',sans-serif;font-weight:900;font-size:1.75rem;
+                color:#fff;letter-spacing:-.02em;margin-bottom:.375rem}
+    .page-sub{font-size:.875rem;color:rgba(255,255,255,.4)}
+
+    /* Stats strip */
+    .stats-strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:1rem;margin-bottom:2rem}
+    .stat-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:1.25rem}
+    .stat-num{font-family:'Montserrat',sans-serif;font-weight:900;font-size:1.75rem;color:#fff;line-height:1}
+    .stat-label{font-size:.72rem;color:rgba(255,255,255,.4);margin-top:.375rem;letter-spacing:.04em;text-transform:uppercase;font-family:'Montserrat',sans-serif;font-weight:600}
+
+    /* Tabs */
+    .tabs{display:flex;gap:.5rem;margin-bottom:1.5rem;border-bottom:1px solid rgba(255,255,255,.08);padding-bottom:0}
+    .tab-btn{font-family:'Montserrat',sans-serif;font-size:.78rem;font-weight:700;letter-spacing:.06em;
+             text-transform:uppercase;padding:.75rem 1.25rem;background:none;border:none;
+             color:rgba(255,255,255,.4);cursor:pointer;border-bottom:2px solid transparent;
+             margin-bottom:-1px;transition:all .15s}
+    .tab-btn.active{color:#FBCD07;border-bottom-color:#FBCD07}
+    .tab-btn:hover:not(.active){color:rgba(255,255,255,.7)}
+
+    /* Filter bar */
+    .filter-bar{display:flex;gap:.75rem;margin-bottom:1.25rem;flex-wrap:wrap}
+    .filter-input{padding:.6rem 1rem;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
+                  border-radius:8px;color:#fff;font-size:.82rem;font-family:'Open Sans',sans-serif;
+                  min-width:220px;transition:border-color .15s}
+    .filter-input::placeholder{color:rgba(255,255,255,.25)}
+    .filter-input:focus{outline:none;border-color:rgba(251,205,7,.5)}
+    .filter-select{padding:.6rem 1rem;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
+                   border-radius:8px;color:#fff;font-size:.82rem;font-family:'Open Sans',sans-serif;cursor:pointer}
+    .filter-select option{background:#1a2540;color:#fff}
+    .filter-count{font-family:'Montserrat',sans-serif;font-size:.72rem;font-weight:700;
+                  color:rgba(255,255,255,.35);letter-spacing:.06em;text-transform:uppercase;
+                  display:flex;align-items:center;margin-left:auto}
+
+    /* Table */
+    .submissions-table{width:100%;border-collapse:collapse}
+    .submissions-table th{font-family:'Montserrat',sans-serif;font-size:.65rem;font-weight:700;
+                          letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.35);
+                          padding:.75rem 1rem;text-align:left;border-bottom:1px solid rgba(255,255,255,.06)}
+    .submissions-table td{padding:.875rem 1rem;border-bottom:1px solid rgba(255,255,255,.04);
+                          font-size:.82rem;vertical-align:middle}
+    .submissions-table tr:hover td{background:rgba(255,255,255,.03)}
+    .submissions-table tr.expanded td{background:rgba(251,205,7,.04)}
+
+    /* Status badges */
+    .badge{font-family:'Montserrat',sans-serif;font-size:.6rem;font-weight:700;letter-spacing:.08em;
+           text-transform:uppercase;padding:.25rem .6rem;border-radius:999px;white-space:nowrap}
+    .badge-complete{background:rgba(34,197,94,.15);color:#4ade80;border:1px solid rgba(34,197,94,.25)}
+    .badge-partial{background:rgba(251,191,36,.12);color:#fbbf24;border:1px solid rgba(251,191,36,.25)}
+    .badge-pending{background:rgba(255,255,255,.06);color:rgba(255,255,255,.4);border:1px solid rgba(255,255,255,.1)}
+
+    /* Student cell */
+    .student-name{font-weight:600;color:#fff;font-size:.85rem}
+    .student-email{font-size:.72rem;color:rgba(255,255,255,.35);margin-top:.1rem}
+
+    /* Week cell */
+    .week-val{font-family:'Montserrat',sans-serif;font-weight:700;font-size:.82rem;color:rgba(255,255,255,.8)}
+
+    /* Hours */
+    .hours-val{font-family:'Montserrat',sans-serif;font-weight:800;font-size:1rem;color:#fff}
+    .hours-sub{font-size:.7rem;color:rgba(255,255,255,.35)}
+
+    /* Expand button */
+    .expand-btn{background:none;border:none;color:rgba(255,255,255,.3);cursor:pointer;
+                font-size:.75rem;padding:.25rem .5rem;border-radius:5px;transition:all .15s;
+                font-family:'Montserrat',sans-serif;font-weight:700;letter-spacing:.04em}
+    .expand-btn:hover{color:#FBCD07;background:rgba(251,205,7,.08)}
+
+    /* Expanded detail row */
+    .detail-row{display:none}
+    .detail-row.open{display:table-row}
+    .detail-panel{background:rgba(255,255,255,.03);border-radius:10px;padding:1.25rem;margin:.25rem 0 .75rem}
+    .detail-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:.875rem}
+    .detail-item{}
+    .detail-label{font-family:'Montserrat',sans-serif;font-size:.62rem;font-weight:700;
+                  letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:.3rem}
+    .detail-val{font-size:.82rem;color:rgba(255,255,255,.8);line-height:1.5}
+
+    /* Day grid in detail */
+    .day-table{width:100%;border-collapse:collapse;margin-top:.75rem;font-size:.78rem}
+    .day-table th{font-family:'Montserrat',sans-serif;font-size:.6rem;font-weight:700;letter-spacing:.08em;
+                  text-transform:uppercase;color:rgba(255,255,255,.3);padding:.4rem .625rem;text-align:left}
+    .day-table td{padding:.4rem .625rem;border-top:1px solid rgba(255,255,255,.04);color:rgba(255,255,255,.7)}
+    .day-table tr:hover td{background:rgba(255,255,255,.03)}
+    .day-hours{font-family:'Montserrat',sans-serif;font-weight:700;color:#fff}
+    .zero-hours{color:rgba(255,255,255,.2)}
+
+    /* Reflection answers */
+    .reflection-answers{display:flex;flex-direction:column;gap:1rem}
+    .qa-block{}
+    .qa-q{font-family:'Montserrat',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:.08em;
+          text-transform:uppercase;color:rgba(251,205,7,.7);margin-bottom:.3rem}
+    .qa-a{font-size:.82rem;color:rgba(255,255,255,.75);line-height:1.6;white-space:pre-wrap}
+    .teacher-note-block{background:rgba(172,22,29,.12);border:1px solid rgba(172,22,29,.25);
+                        border-radius:8px;padding:.875rem 1rem;margin-top:.75rem}
+    .teacher-note-label{font-family:'Montserrat',sans-serif;font-size:.62rem;font-weight:700;
+                        letter-spacing:.1em;text-transform:uppercase;color:#f87171;margin-bottom:.375rem}
+    .teacher-note-text{font-size:.82rem;color:rgba(255,255,255,.75);line-height:1.5}
+
+    /* Skill pill */
+    .skill-tag{display:inline-block;background:rgba(172,22,29,.2);border:1px solid rgba(172,22,29,.3);
+               color:#f87171;font-family:'Montserrat',sans-serif;font-size:.65rem;font-weight:700;
+               letter-spacing:.06em;text-transform:uppercase;padding:.25rem .625rem;border-radius:999px}
+
+    /* Empty state */
+    .empty-state{text-align:center;padding:4rem 2rem;color:rgba(255,255,255,.25)}
+    .empty-icon{font-size:2.5rem;margin-bottom:1rem}
+    .empty-text{font-family:'Montserrat',sans-serif;font-weight:700;font-size:.875rem;letter-spacing:.04em}
+
+    /* Loading */
+    #loading-overlay{position:fixed;inset:0;background:#080e1a;z-index:999;
+                     display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1rem}
+    .spinner{width:36px;height:36px;border:3px solid rgba(255,255,255,.1);border-top-color:#FBCD07;
+             border-radius:50%;animation:spin .8s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .loading-text{font-family:'Montserrat',sans-serif;font-size:.75rem;font-weight:600;
+                  color:rgba(255,255,255,.3);letter-spacing:.1em;text-transform:uppercase}
+
+    @media(max-width:700px){
+      .hide-sm{display:none}
+      .filter-input{min-width:0;flex:1}
+    }
+  </style>
+</head>
+<body>
+
+<div id="loading-overlay">
+  <div class="spinner"></div>
+  <p class="loading-text">Loading submissions…</p>
+</div>
+
+<nav>
+  <div class="nav-left">
+    <a href="teacher-hub.html" class="back-btn font-heading">
+      <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/></svg>
+      Teacher Hub
+    </a>
+    <span style="color:rgba(255,255,255,.15);font-size:.8rem">|</span>
+    <span class="nav-title font-heading">Student Submissions</span>
+    <span class="teacher-badge font-heading">Teacher</span>
+  </div>
+  <button class="logout-btn font-heading" onclick="logout()">Log Out</button>
+</nav>
+
+<main>
+  <div class="page-header">
+    <h1 class="page-title font-heading">Student Submissions</h1>
+    <p class="page-sub">All weekly hours logs and reflections submitted by students.</p>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-strip">
+    <div class="stat-card">
+      <div class="stat-num font-heading" id="stat-students">—</div>
+      <div class="stat-label font-heading">Students</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num font-heading" id="stat-logs">—</div>
+      <div class="stat-label font-heading">Hours Logs</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num font-heading" id="stat-reflections">—</div>
+      <div class="stat-label font-heading">Reflections</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num font-heading" id="stat-hours">—</div>
+      <div class="stat-label font-heading">Total Hours Logged</div>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab-btn active font-heading" onclick="switchTab('logs',this)">📅 Hours Logs</button>
+    <button class="tab-btn font-heading" onclick="switchTab('reflections',this)">💭 Reflections</button>
+  </div>
+
+  <!-- Hours Logs tab -->
+  <div id="tab-logs">
+    <div class="filter-bar">
+      <input class="filter-input" id="log-search" placeholder="Search by student name or email…" oninput="renderLogs()">
+      <select class="filter-select" id="log-week" onchange="renderLogs()">
+        <option value="">All weeks</option>
+      </select>
+      <span class="filter-count font-heading" id="log-count"></span>
+    </div>
+    <div style="overflow-x:auto">
+      <table class="submissions-table" id="logs-table">
+        <thead>
+          <tr>
+            <th>Student</th>
+            <th>Week Of</th>
+            <th>Actual Hours</th>
+            <th class="hide-sm">Key Task</th>
+            <th>Status</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="logs-tbody"></tbody>
+      </table>
+    </div>
+    <div class="empty-state" id="logs-empty" style="display:none">
+      <div class="empty-icon">📋</div>
+      <div class="empty-text font-heading">No hours logs found</div>
+    </div>
+  </div>
+
+  <!-- Reflections tab -->
+  <div id="tab-reflections" style="display:none">
+    <div class="filter-bar">
+      <input class="filter-input" id="refl-search" placeholder="Search by student name or email…" oninput="renderReflections()">
+      <select class="filter-select" id="refl-week" onchange="renderReflections()">
+        <option value="">All weeks</option>
+      </select>
+      <span class="filter-count font-heading" id="refl-count"></span>
+    </div>
+    <div style="overflow-x:auto">
+      <table class="submissions-table" id="reflections-table">
+        <thead>
+          <tr>
+            <th>Student</th>
+            <th>Week Of</th>
+            <th>Skill</th>
+            <th class="hide-sm">Submitted</th>
+            <th class="hide-sm">Note</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="reflections-tbody"></tbody>
+      </table>
+    </div>
+    <div class="empty-state" id="reflections-empty" style="display:none">
+      <div class="empty-icon">💭</div>
+      <div class="empty-text font-heading">No reflections found</div>
+    </div>
+  </div>
+
+</main>
+
+<script>
+const SUPABASE_URL = 'https://bsgrkpykysvqcdqikcym.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJzZ3JrcHlreXN2cWNkcWlrY3ltIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk1MTE5NzUsImV4cCI6MjA5NTA4Nzk3NX0.brdA4f7v0GC89fRXPTVPZV11KIdZxXyCkLTWWsoe0o0';
+const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+const DAYS = ['mon','tue','wed','thu','fri','sat','sun'];
+const DAY_LABELS = { mon:'Monday', tue:'Tuesday', wed:'Wednesday', thu:'Thursday', fri:'Friday', sat:'Saturday', sun:'Sunday' };
+
+let allLogs = [];
+let allReflections = [];
+
+function fmtWeek(dateStr) {
+  if (!dateStr) return '—';
+  const d = new Date(dateStr + 'T12:00:00');
+  return d.toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' });
+}
+
+function fmtDateTime(ts) {
+  if (!ts) return '—';
+  return new Date(ts).toLocaleDateString('en-US', { month:'short', day:'numeric', hour:'numeric', minute:'2-digit' });
+}
+
+function studentDisplay(row) {
+  const name = row.student_name || row.student_email?.split('@')[0] || 'Unknown Student';
+  const email = row.student_email || '';
+  return { name, email };
+}
+
+function switchTab(tab, btn) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tab-logs').style.display        = tab === 'logs'        ? '' : 'none';
+  document.getElementById('tab-reflections').style.display = tab === 'reflections' ? '' : 'none';
+}
+
+function populateWeekFilters() {
+  const logWeeks = [...new Set(allLogs.map(r => r.week_start))].sort().reverse();
+  const reflWeeks = [...new Set(allReflections.map(r => r.week_start))].sort().reverse();
+
+  const logSel = document.getElementById('log-week');
+  logSel.innerHTML = '<option value="">All weeks</option>';
+  logWeeks.forEach(w => { const o = document.createElement('option'); o.value = w; o.textContent = fmtWeek(w); logSel.appendChild(o); });
+
+  const reflSel = document.getElementById('refl-week');
+  reflSel.innerHTML = '<option value="">All weeks</option>';
+  reflWeeks.forEach(w => { const o = document.createElement('option'); o.value = w; o.textContent = fmtWeek(w); reflSel.appendChild(o); });
+}
+
+function renderLogs() {
+  const search = document.getElementById('log-search').value.toLowerCase();
+  const week   = document.getElementById('log-week').value;
+
+  let filtered = allLogs.filter(r => {
+    const { name, email } = studentDisplay(r);
+    const matchSearch = !search || name.toLowerCase().includes(search) || email.toLowerCase().includes(search);
+    const matchWeek   = !week || r.week_start === week;
+    return matchSearch && matchWeek;
+  });
+
+  document.getElementById('log-count').textContent = `${filtered.length} result${filtered.length !== 1 ? 's' : ''}`;
+
+  const tbody = document.getElementById('logs-tbody');
+  tbody.innerHTML = '';
+
+  if (!filtered.length) {
+    document.getElementById('logs-empty').style.display = '';
+    document.getElementById('logs-table').style.display = 'none';
+    return;
+  }
+  document.getElementById('logs-empty').style.display = 'none';
+  document.getElementById('logs-table').style.display = '';
+
+  filtered.forEach((row, i) => {
+    const { name, email } = studentDisplay(row);
+    const projDone = !!row.projected_submitted_at;
+    const actDone  = !!row.actual_submitted_at;
+    const status   = actDone ? 'complete' : projDone ? 'partial' : 'pending';
+    const statusLabel = actDone ? 'Complete' : projDone ? 'Projected Only' : 'Pending';
+    const keyTaskPreview = row.key_task ? (row.key_task.length > 50 ? row.key_task.slice(0,50)+'…' : row.key_task) : '—';
+    const rowId = `log-detail-${i}`;
+
+    tbody.innerHTML += `
+      <tr style="cursor:pointer" onclick="toggleDetail('${rowId}',this)">
+        <td>
+          <div class="student-name">${name}</div>
+          <div class="student-email">${email}</div>
+        </td>
+        <td><span class="week-val font-heading">${fmtWeek(row.week_start)}</span></td>
+        <td>
+          <span class="hours-val font-heading">${(row.total_actual||0).toFixed(1)}</span>
+          <div class="hours-sub">of ${(row.total_projected||0).toFixed(1)} projected</div>
+        </td>
+        <td class="hide-sm" style="color:rgba(255,255,255,.6);max-width:200px">${keyTaskPreview}</td>
+        <td><span class="badge badge-${status} font-heading">${statusLabel}</span></td>
+        <td><button class="expand-btn font-heading" id="btn-${rowId}">▼ Details</button></td>
+      </tr>
+      <tr class="detail-row" id="${rowId}">
+        <td colspan="6" style="padding:0 1rem .75rem">
+          ${buildLogDetail(row)}
+        </td>
+      </tr>`;
+  });
+}
+
+function buildLogDetail(row) {
+  const hasAny = DAYS.some(d => (row[d+'_actual']||0) > 0 || row[d+'_location']);
+  let dayRows = '';
+  DAYS.forEach(d => {
+    const hrs = parseFloat(row[d+'_actual']||0);
+    const loc = row[d+'_location'] || '';
+    const sup = row[d+'_supervisor'] || '';
+    const exp = row[d+'_expected'] || '';
+    if (!hrs && !loc) return;
+    dayRows += `<tr>
+      <td>${DAY_LABELS[d]}</td>
+      <td>${loc || '<span style="color:rgba(255,255,255,.2)">—</span>'}</td>
+      <td>${sup || '<span style="color:rgba(255,255,255,.2)">—</span>'}</td>
+      <td>${exp || '<span style="color:rgba(255,255,255,.2)">—</span>'}</td>
+      <td class="${hrs ? 'day-hours font-heading' : 'zero-hours'}">${hrs ? hrs.toFixed(1)+' hrs' : '—'}</td>
+    </tr>`;
+  });
+
+  return `<div class="detail-panel">
+    ${hasAny ? `<table class="day-table">
+      <thead><tr><th>Day</th><th>Location</th><th>Supervisor</th><th>Expected</th><th>Actual</th></tr></thead>
+      <tbody>${dayRows || '<tr><td colspan="5" style="color:rgba(255,255,255,.2);padding:.75rem">No daily entries recorded</td></tr>'}</tbody>
+    </table>` : '<p style="font-size:.82rem;color:rgba(255,255,255,.3)">No daily entries recorded yet.</p>'}
+    ${row.key_task ? `<div style="margin-top:1rem">
+      <div class="detail-label font-heading">Key Task / Accomplishment</div>
+      <div class="detail-val" style="white-space:pre-wrap">${row.key_task}</div>
+    </div>` : ''}
+    <div style="margin-top:1rem;display:flex;gap:1.5rem;flex-wrap:wrap">
+      <div><div class="detail-label font-heading">Projected submitted</div><div class="detail-val">${fmtDateTime(row.projected_submitted_at)}</div></div>
+      <div><div class="detail-label font-heading">Actual submitted</div><div class="detail-val">${fmtDateTime(row.actual_submitted_at)}</div></div>
+    </div>
+  </div>`;
+}
+
+function renderReflections() {
+  const search = document.getElementById('refl-search').value.toLowerCase();
+  const week   = document.getElementById('refl-week').value;
+
+  let filtered = allReflections.filter(r => {
+    const { name, email } = studentDisplay(r);
+    const matchSearch = !search || name.toLowerCase().includes(search) || email.toLowerCase().includes(search);
+    const matchWeek   = !week || r.week_start === week;
+    return matchSearch && matchWeek;
+  });
+
+  document.getElementById('refl-count').textContent = `${filtered.length} result${filtered.length !== 1 ? 's' : ''}`;
+
+  const tbody = document.getElementById('reflections-tbody');
+  tbody.innerHTML = '';
+
+  if (!filtered.length) {
+    document.getElementById('reflections-empty').style.display = '';
+    document.getElementById('reflections-table').style.display = 'none';
+    return;
+  }
+  document.getElementById('reflections-empty').style.display = 'none';
+  document.getElementById('reflections-table').style.display = '';
+
+  filtered.forEach((row, i) => {
+    const { name, email } = studentDisplay(row);
+    const rowId = `refl-detail-${i}`;
+
+    tbody.innerHTML += `
+      <tr style="cursor:pointer" onclick="toggleDetail('${rowId}',this)">
+        <td>
+          <div class="student-name">${name}</div>
+          <div class="student-email">${email}</div>
+        </td>
+        <td><span class="week-val font-heading">${fmtWeek(row.week_start)}</span></td>
+        <td>${row.employability_skill ? `<span class="skill-tag font-heading">${row.employability_skill}</span>` : '<span style="color:rgba(255,255,255,.25)">—</span>'}</td>
+        <td class="hide-sm" style="color:rgba(255,255,255,.4);font-size:.78rem">${fmtDateTime(row.created_at)}</td>
+        <td class="hide-sm">${row.teacher_note ? '<span style="color:#f87171;font-size:.75rem;font-weight:600">⚑ Note</span>' : '<span style="color:rgba(255,255,255,.15)">—</span>'}</td>
+        <td><button class="expand-btn font-heading" id="btn-${rowId}">▼ Read</button></td>
+      </tr>
+      <tr class="detail-row" id="${rowId}">
+        <td colspan="6" style="padding:0 1rem .75rem">
+          ${buildReflectionDetail(row)}
+        </td>
+      </tr>`;
+  });
+}
+
+function buildReflectionDetail(row) {
+  const QA = [
+    ['What they worked on', row.tasks_worked_on],
+    ['Key learning', row.key_learning],
+    ['Highlight', row.highlight],
+    ['Challenges', row.challenges],
+    ['Impact', row.impact],
+    ['Area to improve next week', row.improvement_focus],
+    ['How they demonstrated ' + (row.employability_skill||'the skill'), row.skill_demonstration],
+  ].filter(([,v]) => v);
+
+  const qaHtml = QA.map(([q,a]) => `
+    <div class="qa-block">
+      <div class="qa-q font-heading">${q}</div>
+      <div class="qa-a">${a}</div>
+    </div>`).join('');
+
+  const noteHtml = row.teacher_note ? `
+    <div class="teacher-note-block">
+      <div class="teacher-note-label font-heading">Note for teacher</div>
+      <div class="teacher-note-text">${row.teacher_note}</div>
+    </div>` : '';
+
+  return `<div class="detail-panel">
+    <div class="reflection-answers">${qaHtml}</div>
+    ${noteHtml}
+  </div>`;
+}
+
+function toggleDetail(rowId, clickedTr) {
+  const detailRow = document.getElementById(rowId);
+  const btn = document.getElementById('btn-' + rowId);
+  const isOpen = detailRow.classList.contains('open');
+  detailRow.classList.toggle('open', !isOpen);
+  if (btn) btn.textContent = isOpen ? '▼ Details' : '▲ Close';
+  clickedTr.classList.toggle('expanded', !isOpen);
+}
+
+async function logout() {
+  await db.auth.signOut();
+  window.location.href = 'login.html';
+}
+
+db.auth.onAuthStateChange(async (event, session) => {
+  if (!session) { window.location.href = 'login.html'; return; }
+
+  const { data: teacher } = await db.from('teachers').select('email').eq('email', session.user.email).maybeSingle();
+  if (!teacher) { window.location.href = 'dashboard.html'; return; }
+
+  // Load all data
+  const [{ data: logs }, { data: reflections }] = await Promise.all([
+    db.from('weekly_logs').select('*').order('week_start', { ascending: false }),
+    db.from('weekly_reflections').select('*').order('week_start', { ascending: false }),
+  ]);
+
+  allLogs        = logs || [];
+  allReflections = reflections || [];
+
+  // Stats
+  const uniqueStudents = new Set([...allLogs.map(r=>r.student_id), ...allReflections.map(r=>r.student_id)]);
+  const totalHours = allLogs.reduce((s,r) => s + (parseFloat(r.total_actual)||0), 0);
+  document.getElementById('stat-students').textContent    = uniqueStudents.size;
+  document.getElementById('stat-logs').textContent        = allLogs.length;
+  document.getElementById('stat-reflections').textContent = allReflections.length;
+  document.getElementById('stat-hours').textContent       = totalHours.toFixed(1);
+
+  populateWeekFilters();
+  renderLogs();
+  renderReflections();
+
+  document.getElementById('loading-overlay').style.display = 'none';
+});
+</script>
+</body>
+</html>

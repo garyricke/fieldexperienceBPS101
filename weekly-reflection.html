@@ -294,6 +294,8 @@ async function submitReflection(e) {
   const payload = {
     student_id:          currentUser.id,
     week_start:          currentWeekStart,
+    student_email:       currentUser.email,
+    student_name:        currentUser.user_metadata?.full_name || currentUser.user_metadata?.name || currentUser.email.split('@')[0],
     tasks_worked_on:     document.getElementById('q-tasks').value,
     key_learning:        document.getElementById('q-learning').value,
     highlight:           document.getElementById('q-highlight').value,

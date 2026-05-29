@@ -394,7 +394,9 @@ async function submitProjected() {
   btn.textContent = 'Saving…';
   statusEl.className = 'status-msg';
 
-  const payload = { student_id: currentUser.id, week_start: currentWeekStart, projected_submitted_at: new Date().toISOString() };
+  const payload = { student_id: currentUser.id, week_start: currentWeekStart, projected_submitted_at: new Date().toISOString(),
+    student_email: currentUser.email,
+    student_name: currentUser.user_metadata?.full_name || currentUser.user_metadata?.name || currentUser.email.split('@')[0] };
   let totalProj = 0;
   DAYS.forEach(({key}) => {
     payload[key+'_location']   = document.getElementById(`p-${key}-loc`)?.value || null;
@@ -431,7 +433,9 @@ async function submitActual() {
   btn.textContent = 'Submitting…';
   statusEl.className = 'status-msg';
 
-  const payload = { student_id: currentUser.id, week_start: currentWeekStart, actual_submitted_at: new Date().toISOString() };
+  const payload = { student_id: currentUser.id, week_start: currentWeekStart, actual_submitted_at: new Date().toISOString(),
+    student_email: currentUser.email,
+    student_name: currentUser.user_metadata?.full_name || currentUser.user_metadata?.name || currentUser.email.split('@')[0] };
   let totalActual = 0;
   DAYS.forEach(({key}) => {
     payload[key+'_location']   = document.getElementById(`a-${key}-loc`)?.value || null;
