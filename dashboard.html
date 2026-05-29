@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Dashboard — Field Experience</title>
+  <link rel="icon" type="image/png" href="https://res.cloudinary.com/dikkdclum/image/upload/v1778676762/field-experience/logos/bps101.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Open Sans',system-ui,sans-serif;background:#f5f6fa;color:#1c1f2e;min-height:100vh}
+    .font-heading{font-family:'Montserrat',system-ui,sans-serif}
+
+    /* ── NAV ── */
+    nav{background:#fff;border-bottom:1px solid #e5e7eb;position:sticky;top:0;z-index:50;
+        display:flex;align-items:center;justify-content:space-between;padding:0 1.5rem;height:60px}
+    .nav-logo{display:flex;align-items:center;gap:.75rem}
+    .nav-logo img{height:2rem;width:auto}
+    .nav-logo-text{font-family:'Montserrat',sans-serif;font-weight:800;font-size:.8rem;
+                   letter-spacing:.04em;text-transform:uppercase;color:#0e1520}
+    .nav-right{display:flex;align-items:center;gap:1rem}
+    .nav-greeting{font-size:.82rem;color:#6b7280}
+    .nav-greeting strong{color:#1c1f2e}
+    .sign-out-btn{font-family:'Montserrat',sans-serif;font-size:.7rem;font-weight:700;
+                  letter-spacing:.08em;text-transform:uppercase;color:#6b7280;background:none;
+                  border:1px solid #e5e7eb;border-radius:6px;padding:.4rem .875rem;cursor:pointer;
+                  transition:all .15s}
+    .sign-out-btn:hover{border-color:#AC161D;color:#AC161D}
+
+    /* ── LAYOUT ── */
+    main{max-width:1100px;margin:0 auto;padding:2rem 1.5rem}
+
+    /* ── HERO STRIP ── */
+    .hero-strip{
+      background:linear-gradient(135deg,#0e1520 0%,#1a2540 100%);
+      border-radius:16px;padding:2rem 2.5rem;margin-bottom:2rem;
+      display:flex;align-items:center;justify-content:space-between;gap:2rem;
+      position:relative;overflow:hidden;
+    }
+    .hero-strip::before{
+      content:'';position:absolute;right:-60px;top:-60px;
+      width:280px;height:280px;border-radius:50%;
+      background:radial-gradient(circle,rgba(172,22,29,.25) 0%,transparent 70%);
+    }
+    .hero-strip-left{position:relative;z-index:1}
+    .hero-strip h1{font-family:'Montserrat',sans-serif;font-weight:900;font-size:1.5rem;
+                   color:#fff;letter-spacing:-.01em;margin-bottom:.25rem}
+    .hero-strip p{font-size:.875rem;color:rgba(255,255,255,.55)}
+    .hero-strip-right{position:relative;z-index:1;text-align:right;flex-shrink:0}
+    .hours-ring-wrap{display:flex;flex-direction:column;align-items:center;gap:.25rem}
+    .hours-big{font-family:'Montserrat',sans-serif;font-weight:900;font-size:2.25rem;
+               color:#fff;line-height:1}
+    .hours-label{font-size:.7rem;color:rgba(255,255,255,.45);letter-spacing:.08em;text-transform:uppercase}
+    .hours-bar-wrap{width:140px;height:6px;background:rgba(255,255,255,.15);border-radius:999px;margin-top:.5rem}
+    .hours-bar{height:100%;background:#AC161D;border-radius:999px;transition:width .6s ease}
+
+    /* ── SECTION HEADER ── */
+    .section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem}
+    .section-title{font-family:'Montserrat',sans-serif;font-weight:800;font-size:.8rem;
+                   letter-spacing:.12em;text-transform:uppercase;color:#6b7280}
+    .section-link{font-family:'Montserrat',sans-serif;font-size:.7rem;font-weight:700;
+                  letter-spacing:.06em;text-transform:uppercase;color:#AC161D;text-decoration:none}
+    .section-link:hover{text-decoration:underline}
+
+    /* ── CARD BASE ── */
+    .card{background:#fff;border-radius:14px;border:1px solid #e5e7eb;overflow:hidden}
+
+    /* ── GRID ── */
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-bottom:2rem}
+    .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;margin-bottom:2rem}
+    @media(max-width:700px){.grid-2,.grid-3{grid-template-columns:1fr}}
+
+    /* ── QUICK ACTION CARDS ── */
+    .action-card{
+      background:#fff;border-radius:14px;border:1px solid #e5e7eb;
+      padding:1.5rem;display:flex;flex-direction:column;gap:.75rem;
+      text-decoration:none;color:inherit;transition:all .2s;cursor:pointer;
+    }
+    .action-card:hover{border-color:#AC161D;box-shadow:0 4px 20px rgba(172,22,29,.08);transform:translateY(-2px)}
+    .action-icon{width:2.5rem;height:2.5rem;border-radius:10px;display:flex;align-items:center;
+                 justify-content:center;font-size:1.1rem;flex-shrink:0}
+    .action-label{font-family:'Montserrat',sans-serif;font-weight:700;font-size:.875rem;color:#1c1f2e}
+    .action-sub{font-size:.78rem;color:#9ca3af;line-height:1.4}
+    .action-arrow{font-size:.8rem;color:#AC161D;font-weight:700;margin-top:auto}
+
+    /* ── BOOTCAMP PROGRESS CARD ── */
+    .bootcamp-card{padding:1.75rem}
+    .phase-row{display:flex;align-items:center;gap:1rem;padding:.875rem 0;border-bottom:1px solid #f3f4f6}
+    .phase-row:last-child{border-bottom:none}
+    .phase-dot{width:2rem;height:2rem;border-radius:50%;display:flex;align-items:center;
+               justify-content:center;flex-shrink:0;font-family:'Montserrat',sans-serif;
+               font-size:.7rem;font-weight:800}
+    .phase-dot.done{background:#22c55e;color:#fff}
+    .phase-dot.active{background:#AC161D;color:#fff}
+    .phase-dot.locked{background:#f3f4f6;color:#d1d5db}
+    .phase-info{flex:1}
+    .phase-name{font-family:'Montserrat',sans-serif;font-weight:700;font-size:.82rem;color:#1c1f2e}
+    .phase-progress{font-size:.72rem;color:#9ca3af;margin-top:.15rem}
+    .phase-pct{font-family:'Montserrat',sans-serif;font-weight:800;font-size:.82rem}
+    .phase-pct.done{color:#22c55e}
+    .phase-pct.active{color:#AC161D}
+    .phase-pct.locked{color:#d1d5db}
+
+    .overall-bar-wrap{margin-top:1.25rem;padding-top:1.25rem;border-top:1px solid #f3f4f6}
+    .overall-bar-label{display:flex;justify-content:space-between;margin-bottom:.5rem}
+    .overall-bar-label span{font-family:'Montserrat',sans-serif;font-size:.7rem;font-weight:700;
+                            letter-spacing:.06em;text-transform:uppercase;color:#6b7280}
+    .overall-bar-track{height:8px;background:#f3f4f6;border-radius:999px;overflow:hidden}
+    .overall-bar-fill{height:100%;background:linear-gradient(90deg,#AC161D,#d72429);
+                      border-radius:999px;transition:width .6s ease}
+
+    /* ── WEEKLY STATUS CARD ── */
+    .weekly-card{padding:1.75rem}
+    .week-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem}
+    .week-title{font-family:'Montserrat',sans-serif;font-weight:800;font-size:.95rem;color:#1c1f2e}
+    .week-badge{font-family:'Montserrat',sans-serif;font-size:.65rem;font-weight:700;
+                letter-spacing:.08em;text-transform:uppercase;padding:.3rem .75rem;border-radius:999px}
+    .badge-due{background:#fef3c7;color:#92400e}
+    .badge-done{background:#dcfce7;color:#166534}
+    .badge-open{background:#f3f4f6;color:#6b7280}
+
+    .checklist{display:flex;flex-direction:column;gap:.625rem}
+    .check-item{display:flex;align-items:center;gap:.75rem;font-size:.82rem}
+    .check-icon{width:1.25rem;height:1.25rem;border-radius:50%;display:flex;align-items:center;
+                justify-content:center;font-size:.65rem;flex-shrink:0}
+    .check-icon.done{background:#dcfce7;color:#22c55e}
+    .check-icon.pending{background:#f3f4f6;color:#9ca3af}
+    .check-icon.due{background:#fef3c7;color:#d97706}
+    .check-text.done{color:#6b7280;text-decoration:line-through}
+    .check-text.pending{color:#9ca3af}
+    .check-text.due{color:#1c1f2e;font-weight:600}
+
+    .week-cta{
+      display:block;margin-top:1.25rem;padding:.875rem 1rem;
+      background:#AC161D;color:#fff;border-radius:8px;
+      font-family:'Montserrat',sans-serif;font-size:.78rem;font-weight:700;
+      letter-spacing:.06em;text-transform:uppercase;text-align:center;
+      text-decoration:none;transition:background .15s;
+    }
+    .week-cta:hover{background:#b91c22}
+    .week-cta.secondary{background:#f3f4f6;color:#374151}
+    .week-cta.secondary:hover{background:#e5e7eb}
+
+    /* ── RECENT PORTFOLIO ── */
+    .portfolio-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.875rem}
+    @media(max-width:600px){.portfolio-grid{grid-template-columns:1fr 1fr}}
+    .portfolio-thumb{
+      aspect-ratio:1;border-radius:10px;background:#f3f4f6;
+      display:flex;align-items:center;justify-content:center;
+      font-size:1.5rem;overflow:hidden;border:1px solid #e5e7eb;
+      cursor:pointer;transition:all .2s;
+    }
+    .portfolio-thumb:hover{transform:scale(1.03);border-color:#AC161D}
+    .portfolio-thumb img{width:100%;height:100%;object-fit:cover}
+    .portfolio-add{
+      aspect-ratio:1;border-radius:10px;border:2px dashed #d1d5db;
+      display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.25rem;
+      cursor:pointer;transition:all .2s;text-decoration:none;
+    }
+    .portfolio-add:hover{border-color:#AC161D;background:#fef2f2}
+    .portfolio-add-icon{font-size:1.25rem;color:#9ca3af}
+    .portfolio-add-label{font-family:'Montserrat',sans-serif;font-size:.65rem;font-weight:700;
+                         letter-spacing:.06em;text-transform:uppercase;color:#9ca3af}
+    .portfolio-add:hover .portfolio-add-icon,.portfolio-add:hover .portfolio-add-label{color:#AC161D}
+
+    /* ── LOADING OVERLAY ── */
+    #loading-overlay{
+      position:fixed;inset:0;background:#f5f6fa;z-index:999;
+      display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1rem;
+    }
+    .spinner{width:40px;height:40px;border:3px solid #e5e7eb;border-top-color:#AC161D;
+             border-radius:50%;animation:spin .8s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .loading-text{font-family:'Montserrat',sans-serif;font-size:.78rem;font-weight:600;
+                  color:#9ca3af;letter-spacing:.06em;text-transform:uppercase}
+  </style>
+</head>
+<body>
+
+<!-- Loading overlay (shown until auth check completes) -->
+<div id="loading-overlay">
+  <div class="spinner"></div>
+  <p class="loading-text">Loading your dashboard…</p>
+</div>
+
+<!-- ── NAV ── -->
+<nav>
+  <div class="nav-logo">
+    <img src="https://res.cloudinary.com/dikkdclum/image/upload/v1778676762/field-experience/logos/bps101.png" alt="BPS101">
+    <span class="nav-logo-text font-heading">Field Experience</span>
+  </div>
+  <div class="nav-right">
+    <span class="nav-greeting">Welcome, <strong id="nav-name">—</strong></span>
+    <button class="sign-out-btn font-heading" onclick="signOut()">Sign out</button>
+  </div>
+</nav>
+
+<!-- ── MAIN ── -->
+<main>
+
+  <!-- Hero strip: name + hours progress -->
+  <div class="hero-strip">
+    <div class="hero-strip-left">
+      <h1 class="font-heading" id="greeting-name">Good morning.</h1>
+      <p id="placement-line">Loading your placement info…</p>
+    </div>
+    <div class="hero-strip-right">
+      <div class="hours-ring-wrap">
+        <div class="hours-big" id="hours-display">—</div>
+        <div class="hours-label">of 60 hours</div>
+        <div class="hours-bar-wrap">
+          <div class="hours-bar" id="hours-bar" style="width:0%"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick actions -->
+  <div class="section-header">
+    <span class="section-title font-heading">Quick Actions</span>
+  </div>
+  <div class="grid-3" style="margin-bottom:2rem">
+    <a href="weekly-log.html" class="action-card">
+      <div class="action-icon" style="background:#fef3c7">📅</div>
+      <div class="action-label font-heading">Weekly Log</div>
+      <div class="action-sub">Log your hours, location, and supervisor for this week.</div>
+      <div class="action-arrow font-heading">Submit log →</div>
+    </a>
+    <a href="weekly-reflection.html" class="action-card">
+      <div class="action-icon" style="background:#eff6ff">💭</div>
+      <div class="action-label font-heading">Weekly Reflection</div>
+      <div class="action-sub">Answer this week's reflection questions.</div>
+      <div class="action-arrow font-heading">Start reflection →</div>
+    </a>
+    <a href="portfolio.html" class="action-card">
+      <div class="action-icon" style="background:#fdf4ff">📁</div>
+      <div class="action-label font-heading">Portfolio</div>
+      <div class="action-sub">Upload photos, documents, and work samples.</div>
+      <div class="action-arrow font-heading">Add to portfolio →</div>
+    </a>
+  </div>
+
+  <!-- Bootcamp progress + Weekly status -->
+  <div class="grid-2" style="margin-bottom:2rem">
+
+    <!-- Bootcamp progress -->
+    <div>
+      <div class="section-header">
+        <span class="section-title font-heading">Bootcamp Progress</span>
+        <a href="bootcamp.html" class="section-link font-heading">Open bootcamp →</a>
+      </div>
+      <div class="card bootcamp-card">
+        <div id="phase-list">
+          <!-- Populated by JS -->
+          <div style="color:#9ca3af;font-size:.82rem;padding:.5rem 0">Loading progress…</div>
+        </div>
+        <div class="overall-bar-wrap">
+          <div class="overall-bar-label">
+            <span class="font-heading">Overall completion</span>
+            <span class="font-heading" id="overall-pct">0%</span>
+          </div>
+          <div class="overall-bar-track">
+            <div class="overall-bar-fill" id="overall-bar" style="width:0%"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- This week checklist -->
+    <div>
+      <div class="section-header">
+        <span class="section-title font-heading">This Week</span>
+        <span class="week-badge badge-open font-heading" id="week-badge">Loading…</span>
+      </div>
+      <div class="card weekly-card">
+        <div class="week-header">
+          <span class="week-title font-heading" id="week-range">Week of —</span>
+        </div>
+        <div class="checklist" id="week-checklist">
+          <div style="color:#9ca3af;font-size:.82rem">Loading…</div>
+        </div>
+        <a href="weekly-log.html" class="week-cta font-heading" id="week-cta">Submit this week's log</a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Recent portfolio -->
+  <div class="section-header">
+    <span class="section-title font-heading">Portfolio</span>
+    <a href="portfolio.html" class="section-link font-heading">View all →</a>
+  </div>
+  <div class="card" style="padding:1.75rem;margin-bottom:2rem">
+    <div class="portfolio-grid" id="portfolio-grid">
+      <!-- Add button always shows; recent items populated by JS -->
+      <a href="portfolio.html" class="portfolio-add">
+        <span class="portfolio-add-icon">+</span>
+        <span class="portfolio-add-label font-heading">Add item</span>
+      </a>
+    </div>
+    <p style="font-size:.75rem;color:#9ca3af;margin-top:1rem" id="portfolio-empty">
+      No items yet — add photos, documents, or links from your placement.
+    </p>
+  </div>
+
+</main>
+
+<script>
+const SUPABASE_URL = 'https://bsgrkpykysvqcdqikcym.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJzZ3JrcHlreXN2cWNkcWlrY3ltIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk1MTE5NzUsImV4cCI6MjA5NTA4Nzk3NX0.brdA4f7v0GC89fRXPTVPZV11KIdZxXyCkLTWWsoe0o0';
+const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+const PHASES = [
+  { phase:1, label:'Professional Identity', tasks:['p1_career_reflection','p1_professional_bio','p1_linkedin_draft','p1_email_signature','p1_digital_footprint'] },
+  { phase:2, label:'Build Your Materials',  tasks:['p2_resume_complete','p2_cover_letter','p2_elevator_pitch_script','p2_elevator_pitch_video'] },
+  { phase:3, label:'Land the Internship',   tasks:['p3_employer_research','p3_star_practice','p3_mock_interview','p3_real_interview','p3_placement_confirmed'] },
+  { phase:4, label:'Show Up Ready',         tasks:['p4_ethics_scenarios','p4_workplace_sim','p4_first_week_plan','p4_commitment'] },
+];
+const TOTAL_TASKS = PHASES.reduce((s,p) => s + p.tasks.length, 0);
+
+function getMondayOf(date) {
+  const d = new Date(date);
+  const day = d.getDay();
+  const diff = d.getDate() - day + (day === 0 ? -6 : 1);
+  d.setDate(diff);
+  d.setHours(0,0,0,0);
+  return d;
+}
+
+function fmtDate(d) {
+  return d.toLocaleDateString('en-US', { month:'short', day:'numeric' });
+}
+
+function greeting(name) {
+  const h = new Date().getHours();
+  const time = h < 12 ? 'morning' : h < 17 ? 'afternoon' : 'evening';
+  return `Good ${time}, ${name}.`;
+}
+
+async function signOut() {
+  await db.auth.signOut();
+  window.location.href = 'login.html';
+}
+
+async function loadDashboard(user) {
+  // Student profile
+  const { data: student } = await db.from('students').select('*').eq('id', user.id).maybeSingle();
+
+  const firstName = student?.first_name || user.user_metadata?.given_name || user.email.split('@')[0];
+  document.getElementById('nav-name').textContent = firstName;
+  document.getElementById('greeting-name').textContent = greeting(firstName);
+  document.getElementById('placement-line').textContent =
+    student?.placement_employer
+      ? `Placed at: ${student.placement_employer}${student.placement_address ? ' · ' + student.placement_address : ''}`
+      : 'No placement confirmed yet — complete bootcamp Phase 3.';
+
+  // Hours progress
+  const { data: logs } = await db.from('weekly_logs').select('total_actual').eq('student_id', user.id);
+  const totalHours = (logs || []).reduce((s, r) => s + (parseFloat(r.total_actual) || 0), 0);
+  const goal = student?.hours_goal || 60;
+  const pct = Math.min(100, Math.round((totalHours / goal) * 100));
+  document.getElementById('hours-display').textContent = totalHours.toFixed(1);
+  document.getElementById('hours-bar').style.width = pct + '%';
+
+  // Bootcamp progress
+  const { data: progress } = await db.from('bootcamp_progress').select('task_id,phase').eq('student_id', user.id);
+  const done = new Set((progress || []).map(r => r.task_id));
+  let totalDone = 0;
+  let firstUnlocked = false;
+
+  const phaseList = document.getElementById('phase-list');
+  phaseList.innerHTML = '';
+  PHASES.forEach(p => {
+    const pDone = p.tasks.filter(t => done.has(t)).length;
+    const pTotal = p.tasks.length;
+    const pPct = Math.round((pDone / pTotal) * 100);
+    totalDone += pDone;
+
+    // Phase is active if previous phase is complete OR it's phase 1
+    const prevPhaseDone = p.phase === 1 || PHASES[p.phase - 2].tasks.every(t => done.has(t));
+    const isActive = prevPhaseDone && pDone < pTotal;
+    const isDone   = pDone === pTotal;
+    const isLocked = !prevPhaseDone;
+
+    const dotClass  = isDone ? 'done' : isActive ? 'active' : 'locked';
+    const pctClass  = isDone ? 'done' : isActive ? 'active' : 'locked';
+    const pctLabel  = isDone ? '✓ Done' : isActive ? `${pDone}/${pTotal} tasks` : 'Locked';
+
+    phaseList.innerHTML += `
+      <div class="phase-row">
+        <div class="phase-dot ${dotClass} font-heading">${isDone ? '✓' : p.phase}</div>
+        <div class="phase-info">
+          <div class="phase-name font-heading">Phase ${p.phase} — ${p.label}</div>
+          <div class="phase-progress">${isDone ? 'Complete' : isLocked ? 'Complete Phase ${p.phase-1} first' : `${pPct}% complete`}</div>
+        </div>
+        <div class="phase-pct ${pctClass} font-heading">${pctLabel}</div>
+      </div>`;
+  });
+
+  const overallPct = Math.round((totalDone / TOTAL_TASKS) * 100);
+  document.getElementById('overall-pct').textContent = overallPct + '%';
+  document.getElementById('overall-bar').style.width = overallPct + '%';
+
+  // This week checklist
+  const monday = getMondayOf(new Date());
+  const sunday = new Date(monday); sunday.setDate(monday.getDate() + 6);
+  document.getElementById('week-range').textContent = `Week of ${fmtDate(monday)} – ${fmtDate(sunday)}`;
+
+  const weekStr = monday.toISOString().split('T')[0];
+  const { data: log }  = await db.from('weekly_logs').select('*').eq('student_id', user.id).eq('week_start', weekStr).maybeSingle();
+  const { data: refl } = await db.from('weekly_reflections').select('id').eq('student_id', user.id).eq('week_start', weekStr).maybeSingle();
+
+  const projDone = !!log?.projected_submitted_at;
+  const actDone  = !!log?.actual_submitted_at;
+  const reflDone = !!refl;
+
+  const today = new Date();
+  const isSunday = today.getDay() === 0;
+  const badge = (actDone && reflDone) ? 'done' : isSunday ? 'due' : 'open';
+  const badgeLabel = badge === 'done' ? '✓ Week Complete' : badge === 'due' ? 'Due Tonight' : 'In Progress';
+  document.getElementById('week-badge').className = `week-badge badge-${badge} font-heading`;
+  document.getElementById('week-badge').textContent = badgeLabel;
+
+  document.getElementById('week-checklist').innerHTML = `
+    <div class="check-item">
+      <div class="check-icon ${projDone?'done':'pending'}">${projDone?'✓':'○'}</div>
+      <span class="check-text ${projDone?'done':'pending'}">Submit projected schedule (Sunday before)</span>
+    </div>
+    <div class="check-item">
+      <div class="check-icon ${actDone?'done':isSunday?'due':'pending'}">${actDone?'✓':isSunday?'!':'○'}</div>
+      <span class="check-text ${actDone?'done':isSunday?'due':'pending'}">Log actual hours (Sunday after)</span>
+    </div>
+    <div class="check-item">
+      <div class="check-icon ${reflDone?'done':isSunday?'due':'pending'}">${reflDone?'✓':isSunday?'!':'○'}</div>
+      <span class="check-text ${reflDone?'done':isSunday?'due':'pending'}">Submit weekly reflection</span>
+    </div>`;
+
+  const ctaEl = document.getElementById('week-cta');
+  if (actDone && reflDone) {
+    ctaEl.textContent = '✓ This week is complete';
+    ctaEl.className = 'week-cta secondary font-heading';
+    ctaEl.href = 'weekly-log.html';
+  } else {
+    ctaEl.textContent = projDone ? 'Submit this week\'s hours & reflection' : 'Submit projected schedule';
+    ctaEl.href = projDone ? 'weekly-reflection.html' : 'weekly-log.html';
+  }
+
+  // Recent portfolio items (last 5)
+  const { data: items } = await db.from('portfolio_items').select('*').eq('student_id', user.id)
+    .order('created_at', { ascending:false }).limit(5);
+
+  const grid = document.getElementById('portfolio-grid');
+  grid.innerHTML = '';
+  if (items?.length) {
+    document.getElementById('portfolio-empty').style.display = 'none';
+    items.forEach(item => {
+      const thumb = document.createElement('div');
+      thumb.className = 'portfolio-thumb';
+      thumb.title = item.title;
+      thumb.onclick = () => window.location.href = 'portfolio.html';
+      if (item.file_url && item.type === 'photo') {
+        thumb.innerHTML = `<img src="${item.file_url}" alt="${item.title}">`;
+      } else {
+        const icons = { document:'📄', link:'🔗', video:'🎬', reflection:'💭', other:'📎' };
+        thumb.textContent = icons[item.type] || '📎';
+      }
+      grid.appendChild(thumb);
+    });
+  }
+  // Always show Add button
+  const addBtn = document.createElement('a');
+  addBtn.href = 'portfolio.html';
+  addBtn.className = 'portfolio-add';
+  addBtn.innerHTML = '<span class="portfolio-add-icon">+</span><span class="portfolio-add-label font-heading">Add item</span>';
+  grid.appendChild(addBtn);
+}
+
+// ── INIT ──
+db.auth.onAuthStateChange(async (event, session) => {
+  if (!session) {
+    window.location.href = 'login.html';
+    return;
+  }
+  // Check they're not a teacher (teachers go to teacher-hub)
+  const { data: teacher } = await db.from('teachers').select('email').eq('email', session.user.email).maybeSingle();
+  if (teacher) { window.location.href = 'teacher-hub.html'; return; }
+
+  await loadDashboard(session.user);
+  document.getElementById('loading-overlay').style.display = 'none';
+});
+</script>
+</body>
+</html>
