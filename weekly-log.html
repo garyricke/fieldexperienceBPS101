@@ -469,7 +469,8 @@ async function signOut() {
   window.location.href = 'login.html';
 }
 
-db.auth.onAuthStateChange(async (event, session) => {
+(async () => {
+  const { data: { session } } = await db.auth.getSession();
   if (!session) { window.location.href = 'login.html'; return; }
   currentUser = session.user;
 
@@ -489,7 +490,7 @@ db.auth.onAuthStateChange(async (event, session) => {
   updatePhaseUI(log);
 
   document.getElementById('loading-overlay').style.display = 'none';
-});
+})();
 </script>
 </body>
 </html>

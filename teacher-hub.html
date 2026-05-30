@@ -132,14 +132,15 @@ async function logoutTeacher() {
   window.location.href = 'login.html';
 }
 
-db.auth.onAuthStateChange(async (event, session) => {
+(async () => {
+  const { data: { session } } = await db.auth.getSession();
   if (!session) { window.location.href = 'login.html'; return; }
   const { data: teacher } = await db.from('teachers').select('email,name').eq('email', session.user.email).maybeSingle();
   if (!teacher) { window.location.href = 'dashboard.html'; return; }
   const btn = document.getElementById('teacher-name-btn');
   if (btn) btn.textContent = (teacher.name || session.user.email) + ' — Log Out';
   document.getElementById('loading-overlay').style.display = 'none';
-});
+})();
 </script>
 
 </body>

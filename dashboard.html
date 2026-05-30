@@ -479,18 +479,14 @@ async function loadDashboard(user) {
 }
 
 // ── INIT ──
-db.auth.onAuthStateChange(async (event, session) => {
-  if (!session) {
-    window.location.href = 'login.html';
-    return;
-  }
-  // Check they're not a teacher (teachers go to teacher-hub)
+(async () => {
+  const { data: { session } } = await db.auth.getSession();
+  if (!session) { window.location.href = 'login.html'; return; }
   const { data: teacher } = await db.from('teachers').select('email').eq('email', session.user.email).maybeSingle();
   if (teacher) { window.location.href = 'teacher-hub.html'; return; }
-
   await loadDashboard(session.user);
   document.getElementById('loading-overlay').style.display = 'none';
-});
+})();
 </script>
 </body>
 </html>

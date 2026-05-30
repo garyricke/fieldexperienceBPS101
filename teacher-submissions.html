@@ -503,7 +503,8 @@ async function logout() {
   window.location.href = 'login.html';
 }
 
-db.auth.onAuthStateChange(async (event, session) => {
+(async () => {
+  const { data: { session } } = await db.auth.getSession();
   if (!session) { window.location.href = 'login.html'; return; }
 
   const { data: teacher } = await db.from('teachers').select('email').eq('email', session.user.email).maybeSingle();
@@ -531,7 +532,7 @@ db.auth.onAuthStateChange(async (event, session) => {
   renderReflections();
 
   document.getElementById('loading-overlay').style.display = 'none';
-});
+})();
 </script>
 </body>
 </html>
