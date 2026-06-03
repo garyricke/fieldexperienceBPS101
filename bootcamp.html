@@ -3,770 +3,1023 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script>if(sessionStorage.getItem('fe_auth')!=='1'){location.replace('index.html')}</script>
   <title>Bootcamp — Field Experience BHS</title>
-  <link rel="icon" type="image/png" href="https://res.cloudinary.com/dsbllwpbh/image/upload/v1771966521/fieldexperience-favicon_jgdotp.png">
+  <link rel="icon" type="image/png" href="https://res.cloudinary.com/dikkdclum/image/upload/v1778676762/field-experience/logos/bps101.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Open+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: { extend: {
-        colors: {
-          crimson: { 50:'#fef2f2',100:'#fee2e2',200:'#fdcbcb',300:'#fba5a6',400:'#f56d6f',500:'#eb4044',600:'#d72429',700:'#b91c22',800:'#AC161D',900:'#851519',950:'#490808' },
-          navy:    { 50:'#f5f5f5',100:'#e5e5e5',200:'#D9D9D9',300:'#b3b3b3',400:'#8a8a8a',500:'#5D5D5D',600:'#4a4a4a',700:'#333333',800:'#1a1a1a',900:'#000000' },
-          gold:    { 50:'#fffde6',100:'#fffabd',200:'#fff48a',300:'#ffe94d',400:'#fde020',500:'#FBCD07',600:'#DAB107',700:'#9a7305',800:'#7d5c0b',900:'#66490f' },
-        },
-        fontFamily: { heading: ['Montserrat','system-ui','sans-serif'], body: ['Open Sans','system-ui','sans-serif'] }
-      }}
-    }
-  </script>
-
-  <!--
-  ============================================================
-  COMPLETION FORM SETUP (Google Sheets Integration)
-  ============================================================
-  1. Go to forms.google.com and create a new form called
-     "Field Experience Bootcamp Completions"
-  2. Add these fields:
-     - Student Name (Short answer, required)
-     - Period (Dropdown: 1st, 2nd, 3rd, 4th, 5th, 6th, required)
-     - Week Completed (Short answer — this will be pre-filled)
-     - Reflection Response (Paragraph, required)
-  3. In form settings, link responses to your Google Sheet
-  4. Click the share/send button → copy the form link
-  5. Replace BOOTCAMP_FORM_URL below with your form link
-  6. To get pre-fill entry IDs: click the 3-dot menu →
-     "Get pre-filled link", fill dummy values, copy the URL,
-     and extract the entry.XXXXXXXX IDs
-  7. Replace WEEK_ENTRY_ID and REFLECTION_ENTRY_ID below
-  ============================================================
-  -->
-  <script>
-    const BOOTCAMP_FORM_URL  = 'https://docs.google.com/forms/d/e/YOUR_FORM_ID_HERE/viewform';
-    const WEEK_ENTRY_ID       = 'entry.XXXXXXXXXX'; // pre-fills "Week Completed" field
-    const REFLECTION_ENTRY_ID = 'entry.XXXXXXXXXX'; // pre-fills "Reflection Response" field
-
-    function submitWeek(weekLabel) {
-      const textarea = document.getElementById('reflection-' + weekLabel.replace(/\s+/g, ''));
-      const reflection = textarea ? textarea.value.trim() : '';
-      const name = document.getElementById('name-' + weekLabel.replace(/\s+/g, '')).value.trim();
-      if (!name) { alert('Please enter your name before submitting.'); return; }
-      if (!reflection) { alert('Please write your reflection before submitting.'); return; }
-      const url = BOOTCAMP_FORM_URL +
-        '?usp=pp_url' +
-        '&' + WEEK_ENTRY_ID + '=' + encodeURIComponent(weekLabel) +
-        '&' + REFLECTION_ENTRY_ID + '=' + encodeURIComponent(reflection);
-      window.open(url, '_blank');
-      const btn = document.getElementById('btn-' + weekLabel.replace(/\s+/g, ''));
-      if (btn) { btn.textContent = '✓ Submitted — Check Google Form tab to confirm'; btn.disabled = true; }
-    }
-
-    function showWeek(n) {
-      [1,2,3].forEach(i => {
-        document.getElementById('week-content-'+i).style.display = i===n ? 'block' : 'none';
-        document.getElementById('week-tab-'+i).classList.toggle('active-tab', i===n);
-      });
-      window.scrollTo({top: document.getElementById('week-nav').offsetTop - 70, behavior:'smooth'});
-    }
-
-    function toggleLesson(id) {
-      const body = document.getElementById(id);
-      const icon = document.getElementById('icon-'+id);
-      const open = body.style.display === 'block';
-      body.style.display = open ? 'none' : 'block';
-      if (icon) icon.textContent = open ? '+' : '−';
-    }
-  </script>
-
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
   <style>
-    *{box-sizing:border-box}
-    body{font-family:'Open Sans',system-ui,sans-serif;background:#0e1520;color:#fff;overflow-x:hidden}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Open Sans',system-ui,sans-serif;background:#0b1120;color:#fff;min-height:100vh}
     .font-heading{font-family:'Montserrat',system-ui,sans-serif}
-    ::selection{background:#AC161D;color:#fff}
     html{scroll-behavior:smooth}
 
-    .top-nav{position:fixed;top:0;left:0;right:0;background:rgba(255,255,255,0.97);backdrop-filter:blur(12px);border-bottom:1px solid #e5e5e5;z-index:50;}
-    .section-label{font-family:'Montserrat',sans-serif;font-size:.7rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;}
+    /* Nav */
+    nav{background:rgba(255,255,255,.97);border-bottom:1px solid #e5e7eb;position:sticky;top:0;z-index:50;
+        display:flex;align-items:center;justify-content:space-between;padding:0 1.5rem;height:58px}
+    .nav-logo{display:flex;align-items:center;gap:.75rem;text-decoration:none}
+    .nav-logo img{height:2rem}
+    .nav-logo-text{font-family:'Montserrat',sans-serif;font-weight:800;font-size:.8rem;letter-spacing:.04em;text-transform:uppercase;color:#0e1520}
+    .nav-right{display:flex;align-items:center;gap:1rem}
+    .nav-greeting{font-size:.82rem;color:#6b7280}
+    .nav-greeting strong{color:#1c1f2e}
+    .btn-ghost{font-family:'Montserrat',sans-serif;font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+               color:#6b7280;background:none;border:1px solid #e5e7eb;border-radius:6px;padding:.4rem .875rem;cursor:pointer;transition:all .15s}
+    .btn-ghost:hover{border-color:#AC161D;color:#AC161D}
 
-    .week-tab{padding:.6rem 1.5rem;border-radius:999px;font-family:'Montserrat',sans-serif;font-size:.85rem;font-weight:700;cursor:pointer;transition:all .2s;border:2px solid rgba(255,255,255,.15);color:rgba(255,255,255,.6);background:transparent;}
-    .week-tab:hover{border-color:rgba(255,255,255,.4);color:#fff;}
-    .active-tab{background:#AC161D;border-color:#AC161D;color:#fff;}
+    /* Phase tabs */
+    .phase-nav{background:#0e1520;border-bottom:1px solid rgba(255,255,255,.07);position:sticky;top:58px;z-index:40;padding:.875rem 1.5rem}
+    .phase-tabs{display:flex;gap:.5rem;max-width:860px;margin:0 auto;overflow-x:auto;padding-bottom:2px}
+    .phase-tab{flex-shrink:0;display:flex;align-items:center;gap:.5rem;padding:.6rem 1.25rem;border-radius:999px;
+               font-family:'Montserrat',sans-serif;font-size:.75rem;font-weight:700;cursor:pointer;
+               border:1.5px solid rgba(255,255,255,.12);color:rgba(255,255,255,.5);background:transparent;transition:all .2s}
+    .phase-tab:hover{border-color:rgba(255,255,255,.3);color:rgba(255,255,255,.8)}
+    .phase-tab.active{background:#AC161D;border-color:#AC161D;color:#fff}
+    .phase-tab.done{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#4ade80}
+    .phase-tab .pct{font-size:.65rem;opacity:.7}
 
-    .lesson-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:16px;margin-bottom:1rem;overflow:hidden;}
-    .lesson-header{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 1.5rem;cursor:pointer;gap:1rem;}
-    .lesson-header:hover{background:rgba(255,255,255,.04);}
-    .lesson-body{padding:0 1.5rem 1.5rem;display:none;border-top:1px solid rgba(255,255,255,.07);}
-    .lesson-num{width:2rem;height:2rem;border-radius:50%;background:#AC161D;color:#fff;font-family:'Montserrat',sans-serif;font-size:.75rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-    .lesson-toggle{width:2rem;height:2rem;border-radius:50%;background:rgba(255,255,255,.1);color:rgba(255,255,255,.7);font-size:1.25rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-weight:300;}
+    /* Hero */
+    .hero{background:linear-gradient(135deg,#0e1520 0%,#1a2540 60%,#0e1520 100%);padding:3.5rem 1.5rem 3rem;text-align:center}
+    .hero-eyebrow{font-family:'Montserrat',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#FBCD07;margin-bottom:1rem}
+    .hero-title{font-family:'Montserrat',sans-serif;font-weight:900;font-size:clamp(2rem,5vw,3.25rem);letter-spacing:-.03em;color:#fff;margin-bottom:1rem}
+    .hero-sub{font-size:1rem;color:rgba(255,255,255,.55);max-width:580px;margin:0 auto 2rem;line-height:1.7}
+    .hero-pills{display:flex;flex-wrap:wrap;gap:.75rem;justify-content:center}
+    .hero-pill{display:flex;align-items:center;gap:.5rem;padding:.5rem 1rem;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:999px;font-family:'Montserrat',sans-serif;font-size:.75rem;font-weight:700;color:rgba(255,255,255,.75)}
 
-    .activity-box{background:rgba(251,205,7,.08);border:1px solid rgba(251,205,7,.3);border-radius:16px;padding:1.5rem;}
-    .choice-btn{display:block;width:100%;text-align:left;padding:.875rem 1.25rem;border-radius:10px;border:1.5px solid rgba(255,255,255,.15);background:rgba(255,255,255,.04);color:rgba(255,255,255,.8);font-family:'Open Sans',sans-serif;font-size:.9rem;cursor:pointer;transition:all .2s;margin-bottom:.5rem;}
-    .choice-btn:hover{border-color:#AC161D;background:rgba(172,22,29,.1);color:#fff;}
-    .choice-btn.chosen-right{border-color:#22c55e;background:rgba(34,197,94,.1);color:#fff;}
-    .choice-btn.chosen-wrong{border-color:#ef4444;background:rgba(239,68,68,.08);color:rgba(255,255,255,.7);}
-    .feedback-box{display:none;padding:1.25rem;border-radius:10px;margin-top:.75rem;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3);}
+    /* Capstone preview */
+    .capstone-card{background:linear-gradient(135deg,rgba(172,22,29,.2),rgba(172,22,29,.08));border:1px solid rgba(172,22,29,.4);border-radius:16px;padding:1.75rem;margin:2.5rem auto;max-width:680px;text-align:left}
+    .capstone-tag{display:inline-block;background:#AC161D;color:#fff;font-family:'Montserrat',sans-serif;font-size:.6rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;padding:.25rem .75rem;border-radius:999px;margin-bottom:1rem}
+    .capstone-title{font-family:'Montserrat',sans-serif;font-weight:900;font-size:1.25rem;color:#fff;margin-bottom:.75rem}
+    .capstone-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1rem}
+    @media(max-width:500px){.capstone-grid{grid-template-columns:1fr}}
+    .capstone-item{background:rgba(255,255,255,.05);border-radius:10px;padding:1rem}
+    .capstone-item-label{font-family:'Montserrat',sans-serif;font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#FBCD07;margin-bottom:.375rem}
+    .capstone-item-text{font-size:.85rem;color:rgba(255,255,255,.75);line-height:1.5}
 
-    .rubric-row{display:grid;grid-template-columns:2.5rem 1fr;gap:1rem;align-items:start;padding:.875rem 0;border-bottom:1px solid rgba(255,255,255,.07);}
-    .rubric-num{width:2.5rem;height:2.5rem;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:.9rem;font-weight:800;flex-shrink:0;}
+    /* Main content */
+    main{max-width:860px;margin:0 auto;padding:2.5rem 1.5rem}
 
-    .submit-section{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:20px;padding:2rem;}
-    .submit-input{width:100%;background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.15);border-radius:10px;padding:.75rem 1rem;color:#fff;font-family:'Open Sans',sans-serif;font-size:.9rem;outline:none;transition:border-color .2s;}
-    .submit-input::placeholder{color:rgba(255,255,255,.35);}
-    .submit-input:focus{border-color:#FBCD07;}
-    .submit-btn{display:inline-flex;align-items:center;gap:.5rem;background:#AC161D;color:#fff;font-family:'Montserrat',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:.875rem 2rem;border-radius:999px;border:none;cursor:pointer;transition:all .2s;}
-    .submit-btn:hover{opacity:.88;transform:translateY(-1px);}
-    .submit-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+    /* Phase header */
+    .phase-header{margin-bottom:2rem}
+    .phase-num{font-family:'Montserrat',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:#FBCD07;margin-bottom:.5rem}
+    .phase-title{font-family:'Montserrat',sans-serif;font-weight:900;font-size:1.75rem;color:#fff;letter-spacing:-.02em;margin-bottom:.75rem}
+    .phase-desc{font-size:.95rem;color:rgba(255,255,255,.55);line-height:1.7;max-width:640px}
+    .phase-progress{margin-top:1.25rem;display:flex;align-items:center;gap:.875rem}
+    .progress-bar-track{flex:1;height:6px;background:rgba(255,255,255,.1);border-radius:999px;overflow:hidden}
+    .progress-bar-fill{height:100%;background:#AC161D;border-radius:999px;transition:width .5s ease}
+    .progress-label{font-family:'Montserrat',sans-serif;font-size:.7rem;font-weight:700;color:rgba(255,255,255,.4);white-space:nowrap}
 
-    .progress-pip{width:.75rem;height:.75rem;border-radius:50%;background:rgba(255,255,255,.2);}
-    .progress-pip.done{background:#FBCD07;}
+    /* Deliverables callout */
+    .deliverables-box{background:rgba(251,205,7,.07);border:1px solid rgba(251,205,7,.25);border-radius:12px;padding:1.25rem 1.5rem;margin-bottom:2rem}
+    .deliverables-label{font-family:'Montserrat',sans-serif;font-size:.62rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#FBCD07;margin-bottom:.75rem}
+    .deliverables-list{display:flex;flex-wrap:wrap;gap:.5rem}
+    .deliverable-pill{display:flex;align-items:center;gap:.375rem;padding:.35rem .75rem;background:rgba(251,205,7,.12);border:1px solid rgba(251,205,7,.2);border-radius:999px;font-size:.78rem;color:rgba(255,255,255,.8)}
+    .deliverable-pill svg{width:12px;height:12px;color:#FBCD07;flex-shrink:0}
 
-    @media(max-width:640px){
-      .week-tab{padding:.5rem 1rem;font-size:.8rem;}
+    /* Activity cards */
+    .activity-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);border-radius:14px;margin-bottom:.875rem;overflow:hidden;transition:border-color .2s}
+    .activity-card.complete{border-color:rgba(34,197,94,.3);background:rgba(34,197,94,.04)}
+    .activity-card:hover{border-color:rgba(255,255,255,.18)}
+    .activity-card.complete:hover{border-color:rgba(34,197,94,.45)}
+
+    .activity-header{display:flex;align-items:center;gap:1rem;padding:1.125rem 1.25rem;cursor:pointer}
+    .activity-num{width:2rem;height:2rem;border-radius:50%;background:#AC161D;color:#fff;font-family:'Montserrat',sans-serif;font-size:.72rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .activity-card.complete .activity-num{background:rgba(34,197,94,.2);color:#4ade80}
+    .activity-info{flex:1}
+    .activity-title{font-family:'Montserrat',sans-serif;font-weight:700;font-size:.9rem;color:#fff}
+    .activity-subtitle{font-size:.75rem;color:rgba(255,255,255,.4);margin-top:.15rem}
+    .activity-badge{font-family:'Montserrat',sans-serif;font-size:.6rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.25rem .6rem;border-radius:999px;flex-shrink:0}
+    .badge-done{background:rgba(34,197,94,.15);color:#4ade80;border:1px solid rgba(34,197,94,.25)}
+    .badge-todo{background:rgba(255,255,255,.07);color:rgba(255,255,255,.4);border:1px solid rgba(255,255,255,.1)}
+    .activity-toggle{font-size:1rem;color:rgba(255,255,255,.3);flex-shrink:0;transition:transform .2s;font-weight:300}
+    .activity-toggle.open{transform:rotate(180deg)}
+
+    .activity-body{padding:0 1.25rem 1.25rem;border-top:1px solid rgba(255,255,255,.06);display:none}
+    .activity-body.open{display:block}
+
+    .activity-section-label{font-family:'Montserrat',sans-serif;font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-top:1rem;margin-bottom:.5rem}
+    .activity-bullets{list-style:none;display:flex;flex-direction:column;gap:.375rem}
+    .activity-bullets li{display:flex;align-items:flex-start;gap:.625rem;font-size:.85rem;color:rgba(255,255,255,.65);line-height:1.5}
+    .activity-bullets li::before{content:'→';color:#AC161D;font-size:.75rem;margin-top:.1rem;flex-shrink:0}
+
+    /* Completion zone */
+    .completion-zone{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:1.25rem;margin-top:1.25rem}
+    .completion-zone-label{font-family:'Montserrat',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:.875rem}
+    .completion-textarea{width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:.75rem 1rem;color:#fff;font-family:'Open Sans',sans-serif;font-size:.85rem;resize:vertical;min-height:80px;outline:none;transition:border-color .15s}
+    .completion-textarea:focus{border-color:#FBCD07}
+    .completion-textarea::placeholder{color:rgba(255,255,255,.25)}
+    .completion-textarea:disabled{opacity:.5;cursor:default}
+    .completion-input{width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:.65rem 1rem;color:#fff;font-family:'Open Sans',sans-serif;font-size:.85rem;outline:none;transition:border-color .15s;margin-bottom:.75rem}
+    .completion-input:focus{border-color:#FBCD07}
+    .completion-input::placeholder{color:rgba(255,255,255,.25)}
+    .completion-input:disabled{opacity:.5;cursor:default}
+
+    .complete-btn{display:inline-flex;align-items:center;gap:.5rem;margin-top:.875rem;padding:.7rem 1.5rem;background:#AC161D;color:#fff;border:none;border-radius:8px;font-family:'Montserrat',sans-serif;font-size:.75rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;transition:all .2s}
+    .complete-btn:hover{background:#b91c22;transform:translateY(-1px)}
+    .complete-btn:disabled{background:rgba(255,255,255,.1);color:rgba(255,255,255,.4);cursor:not-allowed;transform:none}
+    .complete-btn.done{background:rgba(34,197,94,.15);color:#4ade80;border:1px solid rgba(34,197,94,.25)}
+    .complete-btn.done:hover{transform:none;background:rgba(34,197,94,.15)}
+
+    /* Interview window banner */
+    .interview-banner{background:linear-gradient(135deg,rgba(59,130,246,.15),rgba(99,102,241,.1));border:1px solid rgba(59,130,246,.3);border-radius:14px;padding:1.5rem;margin:2rem 0;display:flex;gap:1rem;align-items:flex-start}
+    .interview-banner-icon{width:2.5rem;height:2.5rem;border-radius:10px;background:rgba(59,130,246,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .interview-banner-title{font-family:'Montserrat',sans-serif;font-weight:800;font-size:.9rem;color:#fff;margin-bottom:.375rem}
+    .interview-banner-text{font-size:.82rem;color:rgba(255,255,255,.55);line-height:1.6}
+
+    /* Launch Card Modal */
+    #launch-modal{position:fixed;inset:0;z-index:200;background:rgba(8,14,26,.96);display:none;align-items:center;justify-content:center;padding:1.5rem}
+    #launch-modal.show{display:flex}
+    .launch-card{background:linear-gradient(160deg,#0e1520 0%,#1a2540 100%);border:2px solid rgba(172,22,29,.5);border-radius:24px;padding:2.5rem;max-width:480px;width:100%;text-align:center;position:relative;box-shadow:0 40px 80px rgba(0,0,0,.6)}
+    .launch-card::before{content:'';position:absolute;inset:-1px;border-radius:24px;background:linear-gradient(135deg,rgba(172,22,29,.4),transparent,rgba(251,205,7,.2));z-index:-1}
+    .launch-card-logo{height:2.5rem;margin:0 auto 1.5rem}
+    .launch-card-tag{display:inline-block;background:#AC161D;color:#fff;font-family:'Montserrat',sans-serif;font-size:.65rem;font-weight:800;letter-spacing:.15em;text-transform:uppercase;padding:.375rem 1rem;border-radius:999px;margin-bottom:1.5rem}
+    .launch-card-headline{font-family:'Montserrat',sans-serif;font-weight:900;font-size:2.25rem;letter-spacing:-.03em;color:#fff;margin-bottom:.25rem}
+    .launch-card-name{font-family:'Montserrat',sans-serif;font-weight:700;font-size:1.1rem;color:rgba(255,255,255,.7);margin-bottom:1.5rem}
+    .launch-card-divider{height:1px;background:rgba(255,255,255,.1);margin:1.5rem 0}
+    .launch-card-details{display:grid;grid-template-columns:1fr 1fr;gap:1rem;text-align:left}
+    .launch-detail-label{font-family:'Montserrat',sans-serif;font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:.25rem}
+    .launch-detail-val{font-size:.85rem;color:rgba(255,255,255,.8);font-weight:600}
+    .launch-card-goal{background:rgba(172,22,29,.1);border:1px solid rgba(172,22,29,.3);border-radius:10px;padding:1rem;margin-top:1.25rem;text-align:left}
+    .launch-card-goal-label{font-family:'Montserrat',sans-serif;font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#FBCD07;margin-bottom:.375rem}
+    .launch-card-goal-text{font-size:.875rem;color:#fff;line-height:1.5;font-style:italic}
+    .launch-card-date{font-family:'Montserrat',sans-serif;font-size:.7rem;color:rgba(255,255,255,.3);margin-top:1.5rem;letter-spacing:.06em}
+    .launch-card-cta{margin-top:1.75rem;display:flex;flex-direction:column;gap:.75rem}
+    .launch-go-btn{padding:1rem;background:#AC161D;color:#fff;border:none;border-radius:10px;font-family:'Montserrat',sans-serif;font-size:.82rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:background .15s}
+    .launch-go-btn:hover{background:#b91c22}
+    .launch-dismiss{font-size:.78rem;color:rgba(255,255,255,.3);cursor:pointer;background:none;border:none;font-family:'Open Sans',sans-serif}
+    .launch-dismiss:hover{color:rgba(255,255,255,.6)}
+
+    /* Loading */
+    #loading-overlay{position:fixed;inset:0;background:#0b1120;z-index:999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1rem}
+    .spinner{width:36px;height:36px;border:3px solid rgba(255,255,255,.1);border-top-color:#AC161D;border-radius:50%;animation:spin .8s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .loading-text{font-family:'Montserrat',sans-serif;font-size:.75rem;font-weight:600;color:rgba(255,255,255,.3);letter-spacing:.1em;text-transform:uppercase}
+
+    .status-msg{padding:.75rem 1rem;border-radius:8px;font-size:.8rem;font-weight:600;margin-top:.75rem;display:none}
+    .status-msg.error{background:rgba(239,68,68,.1);color:#f87171;border:1px solid rgba(239,68,68,.25);display:block}
+    .status-msg.success{background:rgba(34,197,94,.1);color:#4ade80;border:1px solid rgba(34,197,94,.25);display:block}
+
+    @media(max-width:600px){
+      .capstone-grid{grid-template-columns:1fr}
+      .launch-card-details{grid-template-columns:1fr}
     }
   </style>
 </head>
 <body>
 
-<!-- ── TOP NAV ── -->
-<nav class="top-nav">
-  <div class="max-w-7xl mx-auto px-5 py-3 flex items-center justify-between">
-    <a href="index.html#bootcamp" class="flex items-center gap-2 text-sm font-semibold text-gray-600 hover:text-crimson-800 transition-colors font-heading">
-      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
-      Back to Home
-    </a>
-    <a href="index.html" class="flex items-center gap-2.5">
-      <img src="https://res.cloudinary.com/dikkdclum/image/upload/v1778676762/field-experience/logos/bps101.png" alt="BPS101" class="h-8 w-auto">
-      <span class="font-heading font-bold text-sm text-navy-900 hidden sm:block">Field Experience</span>
-    </a>
-  </div>
-</nav>
+<div id="loading-overlay"><div class="spinner"></div><p class="loading-text">Loading bootcamp…</p></div>
 
-<!-- ── HERO ── -->
-<section style="margin-top:57px;background:linear-gradient(135deg,#111827 0%,#1a2740 100%);padding:4rem 1.5rem 3rem">
-  <div class="max-w-4xl mx-auto text-center">
-    <p class="section-label mb-3" style="color:#FBCD07">Step 2 — Prepare</p>
-    <h1 class="font-heading text-4xl md:text-5xl lg:text-6xl font-black tracking-tight text-white mb-5 leading-tight">The Bootcamp</h1>
-    <p class="text-lg leading-relaxed max-w-2xl mx-auto" style="color:rgba(255,255,255,.65)">
-      Before you step into your placement, you'll complete this 3-week foundational course. Everything you need to show up ready, professional, and confident on day one.
-    </p>
-    <div class="flex flex-wrap justify-center gap-4 mt-8">
-      <div class="flex items-center gap-2 px-4 py-2 rounded-full" style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12)">
-        <svg class="w-4 h-4 text-gold-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
-        <span class="font-heading font-semibold text-white text-sm">3 Weeks</span>
-      </div>
-      <div class="flex items-center gap-2 px-4 py-2 rounded-full" style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12)">
-        <svg class="w-4 h-4 text-gold-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
-        <span class="font-heading font-semibold text-white text-sm">9 Lessons</span>
-      </div>
-      <div class="flex items-center gap-2 px-4 py-2 rounded-full" style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12)">
-        <svg class="w-4 h-4 text-gold-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
-        <span class="font-heading font-semibold text-white text-sm">3 Reflections</span>
-      </div>
+<!-- Launch Card Modal -->
+<div id="launch-modal">
+  <div class="launch-card">
+    <img src="https://res.cloudinary.com/dikkdclum/image/upload/v1778676762/field-experience/logos/bps101.png" alt="BPS101" class="launch-card-logo">
+    <div class="launch-card-tag font-heading">Field Experience — Launched</div>
+    <div class="launch-card-headline font-heading">You're Ready.</div>
+    <div class="launch-card-name font-heading" id="lc-name">—</div>
+    <div class="launch-card-divider"></div>
+    <div class="launch-card-details">
+      <div><div class="launch-detail-label font-heading">Placement</div><div class="launch-detail-val" id="lc-placement">—</div></div>
+      <div><div class="launch-detail-label font-heading">Launched</div><div class="launch-detail-val" id="lc-date">—</div></div>
     </div>
-  </div>
-</section>
-
-<!-- ── WEEK NAVIGATION ── -->
-<div id="week-nav" style="background:#111827;border-bottom:1px solid rgba(255,255,255,.08);padding:1rem 1.5rem;position:sticky;top:57px;z-index:40;">
-  <div class="max-w-4xl mx-auto flex flex-wrap gap-3 justify-center">
-    <button id="week-tab-1" class="week-tab active-tab" onclick="showWeek(1)">Week 1 — Mindset</button>
-    <button id="week-tab-2" class="week-tab" onclick="showWeek(2)">Week 2 — Professional Skills</button>
-    <button id="week-tab-3" class="week-tab" onclick="showWeek(3)">Week 3 — Launch Ready</button>
+    <div class="launch-card-goal">
+      <div class="launch-card-goal-label font-heading">My #1 Goal This Semester</div>
+      <div class="launch-card-goal-text" id="lc-goal">—</div>
+    </div>
+    <div class="launch-card-date font-heading">BHS Field Experience Program · Batavia Public Schools 101</div>
+    <div class="launch-card-cta">
+      <button class="launch-go-btn font-heading" onclick="goToDashboard()">Go to My Dashboard →</button>
+      <button class="launch-dismiss" onclick="closeLaunchModal()">Dismiss for now</button>
+    </div>
   </div>
 </div>
 
-<div class="max-w-4xl mx-auto px-5 py-12">
-
-<!-- ═══════════════════════════════════════════════════
-     WEEK 1: STUDENT OWNERSHIP & MINDSET
-═══════════════════════════════════════════════════ -->
-<div id="week-content-1">
-
-  <div class="mb-10">
-    <p class="section-label mb-2" style="color:#FBCD07">Week 1 of 3</p>
-    <h2 class="font-heading text-3xl md:text-4xl font-bold text-white mb-3">Student Ownership &amp; Mindset</h2>
-    <p style="color:rgba(255,255,255,.6)" class="text-lg leading-relaxed">This week is about you. Before you walk into any workplace, you need to understand who you are as a worker, what you want to get out of this experience, and how to take ownership of your learning. Nobody is going to hand you a great semester — you build it.</p>
+<!-- Nav -->
+<nav>
+  <a href="dashboard.html" class="nav-logo">
+    <img src="https://res.cloudinary.com/dikkdclum/image/upload/v1778676762/field-experience/logos/bps101.png" alt="BPS101">
+    <span class="nav-logo-text font-heading">Field Experience</span>
+  </a>
+  <div class="nav-right">
+    <span class="nav-greeting">Welcome, <strong id="nav-name">—</strong></span>
+    <button class="btn-ghost font-heading" onclick="signOut()">Sign out</button>
   </div>
+</nav>
 
-  <!-- Lessons -->
-  <div class="mb-10">
-    <h3 class="font-heading font-bold text-white text-lg mb-4 flex items-center gap-2">
-      <svg class="w-5 h-5 text-gold-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
-      Lessons
-    </h3>
-
-    <div class="lesson-card">
-      <div class="lesson-header" onclick="toggleLesson('w1l1')">
-        <div class="flex items-center gap-3">
-          <span class="lesson-num">1</span>
-          <div>
-            <p class="font-heading font-bold text-white">What is Field Experience — Really?</p>
-            <p class="text-xs mt-0.5" style="color:rgba(255,255,255,.45)">The difference between showing up and actually growing</p>
-          </div>
-        </div>
-        <span class="lesson-toggle" id="icon-w1l1">+</span>
-      </div>
-      <div class="lesson-body" id="w1l1">
-        <div class="pt-4 space-y-4" style="color:rgba(255,255,255,.75)">
-          <p>Field Experience is not a job shadow. It's not just "going somewhere for class." It's a real placement — at a real organization — where real professionals will expect real things from you. The way you perform here can shape references, recommendations, and your own understanding of what you want to do after high school.</p>
-          <p>Illinois BPS101 built this program specifically to meet the <strong class="text-white">College and Career Pathway Endorsement (CCPE)</strong> requirements, which means completing your placement earns you a formal credential on your diploma. Employers and colleges recognize it. That's not nothing.</p>
-          <p>But here's the truth: you will get exactly as much out of this as you put in. Students who treat it like a class they have to survive get very little. Students who treat it like an opportunity they chose — who show up curious, ask questions, and push themselves — leave with something real.</p>
-          <div class="p-4 rounded-xl mt-2" style="background:rgba(251,205,7,.08);border:1px solid rgba(251,205,7,.2)">
-            <p class="font-heading font-bold text-gold-400 text-sm mb-1">The Core Idea</p>
-            <p class="text-sm" style="color:rgba(255,255,255,.7)">This semester isn't happening to you. You're the one driving. Your supervisor, your school, and this curriculum are resources — but the ownership is yours.</p>
-          </div>
-        </div>
-      </div>
+<!-- Hero -->
+<div class="hero">
+  <p class="hero-eyebrow font-heading">Step 2 — Prepare</p>
+  <h1 class="hero-title font-heading">The Bootcamp</h1>
+  <p class="hero-sub">Before your first day on the job, you'll complete four phases designed to get you hired, prepared, and ready to make an impact.</p>
+  <div class="hero-pills">
+    <div class="hero-pill font-heading">
+      <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+      4 Phases
     </div>
-
-    <div class="lesson-card">
-      <div class="lesson-header" onclick="toggleLesson('w1l2')">
-        <div class="flex items-center gap-3">
-          <span class="lesson-num">2</span>
-          <div>
-            <p class="font-heading font-bold text-white">Know Yourself First</p>
-            <p class="text-xs mt-0.5" style="color:rgba(255,255,255,.45)">Self-assessment before your placement</p>
-          </div>
-        </div>
-        <span class="lesson-toggle" id="icon-w1l2">+</span>
-      </div>
-      <div class="lesson-body" id="w1l2">
-        <div class="pt-4 space-y-4" style="color:rgba(255,255,255,.75)">
-          <p>The most self-aware workers outperform workers with more experience. Self-awareness means you know your strengths and you know your gaps — and you're honest about both.</p>
-          <p>Before you walk into your placement, think about these honestly:</p>
-          <div class="grid sm:grid-cols-2 gap-3 mt-2">
-            <div class="p-3 rounded-xl" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1)">
-              <p class="font-heading font-bold text-white text-sm mb-2">Your Strengths</p>
-              <ul class="text-sm space-y-1" style="color:rgba(255,255,255,.65)">
-                <li>• What do you do well naturally?</li>
-                <li>• Where have teachers said you shine?</li>
-                <li>• What do you bring to a team?</li>
-              </ul>
-            </div>
-            <div class="p-3 rounded-xl" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1)">
-              <p class="font-heading font-bold text-white text-sm mb-2">Growth Areas</p>
-              <ul class="text-sm space-y-1" style="color:rgba(255,255,255,.65)">
-                <li>• Where do you tend to check out?</li>
-                <li>• What feedback do you usually get?</li>
-                <li>• What feels hardest about "being professional"?</li>
-              </ul>
-            </div>
-          </div>
-          <p>Neither list makes you more or less ready for this. Knowing both makes you far more ready than someone who hasn't thought about it at all.</p>
-        </div>
-      </div>
+    <div class="hero-pill font-heading">
+      <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      60 Hours to Complete
     </div>
-
-    <div class="lesson-card">
-      <div class="lesson-header" onclick="toggleLesson('w1l3')">
-        <div class="flex items-center gap-3">
-          <span class="lesson-num">3</span>
-          <div>
-            <p class="font-heading font-bold text-white">Setting Goals That Actually Work</p>
-            <p class="text-xs mt-0.5" style="color:rgba(255,255,255,.45)">SMART goals for your semester</p>
-          </div>
-        </div>
-        <span class="lesson-toggle" id="icon-w1l3">+</span>
-      </div>
-      <div class="lesson-body" id="w1l3">
-        <div class="pt-4 space-y-4" style="color:rgba(255,255,255,.75)">
-          <p>Most people set vague goals. "I want to do well." "I want to learn stuff." These goals can't be measured, which means you'll never know if you hit them.</p>
-          <p>SMART goals are: <strong class="text-white">Specific, Measurable, Achievable, Relevant, Time-bound.</strong> They sound corporate, but they work — and your supervisor will be thinking in terms like these when they evaluate you.</p>
-          <p>For your placement, try setting <strong class="text-white">three types of goals:</strong></p>
-          <div class="space-y-3 mt-1">
-            <div class="flex gap-3 p-3 rounded-xl" style="background:rgba(172,22,29,.1);border:1px solid rgba(172,22,29,.25)">
-              <div class="w-8 h-8 rounded-lg bg-crimson-800 text-white flex items-center justify-center text-xs font-bold font-heading flex-shrink-0">L</div>
-              <div>
-                <p class="font-heading font-bold text-white text-sm">Learning Goal</p>
-                <p class="text-sm mt-0.5" style="color:rgba(255,255,255,.65)">Something you want to understand or learn to do. <em>"By the end of Week 4, I will understand how [specific task] works."</em></p>
-              </div>
-            </div>
-            <div class="flex gap-3 p-3 rounded-xl" style="background:rgba(251,205,7,.07);border:1px solid rgba(251,205,7,.2)">
-              <div class="w-8 h-8 rounded-lg bg-gold-500 text-navy-900 flex items-center justify-center text-xs font-bold font-heading flex-shrink-0">R</div>
-              <div>
-                <p class="font-heading font-bold text-white text-sm">Relationship Goal</p>
-                <p class="text-sm mt-0.5" style="color:rgba(255,255,255,.65)">Someone you want to connect with. <em>"I will introduce myself to three coworkers and have a real conversation with each one."</em></p>
-              </div>
-            </div>
-            <div class="flex gap-3 p-3 rounded-xl" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1)">
-              <div class="w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold font-heading flex-shrink-0" style="background:rgba(255,255,255,.15)">S</div>
-              <div>
-                <p class="font-heading font-bold text-white text-sm">Skill Goal</p>
-                <p class="text-sm mt-0.5" style="color:rgba(255,255,255,.65)">Something you want to get better at. <em>"I will practice asking follow-up questions instead of just saying 'okay' when I get instructions."</em></p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+    <div class="hero-pill font-heading">
+      <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
+      Capstone Presentation
     </div>
   </div>
 
-  <!-- Week 1 Activity -->
-  <div class="activity-box mb-10">
-    <p class="section-label mb-2" style="color:#FBCD07">Week 1 Activity</p>
-    <h3 class="font-heading font-bold text-white text-xl mb-3">Write Your Work Bio</h3>
-    <p style="color:rgba(255,255,255,.7)" class="mb-4">A Work Bio is a 2–3 sentence professional introduction you could say out loud on your first day. It answers: Who are you? What are you here to do? What are you hoping to learn? Write it like you'd say it to your supervisor — professional, confident, and real.</p>
-    <div class="p-4 rounded-xl mb-4" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1)">
-      <p class="font-heading font-bold text-white text-sm mb-2">Example (not yours — write your own):</p>
-      <p class="text-sm italic" style="color:rgba(255,255,255,.6)">"Hi, I'm Jordan. I'm a junior at Batavia High School and I'm in the Field Experience program this semester. I'm really interested in healthcare and I'm hoping to get a better sense of how hospitals actually run day-to-day. I'm a hard worker and I learn fast — I'm excited to contribute wherever I can."</p>
+  <!-- Capstone Preview -->
+  <div class="capstone-card">
+    <div class="capstone-tag font-heading">Begin with the End in Mind</div>
+    <div class="capstone-title font-heading">This is where you're headed — the Capstone</div>
+    <p style="font-size:.85rem;color:rgba(255,255,255,.55);line-height:1.6;">At the end of the semester, you'll present your Field Experience to the community. Here's what that looks like:</p>
+    <div class="capstone-grid">
+      <div class="capstone-item">
+        <div class="capstone-item-label font-heading">Your Booth</div>
+        <div class="capstone-item-text">Set up a display showing your work — visual, digital, or project-based. You choose the format that fits your placement.</div>
+      </div>
+      <div class="capstone-item">
+        <div class="capstone-item-label font-heading">90-Second Talk</div>
+        <div class="capstone-item-text">On stage. Prompted questions. You share what you did, what you learned, and how you grew. Think of it as your final elevator pitch — practiced and earned.</div>
+      </div>
+      <div class="capstone-item">
+        <div class="capstone-item-label font-heading">Your Portfolio</div>
+        <div class="capstone-item-text">Everything you build in bootcamp and during your placement — resume, pitch, reflections, photos — comes together here.</div>
+      </div>
+      <div class="capstone-item">
+        <div class="capstone-item-label font-heading">The Audience</div>
+        <div class="capstone-item-text">Community members, employers, teachers, and peers. This is a real audience for a real presentation. Bootcamp gets you ready for this moment.</div>
+      </div>
     </div>
-    <textarea id="reflectionWeek1Mindset" class="submit-input" rows="4" placeholder="Write your Work Bio here..."></textarea>
-    <p class="text-xs mt-2" style="color:rgba(255,255,255,.4)">This will be included in your Week 1 completion submission.</p>
   </div>
+</div>
 
-  <!-- Week 1 Completion -->
-  <div class="submit-section">
-    <h3 class="font-heading font-bold text-white text-xl mb-1">Complete Week 1</h3>
-    <p class="text-sm mb-5" style="color:rgba(255,255,255,.55)">Submit your Week 1 reflection to mark this week complete. Your teacher will be able to see your submission.</p>
-    <div class="grid sm:grid-cols-2 gap-3 mb-4">
-      <div>
-        <label class="block text-xs font-heading font-bold text-white mb-1.5" style="letter-spacing:.05em">YOUR NAME</label>
-        <input type="text" id="nameWeek1Mindset" class="submit-input" placeholder="First and Last Name">
-      </div>
-      <div>
-        <label class="block text-xs font-heading font-bold text-white mb-1.5" style="letter-spacing:.05em">PERIOD</label>
-        <select id="periodWeek1Mindset" class="submit-input" style="cursor:pointer">
-          <option value="" disabled selected>Select your period</option>
-          <option>1st Period</option><option>2nd Period</option><option>3rd Period</option>
-          <option>4th Period</option><option>5th Period</option><option>6th Period</option>
-        </select>
-      </div>
-    </div>
-    <div class="mb-4">
-      <label class="block text-xs font-heading font-bold text-white mb-1.5" style="letter-spacing:.05em">WEEK 1 REFLECTION — What did you learn about yourself this week? What are your three goals?</label>
-      <textarea id="reflectionWeek1Mindset2" class="submit-input" rows="5" placeholder="Write your reflection here..."></textarea>
-    </div>
-    <button id="btnWeek1Mindset" class="submit-btn" onclick="submitWeekFull('Week 1 — Mindset', 'nameWeek1Mindset', 'reflectionWeek1Mindset2', 'btnWeek1Mindset')">
-      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-      Submit Week 1 Completion
+<!-- Phase Tabs -->
+<div class="phase-nav">
+  <div class="phase-tabs">
+    <button class="phase-tab active font-heading" id="tab-1" onclick="showPhase(1)">
+      <span>Phase 1</span><span class="pct" id="pct-1"></span>
     </button>
-    <p class="text-xs mt-3" style="color:rgba(255,255,255,.3)">A Google Form will open in a new tab to confirm your submission.</p>
-  </div>
-
-  <div class="flex justify-end mt-8">
-    <button onclick="showWeek(2)" class="flex items-center gap-2 px-6 py-3 rounded-full font-heading font-bold text-sm" style="background:#FBCD07;color:#000">
-      Continue to Week 2
-      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+    <button class="phase-tab font-heading" id="tab-2" onclick="showPhase(2)">
+      <span>Phase 2</span><span class="pct" id="pct-2"></span>
+    </button>
+    <button class="phase-tab font-heading" id="tab-3" onclick="showPhase(3)">
+      <span>Phase 3</span><span class="pct" id="pct-3"></span>
+    </button>
+    <button class="phase-tab font-heading" id="tab-4" onclick="showPhase(4)">
+      <span>Phase 4</span><span class="pct" id="pct-4"></span>
     </button>
   </div>
+</div>
 
-</div><!-- /week-1 -->
+<main>
 
-
-<!-- ═══════════════════════════════════════════════════
-     WEEK 2: PROFESSIONAL SKILLS
-═══════════════════════════════════════════════════ -->
-<div id="week-content-2" style="display:none">
-
-  <div class="mb-10">
-    <p class="section-label mb-2" style="color:#FBCD07">Week 2 of 3</p>
-    <h2 class="font-heading text-3xl md:text-4xl font-bold text-white mb-3">Professional Skills &amp; Workplace Readiness</h2>
-    <p style="color:rgba(255,255,255,.6)" class="text-lg leading-relaxed">This week is about the unwritten rules. Every workplace has a culture — norms around how you communicate, how you show up, and how you carry yourself. The students who learn these quickly are the ones who get opportunities. This week gives you the foundation.</p>
-  </div>
-
-  <!-- Lessons -->
-  <div class="mb-10">
-    <h3 class="font-heading font-bold text-white text-lg mb-4 flex items-center gap-2">
-      <svg class="w-5 h-5 text-gold-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
-      Lessons
-    </h3>
-
-    <div class="lesson-card">
-      <div class="lesson-header" onclick="toggleLesson('w2l1')">
-        <div class="flex items-center gap-3">
-          <span class="lesson-num">4</span>
-          <div>
-            <p class="font-heading font-bold text-white">Professionalism — What It Actually Looks Like</p>
-            <p class="text-xs mt-0.5" style="color:rgba(255,255,255,.45)">Beyond "dress nicely and be on time"</p>
-          </div>
-        </div>
-        <span class="lesson-toggle" id="icon-w2l1">+</span>
-      </div>
-      <div class="lesson-body" id="w2l1">
-        <div class="pt-4 space-y-4" style="color:rgba(255,255,255,.75)">
-          <p>When people say "be professional," they usually mean something much bigger than clothes and punctuality. Professionalism is how you carry yourself across every situation — especially the hard ones.</p>
-          <p>Illinois's Essential Employability Skills Framework identifies four pillars of professionalism that every employer uses to evaluate interns and new employees:</p>
-          <div class="grid sm:grid-cols-2 gap-3 mt-2">
-            <div class="p-3 rounded-xl" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1)">
-              <p class="font-heading font-bold text-crimson-400 text-sm mb-1">Personal Ethic</p>
-              <p class="text-sm" style="color:rgba(255,255,255,.65)">Integrity, respect for people and property, positive attitude, accepting accountability for your decisions.</p>
-            </div>
-            <div class="p-3 rounded-xl" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1)">
-              <p class="font-heading font-bold text-gold-400 text-sm mb-1">Work Ethic</p>
-              <p class="text-sm" style="color:rgba(255,255,255,.65)">Dependability, predictable behavior, meeting deadlines, showing up prepared. Communicating proactively when you can't.</p>
-            </div>
-            <div class="p-3 rounded-xl" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1)">
-              <p class="font-heading font-bold text-blue-400 text-sm mb-1">Communication</p>
-              <p class="text-sm" style="color:rgba(255,255,255,.65)">Active listening, clear verbal and written communication, professional email and digital etiquette.</p>
-            </div>
-            <div class="p-3 rounded-xl" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1)">
-              <p class="font-heading font-bold text-green-400 text-sm mb-1">Teamwork</p>
-              <p class="text-sm" style="color:rgba(255,255,255,.65)">Cooperating toward shared goals, asking questions to clarify, handling conflict respectfully and constructively.</p>
-            </div>
-          </div>
-          <p>These four pillars aren't just concepts — they're what your supervisor will use to evaluate you at the end of the semester.</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="lesson-card">
-      <div class="lesson-header" onclick="toggleLesson('w2l2')">
-        <div class="flex items-center gap-3">
-          <span class="lesson-num">5</span>
-          <div>
-            <p class="font-heading font-bold text-white">Communication in the Workplace</p>
-            <p class="text-xs mt-0.5" style="color:rgba(255,255,255,.45)">Email, speaking up, and listening well</p>
-          </div>
-        </div>
-        <span class="lesson-toggle" id="icon-w2l2">+</span>
-      </div>
-      <div class="lesson-body" id="w2l2">
-        <div class="pt-4 space-y-4" style="color:rgba(255,255,255,.75)">
-          <p>The #1 complaint employers have about new workers — including interns — is poor communication. Not showing up. Not asking for help when stuck. Sending unclear or informal messages. Not listening.</p>
-          <p>Communication at work looks different from communication with friends:</p>
-          <div class="space-y-2 mt-1">
-            <div class="flex gap-3 p-3 rounded-lg" style="background:rgba(239,68,68,.08);border-left:3px solid #ef4444">
-              <div class="flex-1">
-                <p class="font-heading font-bold text-red-400 text-xs mb-1">DON'T</p>
-                <p class="text-sm" style="color:rgba(255,255,255,.7)">"hey so i was gonna do the thing u told me but i forgot lol. when can we meet? also idk if i can come in thursday just a heads up"</p>
-              </div>
-            </div>
-            <div class="flex gap-3 p-3 rounded-lg" style="background:rgba(34,197,94,.08);border-left:3px solid #22c55e">
-              <div class="flex-1">
-                <p class="font-heading font-bold text-green-400 text-xs mb-1">DO</p>
-                <p class="text-sm" style="color:rgba(255,255,255,.7)">"Hi [Name], I wanted to follow up on the filing task we discussed on Monday. I have a question about Step 2 — would you have 5 minutes this week to clarify? Also, I may not be able to come in this Thursday due to a family commitment. I'll keep you updated. Thanks, [Your name]"</p>
-              </div>
-            </div>
-          </div>
-          <p>Key email rules: clear subject line, proper greeting, one topic per email, direct request, your name at the end. No slang, no lowercase "i," no "lol."</p>
-          <p>Also: <strong class="text-white">asking for help is professional, not weak.</strong> The fastest way to waste time is to spend an hour doing a task wrong because you didn't want to "bother" your supervisor. Ask, confirm, then do it.</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="lesson-card">
-      <div class="lesson-header" onclick="toggleLesson('w2l3')">
-        <div class="flex items-center gap-3">
-          <span class="lesson-num">6</span>
-          <div>
-            <p class="font-heading font-bold text-white">Workplace Rules You Need to Know</p>
-            <p class="text-xs mt-0.5" style="color:rgba(255,255,255,.45)">Attendance, phones, and what actually gets people in trouble</p>
-          </div>
-        </div>
-        <span class="lesson-toggle" id="icon-w2l3">+</span>
-      </div>
-      <div class="lesson-body" id="w2l3">
-        <div class="pt-4 space-y-4" style="color:rgba(255,255,255,.75)">
-          <p>Every workplace has rules. Some are posted. Most aren't. Here are the ones that trip up interns most often:</p>
-          <div class="space-y-3">
-            <div class="p-3 rounded-xl" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1)">
-              <p class="font-heading font-bold text-white text-sm">Attendance &amp; tardiness</p>
-              <p class="text-sm mt-1" style="color:rgba(255,255,255,.65)">Not showing up without warning is one of the fastest ways to damage your reputation. If you're going to be late or miss a day, contact your supervisor <em>before</em> it happens — not after. One text or email, as early as possible.</p>
-            </div>
-            <div class="p-3 rounded-xl" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1)">
-              <p class="font-heading font-bold text-white text-sm">Phone use</p>
-              <p class="text-sm mt-1" style="color:rgba(255,255,255,.65)">Unless your supervisor has explicitly said phones are okay, treat your placement like a class — your phone stays away. If you're given a task, the expectation is that you're doing that task. Scrolling is visible and remembered.</p>
-            </div>
-            <div class="p-3 rounded-xl" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1)">
-              <p class="font-heading font-bold text-white text-sm">Confidentiality</p>
-              <p class="text-sm mt-1" style="color:rgba(255,255,255,.65)">Some workplaces — especially in healthcare, law, and finance — have strict rules about what you can share. If you see patient info, client names, financial data, or internal documents: they stay at work. Don't post, screenshot, or tell friends.</p>
-            </div>
-            <div class="p-3 rounded-xl" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1)">
-              <p class="font-heading font-bold text-white text-sm">Social media</p>
-              <p class="text-sm mt-1" style="color:rgba(255,255,255,.65)">Never post about your placement without permission — even positive stuff. Never tag the company, the staff, or share anything that happened during your day. Your supervisor may check.</p>
-            </div>
-          </div>
-        </div>
-      </div>
+<!-- ══════════════════════════════════════════════
+     PHASE 1 — Professional Identity & Course Launch
+══════════════════════════════════════════════ -->
+<div id="phase-1">
+  <div class="phase-header">
+    <div class="phase-num font-heading">Phase 1 of 4</div>
+    <h2 class="phase-title font-heading">Professional Identity &amp; Course Launch</h2>
+    <p class="phase-desc">Everything starts here. You'll learn what this course is, where it's going, and who you are as a professional. By the end of Phase 1, you'll have a resume in hand and an application submitted.</p>
+    <div class="phase-progress">
+      <div class="progress-bar-track"><div class="progress-bar-fill" id="bar-1" style="width:0%"></div></div>
+      <span class="progress-label font-heading" id="pct-label-1">0 / 5 complete</span>
     </div>
   </div>
 
-  <!-- Week 2 Activity -->
-  <div class="activity-box mb-10">
-    <p class="section-label mb-2" style="color:#FBCD07">Week 2 Activity</p>
-    <h3 class="font-heading font-bold text-white text-xl mb-3">Write a Professional Email</h3>
-    <p style="color:rgba(255,255,255,.7)" class="mb-4">You've been at your placement for two weeks. Your supervisor gave you a task last Friday, but you realized over the weekend that you misunderstood part of the instructions. It's Monday morning. Write a professional email to your supervisor explaining the situation and asking for clarification.</p>
-    <div class="p-4 rounded-xl mb-4" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1)">
-      <p class="font-heading font-bold text-white text-sm mb-2">Remember to include:</p>
-      <ul class="text-sm space-y-1" style="color:rgba(255,255,255,.65)">
-        <li>• A clear subject line</li>
-        <li>• A professional greeting</li>
-        <li>• A brief explanation (no excuses, just facts)</li>
-        <li>• A specific question</li>
-        <li>• Your name</li>
+  <div class="deliverables-box">
+    <div class="deliverables-label font-heading">What you'll have by the end of Phase 1</div>
+    <div class="deliverables-list">
+      <div class="deliverable-pill"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>Career reflection + self-assessment</div>
+      <div class="deliverable-pill"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>Professional email signature</div>
+      <div class="deliverable-pill"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>Completed resume</div>
+      <div class="deliverable-pill"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>At least 1 application submitted</div>
+    </div>
+  </div>
+
+  <!-- Activity 1 -->
+  <div class="activity-card" id="card-p1_course_overview">
+    <div class="activity-header" onclick="toggleActivity('p1_course_overview')">
+      <div class="activity-num font-heading" id="num-p1_course_overview">1</div>
+      <div class="activity-info">
+        <div class="activity-title font-heading">Begin With the End in Mind</div>
+        <div class="activity-subtitle">Course overview · Capstone preview · Syllabus · Website tour · Expectations</div>
+      </div>
+      <span class="activity-badge badge-todo font-heading" id="badge-p1_course_overview">To Do</span>
+      <span class="activity-toggle font-heading" id="toggle-p1_course_overview">▾</span>
+    </div>
+    <div class="activity-body" id="body-p1_course_overview">
+      <div class="activity-section-label font-heading">What we do in class</div>
+      <ul class="activity-bullets">
+        <li>See the capstone — your booth presentation and 90-second stage talk. This is where the semester ends. Today we reverse-engineer it.</li>
+        <li>Review the syllabus, course contract, and what 60 hours of field experience actually looks like</li>
+        <li>Walk through this website together: your dashboard, weekly log, reflection form, and bootcamp phases</li>
+        <li>Discussion: what's the difference between showing up as a student versus showing up as an employee?</li>
+        <li>Overview of the 7 career clusters and what placements are available</li>
+        <li>Preview the 10 Illinois Essential Employability Skills you'll be assessed on</li>
       </ul>
-    </div>
-    <textarea id="reflectionWeek2PS" class="submit-input" rows="6" placeholder="Write your professional email here..."></textarea>
-  </div>
-
-  <!-- Week 2 Completion -->
-  <div class="submit-section">
-    <h3 class="font-heading font-bold text-white text-xl mb-1">Complete Week 2</h3>
-    <p class="text-sm mb-5" style="color:rgba(255,255,255,.55)">Submit your Week 2 reflection to mark this week complete.</p>
-    <div class="grid sm:grid-cols-2 gap-3 mb-4">
-      <div>
-        <label class="block text-xs font-heading font-bold text-white mb-1.5" style="letter-spacing:.05em">YOUR NAME</label>
-        <input type="text" id="nameWeek2PS" class="submit-input" placeholder="First and Last Name">
-      </div>
-      <div>
-        <label class="block text-xs font-heading font-bold text-white mb-1.5" style="letter-spacing:.05em">PERIOD</label>
-        <select id="periodWeek2PS" class="submit-input" style="cursor:pointer">
-          <option value="" disabled selected>Select your period</option>
-          <option>1st Period</option><option>2nd Period</option><option>3rd Period</option>
-          <option>4th Period</option><option>5th Period</option><option>6th Period</option>
-        </select>
-      </div>
-    </div>
-    <div class="mb-4">
-      <label class="block text-xs font-heading font-bold text-white mb-1.5" style="letter-spacing:.05em">WEEK 2 REFLECTION — What's one professional norm or rule that surprised you? How will you apply what you learned this week?</label>
-      <textarea id="reflectionWeek2PS2" class="submit-input" rows="5" placeholder="Write your reflection here..."></textarea>
-    </div>
-    <button id="btnWeek2PS" class="submit-btn" onclick="submitWeekFull('Week 2 — Professional Skills', 'nameWeek2PS', 'reflectionWeek2PS2', 'btnWeek2PS')">
-      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-      Submit Week 2 Completion
-    </button>
-    <p class="text-xs mt-3" style="color:rgba(255,255,255,.3)">A Google Form will open in a new tab to confirm your submission.</p>
-  </div>
-
-  <div class="flex justify-between mt-8">
-    <button onclick="showWeek(1)" class="flex items-center gap-2 px-5 py-3 rounded-full font-heading font-bold text-sm" style="background:rgba(255,255,255,.08);color:#fff">
-      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
-      Week 1
-    </button>
-    <button onclick="showWeek(3)" class="flex items-center gap-2 px-6 py-3 rounded-full font-heading font-bold text-sm" style="background:#FBCD07;color:#000">
-      Continue to Week 3
-      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-    </button>
-  </div>
-
-</div><!-- /week-2 -->
-
-
-<!-- ═══════════════════════════════════════════════════
-     WEEK 3: LAUNCH READY
-═══════════════════════════════════════════════════ -->
-<div id="week-content-3" style="display:none">
-
-  <div class="mb-10">
-    <p class="section-label mb-2" style="color:#FBCD07">Week 3 of 3</p>
-    <h2 class="font-heading text-3xl md:text-4xl font-bold text-white mb-3">Your Placement — Launch Ready</h2>
-    <p style="color:rgba(255,255,255,.6)" class="text-lg leading-relaxed">You've got the mindset. You've got the professional foundation. Now let's talk about what actually happens when you walk in on Day One — your supervisor relationship, your first week on the ground, and how to track your experience all semester long.</p>
-  </div>
-
-  <!-- Lessons -->
-  <div class="mb-10">
-    <h3 class="font-heading font-bold text-white text-lg mb-4 flex items-center gap-2">
-      <svg class="w-5 h-5 text-gold-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
-      Lessons
-    </h3>
-
-    <div class="lesson-card">
-      <div class="lesson-header" onclick="toggleLesson('w3l1')">
-        <div class="flex items-center gap-3">
-          <span class="lesson-num">7</span>
-          <div>
-            <p class="font-heading font-bold text-white">Your Supervisor Relationship</p>
-            <p class="text-xs mt-0.5" style="color:rgba(255,255,255,.45)">What they need from you, and what you need from them</p>
-          </div>
-        </div>
-        <span class="lesson-toggle" id="icon-w3l1">+</span>
-      </div>
-      <div class="lesson-body" id="w3l1">
-        <div class="pt-4 space-y-4" style="color:rgba(255,255,255,.75)">
-          <p>Your supervisor is not your teacher, your parent, or your friend. They're a professional who is investing time and trust in you. Here's what they actually need from you:</p>
-          <div class="space-y-2">
-            <div class="flex items-start gap-2"><span class="text-gold-400 mt-0.5">→</span><p class="text-sm"><strong class="text-white">Reliability.</strong> Show up when you said you would. Do what you said you'd do. They need to trust your word.</p></div>
-            <div class="flex items-start gap-2"><span class="text-gold-400 mt-0.5">→</span><p class="text-sm"><strong class="text-white">Low maintenance.</strong> This doesn't mean never asking questions. It means not needing to be managed every second. Try things first, then ask.</p></div>
-            <div class="flex items-start gap-2"><span class="text-gold-400 mt-0.5">→</span><p class="text-sm"><strong class="text-white">Honest communication.</strong> If something is wrong — you're confused, overwhelmed, or made a mistake — tell them. Finding out later is always worse.</p></div>
-          </div>
-          <p>And here's what you need from them: <strong class="text-white">clarity on expectations.</strong> If you don't know what "doing a good job" looks like in their eyes, ask them directly in your first week: <em>"What would a great semester look like from your perspective?"</em></p>
-          <p>Getting feedback is part of the job. When they give you critical feedback, <strong class="text-white">don't get defensive — get curious.</strong> "Can you show me what that would look like?" is one of the best responses to constructive criticism.</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="lesson-card">
-      <div class="lesson-header" onclick="toggleLesson('w3l2')">
-        <div class="flex items-center gap-3">
-          <span class="lesson-num">8</span>
-          <div>
-            <p class="font-heading font-bold text-white">Navigating Day One</p>
-            <p class="text-xs mt-0.5" style="color:rgba(255,255,255,.45)">First impressions, logistics, and what to expect</p>
-          </div>
-        </div>
-        <span class="lesson-toggle" id="icon-w3l2">+</span>
-      </div>
-      <div class="lesson-body" id="w3l2">
-        <div class="pt-4 space-y-4" style="color:rgba(255,255,255,.75)">
-          <p>First impressions form in seconds and take weeks to change. Your first day sets the tone for everything after it.</p>
-          <div class="grid sm:grid-cols-3 gap-3 mt-2">
-            <div class="p-3 rounded-xl" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1)">
-              <p class="font-heading font-bold text-white text-sm mb-2">Before You Go</p>
-              <ul class="text-xs space-y-1.5" style="color:rgba(255,255,255,.65)">
-                <li>✓ Know the address and how long it takes to get there</li>
-                <li>✓ Arrive 10 minutes early</li>
-                <li>✓ Dress appropriately for the industry</li>
-                <li>✓ Bring a notebook and pen</li>
-                <li>✓ Charge your phone the night before</li>
-              </ul>
-            </div>
-            <div class="p-3 rounded-xl" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1)">
-              <p class="font-heading font-bold text-white text-sm mb-2">When You Arrive</p>
-              <ul class="text-xs space-y-1.5" style="color:rgba(255,255,255,.65)">
-                <li>✓ Introduce yourself confidently</li>
-                <li>✓ Make eye contact and shake hands</li>
-                <li>✓ Say your Work Bio (you practiced it in Week 1)</li>
-                <li>✓ Take notes on names, locations, procedures</li>
-                <li>✓ Observe before you opine</li>
-              </ul>
-            </div>
-            <div class="p-3 rounded-xl" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1)">
-              <p class="font-heading font-bold text-white text-sm mb-2">Questions to Ask</p>
-              <ul class="text-xs space-y-1.5" style="color:rgba(255,255,255,.65)">
-                <li>• "What does a great intern look like to you?"</li>
-                <li>• "What should I prioritize this first week?"</li>
-                <li>• "How do you prefer to communicate — email or text?"</li>
-                <li>• "Is there anything I should know about how things work here?"</li>
-              </ul>
-            </div>
-          </div>
-          <p class="text-sm" style="color:rgba(255,255,255,.65)">You will feel awkward. That is normal. Push through it anyway.</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="lesson-card">
-      <div class="lesson-header" onclick="toggleLesson('w3l3')">
-        <div class="flex items-center gap-3">
-          <span class="lesson-num">9</span>
-          <div>
-            <p class="font-heading font-bold text-white">Tracking Your Experience</p>
-            <p class="text-xs mt-0.5" style="color:rgba(255,255,255,.45)">Hours, reflections, and building your portfolio</p>
-          </div>
-        </div>
-        <span class="lesson-toggle" id="icon-w3l3">+</span>
-      </div>
-      <div class="lesson-body" id="w3l3">
-        <div class="pt-4 space-y-4" style="color:rgba(255,255,255,.75)">
-          <p>The Illinois CCPE requirement is a minimum of 60 hours of supervised placement. Your school tracks this — but so should you.</p>
-          <p>Beyond hours, your placement is a story you're building. Each week, document:</p>
-          <div class="space-y-2 mt-1">
-            <div class="flex items-start gap-2"><span class="text-gold-400 mt-0.5">→</span><p class="text-sm"><strong class="text-white">What did you actually do?</strong> Specific tasks, not "helped out."</p></div>
-            <div class="flex items-start gap-2"><span class="text-gold-400 mt-0.5">→</span><p class="text-sm"><strong class="text-white">What did you learn?</strong> Something about the industry, the workplace, or yourself.</p></div>
-            <div class="flex items-start gap-2"><span class="text-gold-400 mt-0.5">→</span><p class="text-sm"><strong class="text-white">What challenged you?</strong> A moment where you had to figure something out or push past discomfort.</p></div>
-            <div class="flex items-start gap-2"><span class="text-gold-400 mt-0.5">→</span><p class="text-sm"><strong class="text-white">What's your goal for next week?</strong> One specific, actionable thing.</p></div>
-          </div>
-          <p>By the end of the semester, this is your portfolio — evidence of real growth in a real environment. It's the difference between saying "I did an internship" and being able to describe exactly what you built and who you became.</p>
-          <div class="p-4 rounded-xl mt-2" style="background:rgba(251,205,7,.08);border:1px solid rgba(251,205,7,.2)">
-            <p class="font-heading font-bold text-gold-400 text-sm mb-1">Your weekly check-ins with your teacher are also part of this.</p>
-            <p class="text-sm" style="color:rgba(255,255,255,.7)">Come with something real to say. The more honestly you reflect, the more support you'll get navigating challenges as they come up.</p>
-          </div>
-        </div>
+      <div class="completion-zone">
+        <div class="completion-zone-label font-heading">Mark Complete</div>
+        <p style="font-size:.82rem;color:rgba(255,255,255,.5);margin-bottom:.75rem">Your teacher will confirm this with the class. Mark complete once you've completed the course overview day.</p>
+        <button class="complete-btn font-heading" id="btn-p1_course_overview" onclick="markComplete('p1_course_overview', 1)">Mark Complete</button>
+        <div class="status-msg" id="msg-p1_course_overview"></div>
       </div>
     </div>
   </div>
 
-  <!-- Week 3 Activity -->
-  <div class="activity-box mb-10">
-    <p class="section-label mb-2" style="color:#FBCD07">Week 3 Activity</p>
-    <h3 class="font-heading font-bold text-white text-xl mb-3">Your First Week Plan</h3>
-    <p style="color:rgba(255,255,255,.7)" class="mb-4">Before you go to your placement for the first time, create a brief written plan. This isn't a schedule — it's an intention. What do you want to accomplish in your first week? What impressions do you want to make? What questions will you ask?</p>
-    <div class="p-4 rounded-xl mb-4" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1)">
-      <p class="font-heading font-bold text-white text-sm mb-2">Your plan should include:</p>
-      <ul class="text-sm space-y-1" style="color:rgba(255,255,255,.65)">
-        <li>• One thing you want your supervisor to know about you after Week 1</li>
-        <li>• Two questions you will ask in your first week</li>
-        <li>• One thing you're nervous about and how you'll handle it</li>
+  <!-- Activity 2 -->
+  <div class="activity-card" id="card-p1_career_reflection">
+    <div class="activity-header" onclick="toggleActivity('p1_career_reflection')">
+      <div class="activity-num font-heading" id="num-p1_career_reflection">2</div>
+      <div class="activity-info">
+        <div class="activity-title font-heading">Career &amp; Self-Assessment</div>
+        <div class="activity-subtitle">Career interest reflection · Employability skills pre-assessment · Professional goals</div>
+      </div>
+      <span class="activity-badge badge-todo font-heading" id="badge-p1_career_reflection">To Do</span>
+      <span class="activity-toggle font-heading" id="toggle-p1_career_reflection">▾</span>
+    </div>
+    <div class="activity-body" id="body-p1_career_reflection">
+      <div class="activity-section-label font-heading">What we do in class</div>
+      <ul class="activity-bullets">
+        <li>Rate yourself on all 10 employability skills (1–4 scale) — this is your baseline. You'll do it again at the end to see how you've grown.</li>
+        <li>Career interest reflection: what fields interest you, what do you want to explore, what are you good at?</li>
+        <li>Write your professional goal for the semester — what do you want to walk away with?</li>
+        <li>Class discussion: what do employers actually look for beyond skills?</li>
       </ul>
-    </div>
-    <textarea id="reflectionWeek3Launch" class="submit-input" rows="6" placeholder="Write your first week plan here..."></textarea>
-  </div>
-
-  <!-- Week 3 Completion -->
-  <div class="submit-section" style="border-color:rgba(251,205,7,.3);background:rgba(251,205,7,.04)">
-    <div class="flex items-center gap-3 mb-1">
-      <h3 class="font-heading font-bold text-white text-xl">Complete the Bootcamp</h3>
-      <span style="background:#FBCD07;color:#000;font-family:'Montserrat',sans-serif;font-size:.65rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:.3rem .75rem;border-radius:999px">Final Step</span>
-    </div>
-    <p class="text-sm mb-5" style="color:rgba(255,255,255,.55)">You made it. Submit your Week 3 reflection — this marks your bootcamp complete and signals you're cleared for your placement.</p>
-    <div class="grid sm:grid-cols-2 gap-3 mb-4">
-      <div>
-        <label class="block text-xs font-heading font-bold text-white mb-1.5" style="letter-spacing:.05em">YOUR NAME</label>
-        <input type="text" id="nameWeek3Launch" class="submit-input" placeholder="First and Last Name">
-      </div>
-      <div>
-        <label class="block text-xs font-heading font-bold text-white mb-1.5" style="letter-spacing:.05em">PERIOD</label>
-        <select id="periodWeek3Launch" class="submit-input" style="cursor:pointer">
-          <option value="" disabled selected>Select your period</option>
-          <option>1st Period</option><option>2nd Period</option><option>3rd Period</option>
-          <option>4th Period</option><option>5th Period</option><option>6th Period</option>
-        </select>
+      <div class="completion-zone">
+        <div class="completion-zone-label font-heading">Submit Your Reflection</div>
+        <textarea class="completion-textarea" id="input-p1_career_reflection" placeholder="Describe your career interests, what you want to get out of this placement, and one professional goal for the semester…" rows="4"></textarea>
+        <button class="complete-btn font-heading" id="btn-p1_career_reflection" onclick="submitWithNotes('p1_career_reflection', 1)">Submit Reflection</button>
+        <div class="status-msg" id="msg-p1_career_reflection"></div>
       </div>
     </div>
-    <div class="mb-4">
-      <label class="block text-xs font-heading font-bold text-white mb-1.5" style="letter-spacing:.05em">FINAL REFLECTION — What are you most ready for? What are you still nervous about? What does a successful semester look like for you?</label>
-      <textarea id="reflectionWeek3Launch2" class="submit-input" rows="5" placeholder="Write your final reflection here..."></textarea>
+  </div>
+
+  <!-- Activity 3 -->
+  <div class="activity-card" id="card-p1_digital_footprint">
+    <div class="activity-header" onclick="toggleActivity('p1_digital_footprint')">
+      <div class="activity-num font-heading" id="num-p1_digital_footprint">3</div>
+      <div class="activity-info">
+        <div class="activity-title font-heading">Your Professional Brand</div>
+        <div class="activity-subtitle">Digital footprint audit · Professional email signature · Social media + first impressions</div>
+      </div>
+      <span class="activity-badge badge-todo font-heading" id="badge-p1_digital_footprint">To Do</span>
+      <span class="activity-toggle font-heading" id="toggle-p1_digital_footprint">▾</span>
     </div>
-    <button id="btnWeek3Launch" class="submit-btn" style="background:#FBCD07;color:#000" onclick="submitWeekFull('Week 3 — Launch Ready (Bootcamp Complete)', 'nameWeek3Launch', 'reflectionWeek3Launch2', 'btnWeek3Launch')">
-      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-      Submit &amp; Complete Bootcamp
-    </button>
-    <p class="text-xs mt-3" style="color:rgba(255,255,255,.3)">A Google Form will open in a new tab to confirm your submission.</p>
-  </div>
-
-  <div class="flex justify-between mt-8">
-    <button onclick="showWeek(2)" class="flex items-center gap-2 px-5 py-3 rounded-full font-heading font-bold text-sm" style="background:rgba(255,255,255,.08);color:#fff">
-      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
-      Week 2
-    </button>
-    <a href="index.html#skills" class="flex items-center gap-2 px-6 py-3 rounded-full font-heading font-bold text-sm" style="background:rgba(255,255,255,.08);color:#fff">
-      Next: Employability Skills
-      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-    </a>
-  </div>
-
-</div><!-- /week-3 -->
-
-</div><!-- /main content -->
-
-<!-- ── FOOTER ── -->
-<footer style="background:#111827;border-top:1px solid rgba(255,255,255,.08);padding:2.5rem 1.5rem;margin-top:4rem">
-  <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-    <div class="flex items-center gap-3">
-      <img src="https://res.cloudinary.com/dsbllwpbh/image/upload/v1770990807/field-study-logo-trans_kewube.png" alt="BHS Field Experience" class="h-8 w-auto brightness-0 invert opacity-70"/>
-      <div>
-        <p class="font-heading font-bold text-white text-sm">BHS Field Experience</p>
-        <p style="color:rgba(255,255,255,.4);font-size:.7rem;text-transform:uppercase;letter-spacing:.1em">Batavia High School</p>
+    <div class="activity-body" id="body-p1_digital_footprint">
+      <div class="activity-section-label font-heading">What we do in class</div>
+      <ul class="activity-bullets">
+        <li>Google yourself — right now, in class. What comes up? What would an employer see?</li>
+        <li>Social media audit discussion: what's public, what's professional, what needs to change before you start interviewing</li>
+        <li>Build your professional email signature — your name, title (Field Experience Student), school, and contact info</li>
+        <li>Real examples: how a digital footprint has cost people jobs and opportunities</li>
+        <li>Phone communication roleplay: cold-calling a potential employer</li>
+      </ul>
+      <div class="completion-zone">
+        <div class="completion-zone-label font-heading">Confirm Your Email Signature</div>
+        <textarea class="completion-textarea" id="input-p1_digital_footprint" placeholder="Paste your professional email signature here as written (name, title, school, contact)…" rows="3"></textarea>
+        <button class="complete-btn font-heading" id="btn-p1_digital_footprint" onclick="submitWithNotes('p1_digital_footprint', 1)">Submit Signature</button>
+        <div class="status-msg" id="msg-p1_digital_footprint"></div>
       </div>
     </div>
-    <div class="flex gap-6">
-      <a href="index.html" class="text-sm font-heading" style="color:rgba(255,255,255,.5)">Home</a>
-      <a href="index.html#skills" class="text-sm font-heading" style="color:rgba(255,255,255,.5)">Skills</a>
-      <a href="resources.html" class="text-sm font-heading" style="color:rgba(255,255,255,.5)">Resources</a>
+  </div>
+
+  <!-- Activity 4 -->
+  <div class="activity-card" id="card-p1_resume_complete">
+    <div class="activity-header" onclick="toggleActivity('p1_resume_complete')">
+      <div class="activity-num font-heading" id="num-p1_resume_complete">4</div>
+      <div class="activity-info">
+        <div class="activity-title font-heading">Resume Workshop</div>
+        <div class="activity-subtitle">Build · Peer review · Conference · Final draft</div>
+      </div>
+      <span class="activity-badge badge-todo font-heading" id="badge-p1_resume_complete">To Do</span>
+      <span class="activity-toggle font-heading" id="toggle-p1_resume_complete">▾</span>
+    </div>
+    <div class="activity-body" id="body-p1_resume_complete">
+      <div class="activity-section-label font-heading">What we do in class</div>
+      <ul class="activity-bullets">
+        <li>Resume structure walkthrough — what goes where and why different resumes look different for different people</li>
+        <li>Translating school experiences into workforce language: "I was on the team" → "Led a 12-person team through…"</li>
+        <li>Action verb practice — the difference between listing a job and owning one</li>
+        <li>References: how to ask professionally, who to ask, what they need to say</li>
+        <li>In-class build time + peer review with a partner</li>
+        <li>Teacher or partner conference on your draft before final</li>
+      </ul>
+      <div class="completion-zone">
+        <div class="completion-zone-label font-heading">Submit Your Resume Link</div>
+        <input type="url" class="completion-input" id="input-p1_resume_complete" placeholder="Paste your Google Drive resume link (make sure sharing is on)…">
+        <button class="complete-btn font-heading" id="btn-p1_resume_complete" onclick="submitWithNotes('p1_resume_complete', 1)">Submit Resume</button>
+        <div class="status-msg" id="msg-p1_resume_complete"></div>
+      </div>
     </div>
   </div>
-</footer>
+
+  <!-- Activity 5 -->
+  <div class="activity-card" id="card-p1_application_submitted">
+    <div class="activity-header" onclick="toggleActivity('p1_application_submitted')">
+      <div class="activity-num font-heading" id="num-p1_application_submitted">5</div>
+      <div class="activity-info">
+        <div class="activity-title font-heading">Explore &amp; Apply</div>
+        <div class="activity-subtitle">Browse job menu · Research top choices · Meet with teacher · Submit application</div>
+      </div>
+      <span class="activity-badge badge-todo font-heading" id="badge-p1_application_submitted">To Do</span>
+      <span class="activity-toggle font-heading" id="toggle-p1_application_submitted">▾</span>
+    </div>
+    <div class="activity-body" id="body-p1_application_submitted">
+      <div class="activity-section-label font-heading">What we do in class</div>
+      <ul class="activity-bullets">
+        <li>Browse the placement list on this site — explore what's available across all 7 career clusters</li>
+        <li>Employer scavenger hunt: research your top 2–3 choices. Find out what they do, who works there, what they value</li>
+        <li>Match your skills from your resume to the placements you're interested in</li>
+        <li>Meet with your teacher to talk through your choices and confirm your application plan</li>
+        <li>Submit your application(s) — this starts the clock on employer paperwork, so the sooner the better</li>
+      </ul>
+      <div class="completion-zone">
+        <div class="completion-zone-label font-heading">Confirm Your Application</div>
+        <textarea class="completion-textarea" id="input-p1_application_submitted" placeholder="Which placement(s) did you apply to, and how did you submit? (e.g., 'Applied to Penrose Brewing and Batavia Public Library through the site on 8/28')" rows="2"></textarea>
+        <button class="complete-btn font-heading" id="btn-p1_application_submitted" onclick="submitWithNotes('p1_application_submitted', 1)">Confirm Application</button>
+        <div class="status-msg" id="msg-p1_application_submitted"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     PHASE 2 — Interview Prep
+══════════════════════════════════════════════ -->
+<div id="phase-2" style="display:none">
+  <div class="phase-header">
+    <div class="phase-num font-heading">Phase 2 of 4</div>
+    <h2 class="phase-title font-heading">Interview Prep</h2>
+    <p class="phase-desc">How do you actually earn the placement? This phase prepares you for the real interview — the pitch, the questions, the nerves, and the follow-through. Some of you may already have interviews scheduled. Good.</p>
+    <div class="phase-progress">
+      <div class="progress-bar-track"><div class="progress-bar-fill" id="bar-2" style="width:0%"></div></div>
+      <span class="progress-label font-heading" id="pct-label-2">0 / 4 complete</span>
+    </div>
+  </div>
+
+  <div class="interview-banner">
+    <div class="interview-banner-icon">
+      <svg width="20" height="20" fill="none" stroke="#60a5fa" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+    </div>
+    <div>
+      <div class="interview-banner-title font-heading">Interviews can happen at any time</div>
+      <div class="interview-banner-text">If an employer reaches out to schedule an interview — even during Phase 1 — go. That's the goal. This phase prepares you, but the real interview doesn't wait for the phase to end. Your teacher will work with the schedule.</div>
+    </div>
+  </div>
+
+  <div class="deliverables-box">
+    <div class="deliverables-label font-heading">What you'll have by the end of Phase 2</div>
+    <div class="deliverables-list">
+      <div class="deliverable-pill"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>Elevator pitch (written + recorded)</div>
+      <div class="deliverable-pill"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>Mock interview completed</div>
+      <div class="deliverable-pill"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>Interview improvement plan</div>
+    </div>
+  </div>
+
+  <!-- Activity 1 -->
+  <div class="activity-card" id="card-p2_elevator_pitch">
+    <div class="activity-header" onclick="toggleActivity('p2_elevator_pitch')">
+      <div class="activity-num font-heading" id="num-p2_elevator_pitch">1</div>
+      <div class="activity-info">
+        <div class="activity-title font-heading">Elevator Pitch</div>
+        <div class="activity-subtitle">Write it · Workshop it · Record it</div>
+      </div>
+      <span class="activity-badge badge-todo font-heading" id="badge-p2_elevator_pitch">To Do</span>
+      <span class="activity-toggle font-heading" id="toggle-p2_elevator_pitch">▾</span>
+    </div>
+    <div class="activity-body" id="body-p2_elevator_pitch">
+      <div class="activity-section-label font-heading">What we do in class</div>
+      <ul class="activity-bullets">
+        <li>Structure: hook → background → value → ask. Thirty seconds to tell someone exactly why they should hire you</li>
+        <li>Write your pitch in class — first draft, no judgment</li>
+        <li>Deliver it to three different partners. Get real feedback: was it clear? Did you sound confident? Did it sound rehearsed?</li>
+        <li>Refine and record your final video pitch — this becomes a portfolio piece and your capstone warmup</li>
+      </ul>
+      <div class="completion-zone">
+        <div class="completion-zone-label font-heading">Submit Your Elevator Pitch</div>
+        <input type="url" class="completion-input" id="input-p2_elevator_pitch-url" placeholder="Paste your video link (Google Drive, Flipgrid, etc.)…">
+        <textarea class="completion-textarea" id="input-p2_elevator_pitch" placeholder="Or paste your written pitch script here…" rows="3"></textarea>
+        <button class="complete-btn font-heading" id="btn-p2_elevator_pitch" onclick="submitWithNotes('p2_elevator_pitch', 2)">Submit Pitch</button>
+        <div class="status-msg" id="msg-p2_elevator_pitch"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Activity 2 -->
+  <div class="activity-card" id="card-p2_star_practice">
+    <div class="activity-header" onclick="toggleActivity('p2_star_practice')">
+      <div class="activity-num font-heading" id="num-p2_star_practice">2</div>
+      <div class="activity-info">
+        <div class="activity-title font-heading">STAR Method &amp; Interview Skills</div>
+        <div class="activity-subtitle">Situation · Task · Action · Result — how to answer anything</div>
+      </div>
+      <span class="activity-badge badge-todo font-heading" id="badge-p2_star_practice">To Do</span>
+      <span class="activity-toggle font-heading" id="toggle-p2_star_practice">▾</span>
+    </div>
+    <div class="activity-body" id="body-p2_star_practice">
+      <div class="activity-section-label font-heading">What we do in class</div>
+      <ul class="activity-bullets">
+        <li>STAR breakdown: Situation → Task → Action → Result. A formula for answering behavioral interview questions like "Tell me about a time when…"</li>
+        <li>Practice with real scenarios pulled from actual workplace situations</li>
+        <li>Common interview questions + how to prep answers without sounding robotic</li>
+        <li>Body language: what it says when you're nervous, how to correct for it</li>
+        <li>Professional appearance discussion: what appropriate looks like for different types of placements</li>
+      </ul>
+      <div class="completion-zone">
+        <div class="completion-zone-label font-heading">Mark Complete</div>
+        <p style="font-size:.82rem;color:rgba(255,255,255,.5);margin-bottom:.75rem">Mark complete after your STAR practice session.</p>
+        <button class="complete-btn font-heading" id="btn-p2_star_practice" onclick="markComplete('p2_star_practice', 2)">Mark Complete</button>
+        <div class="status-msg" id="msg-p2_star_practice"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Activity 3 -->
+  <div class="activity-card" id="card-p2_mock_interview">
+    <div class="activity-header" onclick="toggleActivity('p2_mock_interview')">
+      <div class="activity-num font-heading" id="num-p2_mock_interview">3</div>
+      <div class="activity-info">
+        <div class="activity-title font-heading">Mock Interview</div>
+        <div class="activity-subtitle">Formal interview · Real feedback · Peer or community partner</div>
+      </div>
+      <span class="activity-badge badge-todo font-heading" id="badge-p2_mock_interview">To Do</span>
+      <span class="activity-toggle font-heading" id="toggle-p2_mock_interview">▾</span>
+    </div>
+    <div class="activity-body" id="body-p2_mock_interview">
+      <div class="activity-section-label font-heading">What we do in class</div>
+      <ul class="activity-bullets">
+        <li>Formal mock interview — peer partner, community member, HR professional, or administrator</li>
+        <li>Your interviewer completes a structured feedback form during your interview</li>
+        <li>You receive written feedback immediately after — specific, honest, actionable</li>
+        <li>No one gets a perfect mock interview. That's the point. You find out what to fix before the real one.</li>
+      </ul>
+      <div class="completion-zone">
+        <div class="completion-zone-label font-heading">Confirm Mock Interview Completed</div>
+        <textarea class="completion-textarea" id="input-p2_mock_interview" placeholder="Who interviewed you and what was one piece of feedback you received?" rows="2"></textarea>
+        <button class="complete-btn font-heading" id="btn-p2_mock_interview" onclick="submitWithNotes('p2_mock_interview', 2)">Confirm Completed</button>
+        <div class="status-msg" id="msg-p2_mock_interview"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Activity 4 -->
+  <div class="activity-card" id="card-p2_interview_plan">
+    <div class="activity-header" onclick="toggleActivity('p2_interview_plan')">
+      <div class="activity-num font-heading" id="num-p2_interview_plan">4</div>
+      <div class="activity-info">
+        <div class="activity-title font-heading">Interview Improvement Plan</div>
+        <div class="activity-subtitle">Review feedback · Identify gaps · Write action steps</div>
+      </div>
+      <span class="activity-badge badge-todo font-heading" id="badge-p2_interview_plan">To Do</span>
+      <span class="activity-toggle font-heading" id="toggle-p2_interview_plan">▾</span>
+    </div>
+    <div class="activity-body" id="body-p2_interview_plan">
+      <div class="activity-section-label font-heading">What we do in class</div>
+      <ul class="activity-bullets">
+        <li>Review the feedback from your mock interview — what did you do well, what needs work?</li>
+        <li>Identify 2–3 specific areas to improve before your real interview</li>
+        <li>Write concrete action steps: not "be more confident" — "practice answering the 'tell me about yourself' question out loud three times before my interview"</li>
+      </ul>
+      <div class="completion-zone">
+        <div class="completion-zone-label font-heading">Submit Your Improvement Plan</div>
+        <textarea class="completion-textarea" id="input-p2_interview_plan" placeholder="List 2–3 specific things you're working on before your real interview and your action steps for each…" rows="4"></textarea>
+        <button class="complete-btn font-heading" id="btn-p2_interview_plan" onclick="submitWithNotes('p2_interview_plan', 2)">Submit Plan</button>
+        <div class="status-msg" id="msg-p2_interview_plan"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     PHASE 3 — Workplace Readiness
+══════════════════════════════════════════════ -->
+<div id="phase-3" style="display:none">
+  <div class="phase-header">
+    <div class="phase-num font-heading">Phase 3 of 4</div>
+    <h2 class="phase-title font-heading">Workplace Readiness</h2>
+    <p class="phase-desc">You've applied. Interviews are happening. Now it's time to make sure you're ready for day one — not just to show up, but to show up right. Ethics, real scenarios, and the skills that make the difference between an employee people trust and one they don't.</p>
+    <div class="phase-progress">
+      <div class="progress-bar-track"><div class="progress-bar-fill" id="bar-3" style="width:0%"></div></div>
+      <span class="progress-label font-heading" id="pct-label-3">0 / 4 complete</span>
+    </div>
+  </div>
+
+  <div class="deliverables-box">
+    <div class="deliverables-label font-heading">What you'll have by the end of Phase 3</div>
+    <div class="deliverables-list">
+      <div class="deliverable-pill"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>Workplace readiness self-assessment</div>
+      <div class="deliverable-pill"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>Placement confirmed</div>
+    </div>
+  </div>
+
+  <!-- Activity 1 -->
+  <div class="activity-card" id="card-p3_ethics_scenarios">
+    <div class="activity-header" onclick="toggleActivity('p3_ethics_scenarios')">
+      <div class="activity-num font-heading" id="num-p3_ethics_scenarios">1</div>
+      <div class="activity-info">
+        <div class="activity-title font-heading">Workplace Dilemma Stations</div>
+        <div class="activity-subtitle">Real scenarios · Small groups · Defend your decisions</div>
+      </div>
+      <span class="activity-badge badge-todo font-heading" id="badge-p3_ethics_scenarios">To Do</span>
+      <span class="activity-toggle font-heading" id="toggle-p3_ethics_scenarios">▾</span>
+    </div>
+    <div class="activity-body" id="body-p3_ethics_scenarios">
+      <div class="activity-section-label font-heading">What we do in class</div>
+      <ul class="activity-bullets">
+        <li>Small groups rotate through stations — each one has a real workplace scenario with no easy answer</li>
+        <li>Scenarios include: arriving late, a confidentiality situation, a conflict with a coworker, a dress code question, and an uncomfortable request from a supervisor</li>
+        <li>Groups discuss, decide, and prepare to defend their answer to the class</li>
+        <li>Special focus on confidentiality — especially important for education, health, and human services placements. What you can and cannot share, and what it means legally.</li>
+        <li>Full class debrief: what did different groups decide, and why does it matter?</li>
+      </ul>
+      <div class="completion-zone">
+        <div class="completion-zone-label font-heading">Mark Complete</div>
+        <p style="font-size:.82rem;color:rgba(255,255,255,.5);margin-bottom:.75rem">Mark complete after participating in the dilemma stations activity.</p>
+        <button class="complete-btn font-heading" id="btn-p3_ethics_scenarios" onclick="markComplete('p3_ethics_scenarios', 3)">Mark Complete</button>
+        <div class="status-msg" id="msg-p3_ethics_scenarios"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Activity 2 -->
+  <div class="activity-card" id="card-p3_skills_simulation">
+    <div class="activity-header" onclick="toggleActivity('p3_skills_simulation')">
+      <div class="activity-num font-heading" id="num-p3_skills_simulation">2</div>
+      <div class="activity-info">
+        <div class="activity-title font-heading">Employability Skills Simulation</div>
+        <div class="activity-subtitle">Team challenges · Case studies · Conflict resolution · Receiving feedback</div>
+      </div>
+      <span class="activity-badge badge-todo font-heading" id="badge-p3_skills_simulation">To Do</span>
+      <span class="activity-toggle font-heading" id="toggle-p3_skills_simulation">▾</span>
+    </div>
+    <div class="activity-body" id="body-p3_skills_simulation">
+      <div class="activity-section-label font-heading">What we do in class</div>
+      <ul class="activity-bullets">
+        <li>Team-based challenges focused on adaptability, problem-solving, and collaboration — the kind of situations you'll actually face at a placement</li>
+        <li>Case study analysis: conflict resolution, working with a supervisor who gives confusing direction, being asked to do something outside your job description</li>
+        <li>How to receive feedback — good, bad, and vague — and what to do with it professionally</li>
+        <li>What success looks like in a workplace versus a classroom: different rules, different expectations, different relationships</li>
+      </ul>
+      <div class="completion-zone">
+        <div class="completion-zone-label font-heading">Mark Complete</div>
+        <p style="font-size:.82rem;color:rgba(255,255,255,.5);margin-bottom:.75rem">Mark complete after the skills simulation activity.</p>
+        <button class="complete-btn font-heading" id="btn-p3_skills_simulation" onclick="markComplete('p3_skills_simulation', 3)">Mark Complete</button>
+        <div class="status-msg" id="msg-p3_skills_simulation"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Activity 3 -->
+  <div class="activity-card" id="card-p3_self_assessment">
+    <div class="activity-header" onclick="toggleActivity('p3_self_assessment')">
+      <div class="activity-num font-heading" id="num-p3_self_assessment">3</div>
+      <div class="activity-info">
+        <div class="activity-title font-heading">Post-Assessment</div>
+        <div class="activity-subtitle">Re-rate your 10 employability skills · See your growth since Phase 1</div>
+      </div>
+      <span class="activity-badge badge-todo font-heading" id="badge-p3_self_assessment">To Do</span>
+      <span class="activity-toggle font-heading" id="toggle-p3_self_assessment">▾</span>
+    </div>
+    <div class="activity-body" id="body-p3_self_assessment">
+      <div class="activity-section-label font-heading">What we do in class</div>
+      <ul class="activity-bullets">
+        <li>Re-rate yourself on all 10 Illinois Essential Employability Skills using the same 1–4 scale from Phase 1</li>
+        <li>Compare your scores: where did you grow? Where are you still working?</li>
+        <li>This isn't about being perfect — it's about being honest so your placement experience can be intentional</li>
+        <li>Write a short reflection: what surprised you about your growth? What do you want to focus on during your 60 hours?</li>
+      </ul>
+      <div class="completion-zone">
+        <div class="completion-zone-label font-heading">Submit Your Post-Assessment Reflection</div>
+        <textarea class="completion-textarea" id="input-p3_self_assessment" placeholder="Where did you grow since Phase 1? What skill do you most want to develop during your placement?" rows="3"></textarea>
+        <button class="complete-btn font-heading" id="btn-p3_self_assessment" onclick="submitWithNotes('p3_self_assessment', 3)">Submit Assessment</button>
+        <div class="status-msg" id="msg-p3_self_assessment"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Activity 4 -->
+  <div class="activity-card" id="card-p3_placement_confirmed">
+    <div class="activity-header" onclick="toggleActivity('p3_placement_confirmed')">
+      <div class="activity-num font-heading" id="num-p3_placement_confirmed">4</div>
+      <div class="activity-info">
+        <div class="activity-title font-heading">Placement Confirmed</div>
+        <div class="activity-subtitle">You got it — confirm your employer so we can get your paperwork started</div>
+      </div>
+      <span class="activity-badge badge-todo font-heading" id="badge-p3_placement_confirmed">To Do</span>
+      <span class="activity-toggle font-heading" id="toggle-p3_placement_confirmed">▾</span>
+    </div>
+    <div class="activity-body" id="body-p3_placement_confirmed">
+      <div class="activity-section-label font-heading">What this means</div>
+      <ul class="activity-bullets">
+        <li>You've accepted an offer from a placement employer — congratulations</li>
+        <li>Confirm your employer here so your teacher can start the hiring paperwork process</li>
+        <li>The earlier this is confirmed, the more time your employer has to complete all required documents before your start date</li>
+        <li>Don't have a confirmed placement yet? Keep at it. Talk to your teacher about next steps.</li>
+      </ul>
+      <div class="completion-zone">
+        <div class="completion-zone-label font-heading">Confirm Your Placement</div>
+        <input type="text" class="completion-input" id="input-p3_placement_confirmed" placeholder="Employer name and your start date (e.g., 'Penrose Brewing — starting Sept 9')…">
+        <button class="complete-btn font-heading" id="btn-p3_placement_confirmed" onclick="submitPlacement()">Confirm Placement</button>
+        <div class="status-msg" id="msg-p3_placement_confirmed"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     PHASE 4 — Launch
+══════════════════════════════════════════════ -->
+<div id="phase-4" style="display:none">
+  <div class="phase-header">
+    <div class="phase-num font-heading">Phase 4 of 4 — Final Phase</div>
+    <h2 class="phase-title font-heading">Launch</h2>
+    <p class="phase-desc">This is the send-off. You've built your resume, practiced your pitch, nailed the interview, and confirmed your placement. Now you set your intentions, make your commitment, and walk out ready. Your Launch Card generates when you complete this phase.</p>
+    <div class="phase-progress">
+      <div class="progress-bar-track"><div class="progress-bar-fill" id="bar-4" style="width:0%"></div></div>
+      <span class="progress-label font-heading" id="pct-label-4">0 / 3 complete</span>
+    </div>
+  </div>
+
+  <div class="deliverables-box">
+    <div class="deliverables-label font-heading">What you'll have by the end of Phase 4</div>
+    <div class="deliverables-list">
+      <div class="deliverable-pill"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>Internship plan of success</div>
+      <div class="deliverable-pill"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>Your Launch Card</div>
+    </div>
+  </div>
+
+  <!-- Activity 1 -->
+  <div class="activity-card" id="card-p4_goal_conference">
+    <div class="activity-header" onclick="toggleActivity('p4_goal_conference')">
+      <div class="activity-num font-heading" id="num-p4_goal_conference">1</div>
+      <div class="activity-info">
+        <div class="activity-title font-heading">Goal Conference</div>
+        <div class="activity-subtitle">One-on-one with your teacher · Set 2–3 goals · Get your expectations cleared</div>
+      </div>
+      <span class="activity-badge badge-todo font-heading" id="badge-p4_goal_conference">To Do</span>
+      <span class="activity-toggle font-heading" id="toggle-p4_goal_conference">▾</span>
+    </div>
+    <div class="activity-body" id="body-p4_goal_conference">
+      <div class="activity-section-label font-heading">What we do in class</div>
+      <ul class="activity-bullets">
+        <li>5–10 minute one-on-one with your teacher — not a check-in, a real conversation about your placement and what you want from it</li>
+        <li>Set 2–3 goals for your semester: specific, achievable, and tied to what you actually care about</li>
+        <li>Review the time log and reflection process one more time — everyone does a test submission so there are no surprises</li>
+        <li>Any questions, concerns, or nerves? This is the place to name them.</li>
+      </ul>
+      <div class="completion-zone">
+        <div class="completion-zone-label font-heading">Mark Complete</div>
+        <p style="font-size:.82rem;color:rgba(255,255,255,.5);margin-bottom:.75rem">Mark complete after your one-on-one goal conference with your teacher.</p>
+        <button class="complete-btn font-heading" id="btn-p4_goal_conference" onclick="markComplete('p4_goal_conference', 4)">Mark Complete</button>
+        <div class="status-msg" id="msg-p4_goal_conference"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Activity 2 -->
+  <div class="activity-card" id="card-p4_internship_plan">
+    <div class="activity-header" onclick="toggleActivity('p4_internship_plan')">
+      <div class="activity-num font-heading" id="num-p4_internship_plan">2</div>
+      <div class="activity-info">
+        <div class="activity-title font-heading">Internship Plan of Success</div>
+        <div class="activity-subtitle">Your roadmap for the semester · Professional intro email</div>
+      </div>
+      <span class="activity-badge badge-todo font-heading" id="badge-p4_internship_plan">To Do</span>
+      <span class="activity-toggle font-heading" id="toggle-p4_internship_plan">▾</span>
+    </div>
+    <div class="activity-body" id="body-p4_internship_plan">
+      <div class="activity-section-label font-heading">What we do in class</div>
+      <ul class="activity-bullets">
+        <li>Write your internship plan of success — your schedule, your goals, how you'll handle challenges, and how you'll track your 60 hours</li>
+        <li>Draft a professional introduction or thank you email to your placement supervisor — your first real professional communication with them</li>
+        <li>Review: what does logging hours look like on the site? What does a good weekly reflection look like?</li>
+      </ul>
+      <div class="completion-zone">
+        <div class="completion-zone-label font-heading">Submit Your Internship Plan</div>
+        <textarea class="completion-textarea" id="input-p4_internship_plan" placeholder="Your placement, your schedule, your 2–3 goals for the semester, and how you plan to hit 60 hours…" rows="5"></textarea>
+        <button class="complete-btn font-heading" id="btn-p4_internship_plan" onclick="submitWithNotes('p4_internship_plan', 4)">Submit Plan</button>
+        <div class="status-msg" id="msg-p4_internship_plan"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Activity 3 — LAUNCH -->
+  <div class="activity-card" id="card-p4_commitment" style="border-color:rgba(172,22,29,.3)">
+    <div class="activity-header" onclick="toggleActivity('p4_commitment')">
+      <div class="activity-num font-heading" id="num-p4_commitment" style="background:linear-gradient(135deg,#AC161D,#d72429)">4</div>
+      <div class="activity-info">
+        <div class="activity-title font-heading">Launch Day</div>
+        <div class="activity-subtitle">Set your #1 goal · Submit &amp; Launch · Receive your Launch Card</div>
+      </div>
+      <span class="activity-badge badge-todo font-heading" id="badge-p4_commitment">To Do</span>
+      <span class="activity-toggle font-heading" id="toggle-p4_commitment">▾</span>
+    </div>
+    <div class="activity-body" id="body-p4_commitment">
+      <div class="activity-section-label font-heading">What this moment is</div>
+      <ul class="activity-bullets">
+        <li>You've done the work. Resume built. Pitch practiced. Interview survived. Placement confirmed. Goals set.</li>
+        <li>Write your single most important goal for this semester — one sentence, honest and specific</li>
+        <li>Hit Submit &amp; Launch. Your Launch Card generates and lives on your dashboard permanently</li>
+        <li>You are no longer a student preparing for a job. You're a student employee. Go make it count.</li>
+      </ul>
+      <div class="completion-zone" style="border-color:rgba(172,22,29,.3);background:rgba(172,22,29,.05)">
+        <div class="completion-zone-label font-heading" style="color:#AC161D">Your #1 Goal This Semester</div>
+        <textarea class="completion-textarea" id="input-p4_commitment" placeholder="One sentence. Specific and honest. What do you most want to accomplish or learn during your 60 hours?" rows="2" style="border-color:rgba(172,22,29,.3)"></textarea>
+        <button class="complete-btn font-heading" id="btn-p4_commitment" onclick="submitLaunch()" style="background:linear-gradient(135deg,#AC161D,#d72429);width:100%;justify-content:center;margin-top:1rem;padding:1rem">
+          Submit &amp; Launch →
+        </button>
+        <div class="status-msg" id="msg-p4_commitment"></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</main>
 
 <script>
-  function submitWeekFull(weekLabel, nameId, reflectionId, btnId) {
-    const name = document.getElementById(nameId).value.trim();
-    const reflection = document.getElementById(reflectionId).value.trim();
-    if (!name) { alert('Please enter your name before submitting.'); return; }
-    if (!reflection) { alert('Please write your reflection before submitting.'); return; }
-    const url = BOOTCAMP_FORM_URL +
-      '?usp=pp_url' +
-      '&' + WEEK_ENTRY_ID + '=' + encodeURIComponent(weekLabel) +
-      '&' + REFLECTION_ENTRY_ID + '=' + encodeURIComponent(name + ' | ' + reflection);
-    window.open(url, '_blank');
-    const btn = document.getElementById(btnId);
-    if (btn) {
-      btn.innerHTML = '✓ Submitted — confirm in the Google Form tab';
-      btn.disabled = true;
-    }
-  }
-</script>
+const SUPABASE_URL = 'https://bsgrkpykysvqcdqikcym.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJzZ3JrcHlreXN2cWNkcWlrY3ltIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk1MTE5NzUsImV4cCI6MjA5NTA4Nzk3NX0.brdA4f7v0GC89fRXPTVPZV11KIdZxXyCkLTWWsoe0o0';
+const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
+const PHASE_TASKS = {
+  1: ['p1_course_overview','p1_career_reflection','p1_digital_footprint','p1_resume_complete','p1_application_submitted'],
+  2: ['p2_elevator_pitch','p2_star_practice','p2_mock_interview','p2_interview_plan'],
+  3: ['p3_ethics_scenarios','p3_skills_simulation','p3_self_assessment','p3_placement_confirmed'],
+  4: ['p4_goal_conference','p4_internship_plan','p4_commitment']
+};
+
+let currentUser = null;
+let doneTasks = new Set();
+let userStudent = null;
+let currentPhase = 1;
+
+function showPhase(n) {
+  currentPhase = n;
+  [1,2,3,4].forEach(i => {
+    document.getElementById('phase-'+i).style.display = i===n ? 'block' : 'none';
+    const tab = document.getElementById('tab-'+i);
+    tab.classList.toggle('active', i===n);
+  });
+  window.scrollTo({top: document.getElementById('phase-'+n).offsetTop - 130, behavior:'smooth'});
+}
+
+function toggleActivity(taskId) {
+  const body = document.getElementById('body-'+taskId);
+  const toggle = document.getElementById('toggle-'+taskId);
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  if (toggle) toggle.classList.toggle('open', !isOpen);
+}
+
+function updatePhaseUI() {
+  [1,2,3,4].forEach(phase => {
+    const tasks = PHASE_TASKS[phase];
+    const done = tasks.filter(t => doneTasks.has(t)).length;
+    const pct = Math.round((done/tasks.length)*100);
+    const bar = document.getElementById('bar-'+phase);
+    if (bar) bar.style.width = pct+'%';
+    const lbl = document.getElementById('pct-label-'+phase);
+    if (lbl) lbl.textContent = done+' / '+tasks.length+' complete';
+    const tabPct = document.getElementById('pct-'+phase);
+    if (tabPct) tabPct.textContent = done > 0 ? ' · '+pct+'%' : '';
+    const tab = document.getElementById('tab-'+phase);
+    if (tab && done === tasks.length && phase !== currentPhase) {
+      tab.classList.add('done');
+      tab.classList.remove('active');
+    }
+  });
+
+  // Update each task card
+  Object.values(PHASE_TASKS).flat().forEach(taskId => {
+    const isDone = doneTasks.has(taskId);
+    const card = document.getElementById('card-'+taskId);
+    const badge = document.getElementById('badge-'+taskId);
+    const btn = document.getElementById('btn-'+taskId);
+    const num = document.getElementById('num-'+taskId);
+    if (card) card.classList.toggle('complete', isDone);
+    if (badge) { badge.textContent = isDone ? '✓ Done' : 'To Do'; badge.className = 'activity-badge font-heading '+(isDone?'badge-done':'badge-todo'); }
+    if (btn && isDone) { btn.textContent = '✓ Completed'; btn.className = 'complete-btn done font-heading'; btn.disabled = true; }
+    // Disable inputs on done tasks
+    const inputs = document.querySelectorAll('#body-'+taskId+' .completion-textarea, #body-'+taskId+' .completion-input');
+    inputs.forEach(el => { if (isDone) el.disabled = true; });
+  });
+}
+
+async function markComplete(taskId, phase) {
+  const btn = document.getElementById('btn-'+taskId);
+  btn.disabled = true; btn.textContent = 'Saving…';
+  const { error } = await db.from('bootcamp_progress').upsert({
+    student_id: currentUser.id, task_id: taskId, phase
+  }, { onConflict: 'student_id,task_id' });
+  if (error) {
+    showMsg(taskId, 'Error: '+error.message, 'error');
+    btn.disabled = false; btn.textContent = 'Mark Complete';
+  } else {
+    doneTasks.add(taskId);
+    updatePhaseUI();
+  }
+}
+
+async function submitWithNotes(taskId, phase) {
+  const btn = document.getElementById('btn-'+taskId);
+  const textEl = document.getElementById('input-'+taskId);
+  const urlEl = document.getElementById('input-'+taskId+'-url');
+  const notes = (urlEl?.value?.trim() ? urlEl.value.trim()+'\n' : '') + (textEl?.value?.trim() || '');
+  if (!notes && textEl) { showMsg(taskId, 'Please fill in the field above before submitting.', 'error'); return; }
+  btn.disabled = true; btn.textContent = 'Submitting…';
+  const { error } = await db.from('bootcamp_progress').upsert({
+    student_id: currentUser.id, task_id: taskId, phase, notes: notes || null
+  }, { onConflict: 'student_id,task_id' });
+  if (error) {
+    showMsg(taskId, 'Error: '+error.message, 'error');
+    btn.disabled = false; btn.textContent = 'Submit';
+  } else {
+    doneTasks.add(taskId);
+    updatePhaseUI();
+    showMsg(taskId, 'Submitted!', 'success');
+  }
+}
+
+async function submitPlacement() {
+  const input = document.getElementById('input-p3_placement_confirmed');
+  const val = input?.value?.trim();
+  if (!val) { showMsg('p3_placement_confirmed', 'Please enter your placement employer and start date.', 'error'); return; }
+  const btn = document.getElementById('btn-p3_placement_confirmed');
+  btn.disabled = true; btn.textContent = 'Confirming…';
+  const { error: progErr } = await db.from('bootcamp_progress').upsert({
+    student_id: currentUser.id, task_id: 'p3_placement_confirmed', phase: 3, notes: val
+  }, { onConflict: 'student_id,task_id' });
+  if (progErr) { showMsg('p3_placement_confirmed', 'Error: '+progErr.message, 'error'); btn.disabled = false; btn.textContent = 'Confirm Placement'; return; }
+  await db.from('students').upsert({ id: currentUser.id, placement_name: val }, { onConflict: 'id' });
+  doneTasks.add('p3_placement_confirmed');
+  updatePhaseUI();
+  showMsg('p3_placement_confirmed', 'Placement confirmed! Move to Phase 4 when ready.', 'success');
+}
+
+async function submitLaunch() {
+  const goal = document.getElementById('input-p4_commitment')?.value?.trim();
+  if (!goal) { showMsg('p4_commitment', 'Please write your #1 goal before launching.', 'error'); return; }
+  const btn = document.getElementById('btn-p4_commitment');
+  btn.disabled = true; btn.textContent = 'Launching…';
+  const now = new Date();
+  const { error } = await db.from('bootcamp_progress').upsert({
+    student_id: currentUser.id, task_id: 'p4_commitment', phase: 4, notes: goal
+  }, { onConflict: 'student_id,task_id' });
+  if (error) { showMsg('p4_commitment', 'Error: '+error.message, 'error'); btn.disabled = false; btn.textContent = 'Submit & Launch →'; return; }
+  await db.from('students').upsert({ id: currentUser.id, semester_goal: goal, launch_date: now.toISOString() }, { onConflict: 'id' });
+  doneTasks.add('p4_commitment');
+  updatePhaseUI();
+  showLaunchCard(goal, now);
+}
+
+function showLaunchCard(goal, date) {
+  const name = currentUser.user_metadata?.full_name || currentUser.user_metadata?.given_name || currentUser.email.split('@')[0];
+  const placement = userStudent?.placement_name || document.getElementById('input-p3_placement_confirmed')?.value || '—';
+  document.getElementById('lc-name').textContent = name;
+  document.getElementById('lc-placement').textContent = placement;
+  document.getElementById('lc-goal').textContent = '"' + goal + '"';
+  document.getElementById('lc-date').textContent = date.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
+  document.getElementById('launch-modal').classList.add('show');
+}
+
+function goToDashboard() { window.location.href = 'dashboard.html'; }
+function closeLaunchModal() { document.getElementById('launch-modal').classList.remove('show'); }
+
+function showMsg(taskId, msg, type) {
+  const el = document.getElementById('msg-'+taskId);
+  if (!el) return;
+  el.textContent = msg;
+  el.className = 'status-msg ' + type;
+}
+
+async function signOut() { await db.auth.signOut(); window.location.href = 'login.html'; }
+
+// Check if already launched and show card again
+function checkForLaunchCard() {
+  if (doneTasks.has('p4_commitment') && userStudent?.launch_date) {
+    // Already launched — don't show modal again automatically, just mark done
+  }
+}
+
+(async () => {
+  const { data: { session } } = await db.auth.getSession();
+  if (!session) { window.location.href = 'login.html'; return; }
+  currentUser = session.user;
+
+  const firstName = session.user.user_metadata?.given_name || session.user.email.split('@')[0];
+  document.getElementById('nav-name').textContent = firstName;
+
+  const [{ data: progress }, { data: student }] = await Promise.all([
+    db.from('bootcamp_progress').select('task_id').eq('student_id', currentUser.id),
+    db.from('students').select('*').eq('id', currentUser.id).maybeSingle()
+  ]);
+
+  userStudent = student;
+  (progress || []).forEach(r => doneTasks.add(r.task_id));
+  updatePhaseUI();
+
+  document.getElementById('loading-overlay').style.display = 'none';
+})();
+</script>
 </body>
 </html>

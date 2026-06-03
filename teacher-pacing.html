@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pacing Guide — Field Experience BHS</title>
+  <link rel="icon" type="image/png" href="https://res.cloudinary.com/dsbllwpbh/image/upload/v1771966521/fieldexperience-favicon_jgdotp.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Open Sans',system-ui,sans-serif;background:#080e1a;color:#fff;min-height:100vh}
+    .font-heading{font-family:'Montserrat',system-ui,sans-serif}
+    nav{background:rgba(8,14,26,.97);backdrop-filter:blur(12px);border-bottom:2px solid rgba(251,205,7,.2);
+        position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:0 1.5rem;height:56px}
+    .back-btn{display:flex;align-items:center;gap:.4rem;font-family:'Montserrat',sans-serif;font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.4);text-decoration:none;transition:color .15s}
+    .back-btn:hover{color:#fff}
+    .nav-title{font-family:'Montserrat',sans-serif;font-weight:800;font-size:.85rem;letter-spacing:.04em;text-transform:uppercase;color:#fff}
+    .teacher-badge{background:rgba(251,205,7,.15);color:#FBCD07;font-family:'Montserrat',sans-serif;font-size:.62rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:.25rem .6rem;border-radius:999px;border:1px solid rgba(251,205,7,.3)}
+
+    main{max-width:960px;margin:0 auto;padding:2.5rem 1.5rem}
+    h1{font-family:'Montserrat',sans-serif;font-weight:900;font-size:1.75rem;letter-spacing:-.02em;margin-bottom:.375rem}
+    .page-sub{font-size:.875rem;color:rgba(255,255,255,.4);margin-bottom:.75rem}
+
+    /* Section toggle buttons */
+    .section-toggle{display:flex;gap:.5rem;margin-bottom:2rem;flex-wrap:wrap}
+    .toggle-btn{padding:.5rem 1.25rem;border-radius:999px;font-family:'Montserrat',sans-serif;font-size:.75rem;font-weight:700;cursor:pointer;border:1.5px solid rgba(255,255,255,.15);color:rgba(255,255,255,.5);background:transparent;transition:all .2s}
+    .toggle-btn.active{background:#FBCD07;border-color:#FBCD07;color:#000}
+    .toggle-btn:hover:not(.active){border-color:rgba(255,255,255,.35);color:#fff}
+
+    /* Key principle box */
+    .principle-box{background:rgba(251,205,7,.07);border:1px solid rgba(251,205,7,.25);border-radius:12px;padding:1.25rem 1.5rem;margin-bottom:2rem}
+    .principle-title{font-family:'Montserrat',sans-serif;font-weight:800;font-size:.82rem;color:#FBCD07;margin-bottom:.625rem}
+    .principle-text{font-size:.875rem;color:rgba(255,255,255,.65);line-height:1.7}
+
+    /* Phase card */
+    .phase-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px;margin-bottom:1.25rem;overflow:hidden}
+    .phase-card-header{display:flex;align-items:center;gap:1rem;padding:1.25rem 1.5rem;border-bottom:1px solid rgba(255,255,255,.06)}
+    .phase-dot{width:2.5rem;height:2.5rem;border-radius:50%;background:#AC161D;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:.8rem;font-weight:900;color:#fff;flex-shrink:0}
+    .phase-card-title{font-family:'Montserrat',sans-serif;font-weight:800;font-size:.95rem;color:#fff;flex:1}
+    .phase-time-badges{display:flex;gap:.5rem;flex-wrap:wrap}
+    .time-badge{display:flex;align-items:center;gap:.375rem;padding:.3rem .75rem;border-radius:999px;font-family:'Montserrat',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+    .badge-daily{background:rgba(99,102,241,.15);color:#a5b4fc;border:1px solid rgba(99,102,241,.25)}
+    .badge-alt{background:rgba(16,185,129,.12);color:#6ee7b7;border:1px solid rgba(16,185,129,.2)}
+
+    .phase-card-body{padding:1.25rem 1.5rem}
+    .activities-list{display:flex;flex-direction:column;gap:.625rem;margin-bottom:1.25rem}
+    .activity-row{display:flex;align-items:flex-start;gap:.875rem}
+    .activity-num-sm{width:1.5rem;height:1.5rem;border-radius:50%;background:rgba(172,22,29,.25);border:1px solid rgba(172,22,29,.4);display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:.6rem;font-weight:800;color:#f87171;flex-shrink:0;margin-top:.1rem}
+    .activity-detail{flex:1}
+    .activity-name{font-family:'Montserrat',sans-serif;font-weight:700;font-size:.82rem;color:rgba(255,255,255,.85)}
+    .activity-notes{font-size:.75rem;color:rgba(255,255,255,.4);margin-top:.15rem;line-height:1.5}
+    .deliverable-tag{display:inline-block;background:rgba(251,205,7,.1);border:1px solid rgba(251,205,7,.2);border-radius:4px;font-size:.65rem;font-family:'Montserrat',sans-serif;font-weight:700;color:#FBCD07;padding:.1rem .45rem;margin-left:.4rem;vertical-align:middle}
+
+    /* Timing grid */
+    .timing-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;background:rgba(0,0,0,.2);border-radius:10px;padding:1rem;margin-top:.25rem}
+    .timing-col-label{font-family:'Montserrat',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.5rem}
+    .timing-daily{color:#a5b4fc}
+    .timing-alt{color:#6ee7b7}
+    .timing-val{font-family:'Montserrat',sans-serif;font-weight:800;font-size:1.25rem;color:#fff;line-height:1}
+    .timing-sub{font-size:.75rem;color:rgba(255,255,255,.35);margin-top:.2rem}
+
+    /* Interview window */
+    .interview-window{background:rgba(59,130,246,.08);border:1px solid rgba(59,130,246,.25);border-radius:14px;padding:1.5rem;margin:1.5rem 0}
+    .interview-window-title{font-family:'Montserrat',sans-serif;font-weight:800;font-size:.95rem;color:#93c5fd;margin-bottom:.75rem;display:flex;align-items:center;gap:.5rem}
+    .interview-window-text{font-size:.875rem;color:rgba(255,255,255,.55);line-height:1.7}
+
+    /* Tips */
+    .tips-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem;margin-top:2rem}
+    .tip-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:1.25rem}
+    .tip-title{font-family:'Montserrat',sans-serif;font-weight:700;font-size:.8rem;color:#fff;margin-bottom:.5rem}
+    .tip-text{font-size:.8rem;color:rgba(255,255,255,.45);line-height:1.6}
+
+    /* Total summary */
+    .total-bar{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:1.25rem 1.5rem;margin-top:2rem;display:flex;gap:2rem;flex-wrap:wrap}
+    .total-item{text-align:center}
+    .total-num{font-family:'Montserrat',sans-serif;font-weight:900;font-size:1.5rem;line-height:1}
+    .total-label{font-size:.7rem;color:rgba(255,255,255,.35);margin-top:.25rem;font-family:'Montserrat',sans-serif;font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+
+    @media(max-width:600px){.timing-grid{grid-template-columns:1fr}.total-bar{gap:1rem}}
+  </style>
+</head>
+<body>
+<nav>
+  <div style="display:flex;align-items:center;gap:1rem">
+    <a href="teacher-hub.html" class="back-btn font-heading">
+      <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/></svg>Teacher Hub
+    </a>
+    <span style="color:rgba(255,255,255,.15)">|</span>
+    <span class="nav-title font-heading">Pacing Guide</span>
+    <span class="teacher-badge font-heading">Teacher</span>
+  </div>
+</nav>
+
+<main>
+  <h1 class="font-heading">Bootcamp Pacing Guide</h1>
+  <p class="page-sub">Field Experience — Fall 2026</p>
+  <p style="font-size:.875rem;color:rgba(255,255,255,.5);margin-bottom:2rem;line-height:1.7">This guide covers both the <strong style="color:#a5b4fc">daily section</strong> and the <strong style="color:#6ee7b7">every-other-day section</strong>. Phases are defined by activities and deliverables completed, not by calendar days — so both sections move through the same content at their own pace.</p>
+
+  <div class="principle-box">
+    <div class="principle-title font-heading">Core Pacing Principle</div>
+    <div class="principle-text">Phases unlock in sequence based on completion, not the calendar. A student is done with Phase 1 when they've completed all 5 Phase 1 activities — not after X days. This means the daily section will outpace the EOD section, and that's fine. Both sections reach the same milestones; they just get there at different speeds. <strong style="color:rgba(255,255,255,.8)">Never hold the daily section back to keep pace with the EOD section.</strong></div>
+  </div>
+
+  <!-- PHASE 1 -->
+  <div class="phase-card">
+    <div class="phase-card-header">
+      <div class="phase-dot font-heading">1</div>
+      <div class="phase-card-title font-heading">Professional Identity &amp; Course Launch</div>
+      <div class="phase-time-badges">
+        <div class="time-badge badge-daily font-heading">Daily: ~5 periods</div>
+        <div class="time-badge badge-alt font-heading">EOD: ~8 periods</div>
+      </div>
+    </div>
+    <div class="phase-card-body">
+      <div class="activities-list">
+        <div class="activity-row">
+          <div class="activity-num-sm font-heading">1</div>
+          <div class="activity-detail">
+            <div class="activity-name font-heading">Begin With the End in Mind <span class="deliverable-tag font-heading">Day 1</span></div>
+            <div class="activity-notes">Capstone preview, syllabus, contract, website walkthrough, career cluster overview, professional mindset discussion. Plan for 1 full period. This sets the entire tone — don't rush it.</div>
+          </div>
+        </div>
+        <div class="activity-row">
+          <div class="activity-num-sm font-heading">2</div>
+          <div class="activity-detail">
+            <div class="activity-name font-heading">Career &amp; Self-Assessment <span class="deliverable-tag font-heading">Submit</span></div>
+            <div class="activity-notes">Employability skills pre-assessment (10 skills, 1–4 scale), career interest reflection, goal-setting. 1 period. Students submit their reflection to the site.</div>
+          </div>
+        </div>
+        <div class="activity-row">
+          <div class="activity-num-sm font-heading">3</div>
+          <div class="activity-detail">
+            <div class="activity-name font-heading">Professional Brand <span class="deliverable-tag font-heading">Submit</span></div>
+            <div class="activity-notes">Google yourself activity, social media audit discussion, email signature build. 1 period. Students submit their email signature text to the site.</div>
+          </div>
+        </div>
+        <div class="activity-row">
+          <div class="activity-num-sm font-heading">4</div>
+          <div class="activity-detail">
+            <div class="activity-name font-heading">Resume Workshop <span class="deliverable-tag font-heading">Submit</span></div>
+            <div class="activity-notes">1–2 periods. Day 1: instruction + in-class draft. Day 2: peer review + teacher conferences. Students submit Google Drive link to final resume.</div>
+          </div>
+        </div>
+        <div class="activity-row">
+          <div class="activity-num-sm font-heading">5</div>
+          <div class="activity-detail">
+            <div class="activity-name font-heading">Explore &amp; Apply <span class="deliverable-tag font-heading">Submit</span></div>
+            <div class="activity-notes">Browse job menu on site, employer scavenger hunt, teacher conversations about placement preferences, submit application. 1 period minimum. The application submission starts the employer paperwork clock — prioritize this.</div>
+          </div>
+        </div>
+      </div>
+      <div class="timing-grid">
+        <div><div class="timing-col-label timing-daily font-heading">Daily Section</div><div class="timing-val font-heading">~5 class periods</div><div class="timing-sub">Roughly 1 week from start</div></div>
+        <div><div class="timing-col-label timing-alt font-heading">Every-Other-Day Section</div><div class="timing-val font-heading">~8 class periods</div><div class="timing-sub">Roughly 2.5 weeks from start</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INTERVIEW WINDOW -->
+  <div class="interview-window">
+    <div class="interview-window-title font-heading">
+      <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+      Interview &amp; Placement Window (Ongoing — Starts During Phase 1)
+    </div>
+    <div class="interview-window-text">
+      Interviews can happen at any point, including during Phase 1 if an employer reaches out immediately. <strong style="color:rgba(255,255,255,.75)">Do not hold students back from interviewing because they haven't completed Phase 2.</strong> The mock interview in Phase 2 prepares them — but real interviews don't wait.<br><br>
+      Use flexible class time between Phase 2 and Phase 3 to accommodate interviews that are actively being scheduled. Some students may finish all bootcamp phases before having a confirmed placement; others may have their placement confirmed mid-Phase 2. Both are fine. Phase 4 requires placement confirmation before Launch.
+    </div>
+  </div>
+
+  <!-- PHASE 2 -->
+  <div class="phase-card">
+    <div class="phase-card-header">
+      <div class="phase-dot font-heading">2</div>
+      <div class="phase-card-title font-heading">Interview Prep</div>
+      <div class="phase-time-badges">
+        <div class="time-badge badge-daily font-heading">Daily: ~4 periods</div>
+        <div class="time-badge badge-alt font-heading">EOD: ~6 periods</div>
+      </div>
+    </div>
+    <div class="phase-card-body">
+      <div class="activities-list">
+        <div class="activity-row">
+          <div class="activity-num-sm font-heading">1</div>
+          <div class="activity-detail">
+            <div class="activity-name font-heading">Elevator Pitch <span class="deliverable-tag font-heading">Submit</span></div>
+            <div class="activity-notes">1–2 periods. Day 1: instruction + write + workshop with partners. Day 2: record video. Students submit video link or written script to site.</div>
+          </div>
+        </div>
+        <div class="activity-row">
+          <div class="activity-num-sm font-heading">2</div>
+          <div class="activity-detail">
+            <div class="activity-name font-heading">STAR Method &amp; Interview Skills</div>
+            <div class="activity-notes">1 period. STAR breakdown, practice scenarios, body language, professional appearance. Students mark complete on site after participating.</div>
+          </div>
+        </div>
+        <div class="activity-row">
+          <div class="activity-num-sm font-heading">3</div>
+          <div class="activity-detail">
+            <div class="activity-name font-heading">Mock Interview <span class="deliverable-tag font-heading">Submit</span></div>
+            <div class="activity-notes">1 period. Formal mock interview with a peer, community partner, administrator, or HR professional. Feedback form required. Students confirm completion on site with a note about their feedback. Note: scheduling community partners takes advance planning — contact 2+ weeks before this phase.</div>
+          </div>
+        </div>
+        <div class="activity-row">
+          <div class="activity-num-sm font-heading">4</div>
+          <div class="activity-detail">
+            <div class="activity-name font-heading">Interview Improvement Plan <span class="deliverable-tag font-heading">Submit</span></div>
+            <div class="activity-notes">30–45 min. Students review mock interview feedback and write 2–3 specific improvement areas with action steps. Submit to site.</div>
+          </div>
+        </div>
+      </div>
+      <div class="timing-grid">
+        <div><div class="timing-col-label timing-daily font-heading">Daily Section</div><div class="timing-val font-heading">~4 class periods</div><div class="timing-sub">~2 weeks from start of bootcamp</div></div>
+        <div><div class="timing-col-label timing-alt font-heading">Every-Other-Day Section</div><div class="timing-val font-heading">~6 class periods</div><div class="timing-sub">~4 weeks from start of bootcamp</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PHASE 3 -->
+  <div class="phase-card">
+    <div class="phase-card-header">
+      <div class="phase-dot font-heading">3</div>
+      <div class="phase-card-title font-heading">Workplace Readiness</div>
+      <div class="phase-time-badges">
+        <div class="time-badge badge-daily font-heading">Daily: ~3 periods</div>
+        <div class="time-badge badge-alt font-heading">EOD: ~4 periods</div>
+      </div>
+    </div>
+    <div class="phase-card-body">
+      <div class="activities-list">
+        <div class="activity-row">
+          <div class="activity-num-sm font-heading">1</div>
+          <div class="activity-detail">
+            <div class="activity-name font-heading">Workplace Dilemma Stations</div>
+            <div class="activity-notes">1 period. Small groups rotate through 5 stations, each with a realistic scenario. Debrief as class. Special emphasis on confidentiality. Students mark complete on site.</div>
+          </div>
+        </div>
+        <div class="activity-row">
+          <div class="activity-num-sm font-heading">2</div>
+          <div class="activity-detail">
+            <div class="activity-name font-heading">Employability Skills Simulation</div>
+            <div class="activity-notes">1 period. Team challenges, case studies on conflict resolution and receiving feedback. Focus on adaptability, problem-solving, and teamwork in workplace context. Students mark complete on site.</div>
+          </div>
+        </div>
+        <div class="activity-row">
+          <div class="activity-num-sm font-heading">3</div>
+          <div class="activity-detail">
+            <div class="activity-name font-heading">Post-Assessment <span class="deliverable-tag font-heading">Submit</span></div>
+            <div class="activity-notes">30–45 min. Re-rate all 10 employability skills. Compare to Phase 1 baseline. Short reflection on growth. Submit to site.</div>
+          </div>
+        </div>
+        <div class="activity-row">
+          <div class="activity-num-sm font-heading">4</div>
+          <div class="activity-detail">
+            <div class="activity-name font-heading">Placement Confirmed <span class="deliverable-tag font-heading">Required for Phase 4</span></div>
+            <div class="activity-notes">Student confirms placement employer name and start date on site. This is required to unlock Phase 4. Students who don't yet have placement confirmation continue in class but cannot launch until confirmed.</div>
+          </div>
+        </div>
+      </div>
+      <div class="timing-grid">
+        <div><div class="timing-col-label timing-daily font-heading">Daily Section</div><div class="timing-val font-heading">~3 class periods</div><div class="timing-sub">~3 weeks from start of bootcamp</div></div>
+        <div><div class="timing-col-label timing-alt font-heading">Every-Other-Day Section</div><div class="timing-val font-heading">~4 class periods</div><div class="timing-sub">~6 weeks from start of bootcamp</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PHASE 4 -->
+  <div class="phase-card" style="border-color:rgba(172,22,29,.25)">
+    <div class="phase-card-header">
+      <div class="phase-dot font-heading" style="background:linear-gradient(135deg,#AC161D,#d72429)">4</div>
+      <div class="phase-card-title font-heading">Launch</div>
+      <div class="phase-time-badges">
+        <div class="time-badge badge-daily font-heading">Daily: 1–2 periods</div>
+        <div class="time-badge badge-alt font-heading">EOD: 1–2 periods</div>
+      </div>
+    </div>
+    <div class="phase-card-body">
+      <div class="activities-list">
+        <div class="activity-row">
+          <div class="activity-num-sm font-heading">1</div>
+          <div class="activity-detail">
+            <div class="activity-name font-heading">Goal Conference</div>
+            <div class="activity-notes">One-on-one with teacher, 5–10 min each. While waiting for their conference, students work on their internship plan. Consider blocking a dedicated period for conferences so you can give full attention to each student.</div>
+          </div>
+        </div>
+        <div class="activity-row">
+          <div class="activity-num-sm font-heading">2</div>
+          <div class="activity-detail">
+            <div class="activity-name font-heading">Internship Plan of Success <span class="deliverable-tag font-heading">Submit</span></div>
+            <div class="activity-notes">Written in class. Schedule, goals, plan for 60 hours. Draft professional intro/thank you email to placement supervisor. Submit to site.</div>
+          </div>
+        </div>
+        <div class="activity-row">
+          <div class="activity-num-sm font-heading">3</div>
+          <div class="activity-detail">
+            <div class="activity-name font-heading">Launch Day <span class="deliverable-tag font-heading">Launch Card</span></div>
+            <div class="activity-notes">Student writes their #1 goal and clicks Submit & Launch. Their Launch Card generates and lives on their dashboard permanently. Consider doing this as a class moment — everyone launches together when ready. Requires placement confirmed (Phase 3 #4) to complete.</div>
+          </div>
+        </div>
+      </div>
+      <div class="timing-grid">
+        <div><div class="timing-col-label timing-daily font-heading">Daily Section</div><div class="timing-val font-heading">~1–2 periods</div><div class="timing-sub">~3.5 weeks from start</div></div>
+        <div><div class="timing-col-label timing-alt font-heading">Every-Other-Day Section</div><div class="timing-val font-heading">~1–2 periods</div><div class="timing-sub">~7 weeks from start</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOTAL SUMMARY -->
+  <div class="total-bar">
+    <div class="total-item">
+      <div class="total-num font-heading" style="color:#a5b4fc">13–14</div>
+      <div class="total-label font-heading">Daily section periods</div>
+    </div>
+    <div class="total-item">
+      <div class="total-num font-heading" style="color:#6ee7b7">19–22</div>
+      <div class="total-label font-heading">EOD section periods</div>
+    </div>
+    <div class="total-item">
+      <div class="total-num font-heading" style="color:#f87171">~3.5 wks</div>
+      <div class="total-label font-heading">Daily bootcamp length</div>
+    </div>
+    <div class="total-item">
+      <div class="total-num font-heading" style="color:#f87171">~7 wks</div>
+      <div class="total-label font-heading">EOD bootcamp length</div>
+    </div>
+  </div>
+
+  <!-- TIPS -->
+  <div class="tips-grid">
+    <div class="tip-card">
+      <div class="tip-title font-heading">Mock Interview Prep</div>
+      <div class="tip-text">Recruiting community partners for mock interviews requires 2+ weeks of lead time. Reach out to HR contacts, administrators, and business partners well before Phase 2 begins. Even 3–4 interviewers can rotate through a class.</div>
+    </div>
+    <div class="tip-card">
+      <div class="tip-title font-heading">Application Urgency</div>
+      <div class="tip-text">The whole reason applications happen at the end of Phase 1 (not Phase 2 or 3) is to give employers maximum time to complete hiring documents before students need to start. Treat this deadline seriously.</div>
+    </div>
+    <div class="tip-card">
+      <div class="tip-title font-heading">When Students Interview Early</div>
+      <div class="tip-text">If an employer schedules an interview during Phase 1 or early Phase 2, let the student go. A real interview beats any mock. Document it and have the student complete the Phase 2 mock interview activity as practice after — not a prerequisite before.</div>
+    </div>
+    <div class="tip-card">
+      <div class="tip-title font-heading">Tracking Progress</div>
+      <div class="tip-text">View each student's bootcamp phase completion from Teacher Hub → Student Progress. The dashboard reflects real-time task completions from Supabase. No paper tracking needed.</div>
+    </div>
+  </div>
+</main>
+</body>
+</html>

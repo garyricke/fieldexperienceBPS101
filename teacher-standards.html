@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Standards — Field Experience BHS</title>
+  <link rel="icon" type="image/png" href="https://res.cloudinary.com/dsbllwpbh/image/upload/v1771966521/fieldexperience-favicon_jgdotp.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Open Sans',system-ui,sans-serif;background:#080e1a;color:#fff;min-height:100vh}
+    .font-heading{font-family:'Montserrat',system-ui,sans-serif}
+    nav{background:rgba(8,14,26,.97);backdrop-filter:blur(12px);border-bottom:2px solid rgba(251,205,7,.2);position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:0 1.5rem;height:56px}
+    .back-btn{display:flex;align-items:center;gap:.4rem;font-family:'Montserrat',sans-serif;font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.4);text-decoration:none;transition:color .15s}
+    .back-btn:hover{color:#fff}
+    .nav-title{font-family:'Montserrat',sans-serif;font-weight:800;font-size:.85rem;letter-spacing:.04em;text-transform:uppercase;color:#fff}
+    .teacher-badge{background:rgba(251,205,7,.15);color:#FBCD07;font-family:'Montserrat',sans-serif;font-size:.62rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:.25rem .6rem;border-radius:999px;border:1px solid rgba(251,205,7,.3)}
+
+    main{max-width:960px;margin:0 auto;padding:2.5rem 1.5rem}
+    h1{font-family:'Montserrat',sans-serif;font-weight:900;font-size:1.75rem;letter-spacing:-.02em;margin-bottom:.375rem}
+    .page-sub{font-size:.875rem;color:rgba(255,255,255,.4);margin-bottom:2.5rem}
+
+    /* Section */
+    .section{margin-bottom:3rem}
+    .section-header{margin-bottom:1.25rem}
+    .section-eyebrow{font-family:'Montserrat',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:#FBCD07;margin-bottom:.5rem}
+    .section-title{font-family:'Montserrat',sans-serif;font-weight:900;font-size:1.25rem;color:#fff;margin-bottom:.375rem}
+    .section-sub{font-size:.85rem;color:rgba(255,255,255,.4);line-height:1.6}
+    .section-divider{height:1px;background:rgba(255,255,255,.07);margin-bottom:1.5rem}
+
+    /* Skills grid */
+    .skills-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem}
+    .skill-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:1.25rem}
+    .skill-num{font-family:'Montserrat',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#AC161D;margin-bottom:.375rem}
+    .skill-name{font-family:'Montserrat',sans-serif;font-weight:800;font-size:.95rem;color:#fff;margin-bottom:.5rem}
+    .skill-desc{font-size:.8rem;color:rgba(255,255,255,.5);line-height:1.6;margin-bottom:.75rem}
+    .skill-tags{display:flex;flex-wrap:wrap;gap:.35rem}
+    .skill-tag{font-family:'Montserrat',sans-serif;font-size:.6rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:.2rem .5rem;border-radius:4px;background:rgba(172,22,29,.15);color:rgba(255,255,255,.5);border:1px solid rgba(172,22,29,.2)}
+
+    /* Standards table */
+    .standards-table{width:100%;border-collapse:collapse}
+    .standards-table th{font-family:'Montserrat',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.35);padding:.75rem 1rem;text-align:left;border-bottom:1px solid rgba(255,255,255,.07)}
+    .standards-table td{padding:.875rem 1rem;border-bottom:1px solid rgba(255,255,255,.04);font-size:.82rem;vertical-align:top}
+    .standards-table tr:hover td{background:rgba(255,255,255,.02)}
+    .std-code{font-family:'Montserrat',sans-serif;font-weight:700;font-size:.75rem;color:#FBCD07;white-space:nowrap}
+    .std-desc{color:rgba(255,255,255,.75);line-height:1.5}
+    .std-phase{font-size:.7rem;color:rgba(255,255,255,.3)}
+    .phase-badge{display:inline-block;font-family:'Montserrat',sans-serif;font-size:.6rem;font-weight:700;padding:.15rem .45rem;border-radius:4px;margin-right:.25rem}
+    .ph1{background:rgba(172,22,29,.2);color:#f87171}
+    .ph2{background:rgba(59,130,246,.15);color:#93c5fd}
+    .ph3{background:rgba(16,185,129,.12);color:#6ee7b7}
+    .ph4{background:rgba(251,205,7,.12);color:#FBCD07}
+
+    /* Rubric */
+    .rubric-grid{display:grid;grid-template-columns:1fr repeat(4,1fr);gap:.5rem;margin-top:.75rem}
+    @media(max-width:600px){.rubric-grid{grid-template-columns:1fr 1fr}}
+    .rubric-header{font-family:'Montserrat',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.5rem .75rem;border-radius:6px;text-align:center}
+    .rubric-skill-col{color:rgba(255,255,255,.5);background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07)}
+    .rubric-1{background:rgba(239,68,68,.12);color:#f87171;border:1px solid rgba(239,68,68,.2)}
+    .rubric-2{background:rgba(251,191,36,.1);color:#fbbf24;border:1px solid rgba(251,191,36,.2)}
+    .rubric-3{background:rgba(34,197,94,.1);color:#4ade80;border:1px solid rgba(34,197,94,.2)}
+    .rubric-4{background:rgba(99,102,241,.15);color:#a5b4fc;border:1px solid rgba(99,102,241,.25)}
+    .rubric-row{display:contents}
+    .rubric-cell{padding:.625rem .75rem;border-radius:6px;font-size:.75rem;line-height:1.5;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.05);color:rgba(255,255,255,.65)}
+    .rubric-skill-name{font-family:'Montserrat',sans-serif;font-weight:700;font-size:.75rem;color:rgba(255,255,255,.75);background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);padding:.625rem .75rem;border-radius:6px;display:flex;align-items:center}
+  </style>
+</head>
+<body>
+<nav>
+  <div style="display:flex;align-items:center;gap:1rem">
+    <a href="teacher-hub.html" class="back-btn font-heading">
+      <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/></svg>Teacher Hub
+    </a>
+    <span style="color:rgba(255,255,255,.15)">|</span>
+    <span class="nav-title font-heading">Standards</span>
+    <span class="teacher-badge font-heading">Teacher</span>
+  </div>
+</nav>
+
+<main>
+  <h1 class="font-heading">Course Standards</h1>
+  <p class="page-sub">Illinois Essential Employability Skills · CTE Work-Based Learning Standards · Common Core ELA · NAF Alignment</p>
+
+  <!-- ICES -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-eyebrow font-heading">Primary Standards</div>
+      <div class="section-title font-heading">Illinois Essential Employability Skills (ICES)</div>
+      <div class="section-sub">The 10 skills defined by Illinois that prepare students for post-secondary success. Students self-assess on all 10 in Phase 1 (baseline) and again in Phase 3 (post-assessment). These skills are also the focus of weekly reflections throughout the placement semester.</div>
+    </div>
+    <div class="section-divider"></div>
+    <div class="skills-grid">
+      <div class="skill-card">
+        <div class="skill-num font-heading">Skill 01</div>
+        <div class="skill-name font-heading">Communication</div>
+        <div class="skill-desc">Clearly and effectively convey information, ideas, and expectations in verbal, written, and digital formats appropriate to professional settings.</div>
+        <div class="skill-tags"><span class="skill-tag font-heading">Phase 1</span><span class="skill-tag font-heading">Phase 2</span><span class="skill-tag font-heading">Weekly Reflection</span></div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-num font-heading">Skill 02</div>
+        <div class="skill-name font-heading">Critical Thinking</div>
+        <div class="skill-desc">Analyze information, evaluate options, and make well-reasoned judgments to solve workplace problems effectively.</div>
+        <div class="skill-tags"><span class="skill-tag font-heading">Phase 3</span><span class="skill-tag font-heading">Weekly Reflection</span></div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-num font-heading">Skill 03</div>
+        <div class="skill-name font-heading">Teamwork</div>
+        <div class="skill-desc">Work collaboratively with others toward a shared goal, contribute meaningfully, and support team members in a professional environment.</div>
+        <div class="skill-tags"><span class="skill-tag font-heading">Phase 3</span><span class="skill-tag font-heading">Weekly Reflection</span></div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-num font-heading">Skill 04</div>
+        <div class="skill-name font-heading">Problem Solving</div>
+        <div class="skill-desc">Identify challenges in the workplace, develop practical solutions, and take initiative to resolve them with minimal direction.</div>
+        <div class="skill-tags"><span class="skill-tag font-heading">Phase 3</span><span class="skill-tag font-heading">Weekly Reflection</span></div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-num font-heading">Skill 05</div>
+        <div class="skill-name font-heading">Adaptability</div>
+        <div class="skill-desc">Adjust to new situations, changing priorities, and unexpected challenges in a professional setting with a positive and productive attitude.</div>
+        <div class="skill-tags"><span class="skill-tag font-heading">Phase 3</span><span class="skill-tag font-heading">Weekly Reflection</span></div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-num font-heading">Skill 06</div>
+        <div class="skill-name font-heading">Initiative</div>
+        <div class="skill-desc">Take action without being prompted, seek out opportunities to contribute, and go beyond the minimum requirements of a role.</div>
+        <div class="skill-tags"><span class="skill-tag font-heading">Phase 1</span><span class="skill-tag font-heading">Weekly Reflection</span></div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-num font-heading">Skill 07</div>
+        <div class="skill-name font-heading">Decision Making</div>
+        <div class="skill-desc">Weigh choices carefully, consider consequences, and make sound professional decisions in a timely manner.</div>
+        <div class="skill-tags"><span class="skill-tag font-heading">Phase 3</span><span class="skill-tag font-heading">Weekly Reflection</span></div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-num font-heading">Skill 08</div>
+        <div class="skill-name font-heading">Cultural Awareness</div>
+        <div class="skill-desc">Recognize, respect, and work effectively with individuals from diverse backgrounds, perspectives, and experiences in the workplace.</div>
+        <div class="skill-tags"><span class="skill-tag font-heading">Phase 3</span><span class="skill-tag font-heading">Weekly Reflection</span></div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-num font-heading">Skill 09</div>
+        <div class="skill-name font-heading">Reliability</div>
+        <div class="skill-desc">Consistently show up on time, meet commitments, follow through on tasks, and be someone a team or employer can count on.</div>
+        <div class="skill-tags"><span class="skill-tag font-heading">Phase 3</span><span class="skill-tag font-heading">60-Hour Placement</span></div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-num font-heading">Skill 10</div>
+        <div class="skill-name font-heading">Planning</div>
+        <div class="skill-desc">Set goals, organize resources, manage time effectively, and develop actionable steps to achieve professional objectives.</div>
+        <div class="skill-tags"><span class="skill-tag font-heading">Phase 1</span><span class="skill-tag font-heading">Phase 4</span><span class="skill-tag font-heading">Weekly Reflection</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NAF RUBRIC -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-eyebrow font-heading">Assessment Framework</div>
+      <div class="section-title font-heading">NAF 4-Level Employability Skills Rubric</div>
+      <div class="section-sub">Used during site visit observations. Four performance levels assess each of the 10 ICES skills in a real workplace context.</div>
+    </div>
+    <div class="section-divider"></div>
+    <div style="overflow-x:auto">
+      <div class="rubric-grid">
+        <div class="rubric-header rubric-skill-col font-heading">Skill</div>
+        <div class="rubric-header rubric-1 font-heading">1 — Beginning</div>
+        <div class="rubric-header rubric-2 font-heading">2 — Developing</div>
+        <div class="rubric-header rubric-3 font-heading">3 — Proficient</div>
+        <div class="rubric-header rubric-4 font-heading">4 — Exemplary</div>
+        <div class="rubric-skill-name font-heading">Communication</div>
+        <div class="rubric-cell">Rarely communicates clearly; may be unclear or unprofessional in written/verbal exchanges</div>
+        <div class="rubric-cell">Communicates adequately; some inconsistencies in professionalism or clarity</div>
+        <div class="rubric-cell">Communicates clearly and professionally in most workplace situations</div>
+        <div class="rubric-cell">Consistently clear, professional, and adapts communication style to audience and context</div>
+        <div class="rubric-skill-name font-heading">Reliability</div>
+        <div class="rubric-cell">Frequently absent or late; misses deadlines; not dependable</div>
+        <div class="rubric-cell">Generally present; occasional tardiness or missed commitments</div>
+        <div class="rubric-cell">Consistently on time, meets commitments, follows through on responsibilities</div>
+        <div class="rubric-cell">Models reliability for others; proactively communicates any issues; zero pattern of absence or tardiness</div>
+        <div class="rubric-skill-name font-heading">Initiative</div>
+        <div class="rubric-cell">Waits to be told what to do; rarely contributes beyond assigned tasks</div>
+        <div class="rubric-cell">Completes assigned work; occasionally takes independent action</div>
+        <div class="rubric-cell">Regularly looks for ways to contribute beyond the minimum; acts without prompting</div>
+        <div class="rubric-cell">Consistently identifies needs and acts on them; serves as a resource to others in the workplace</div>
+        <div class="rubric-skill-name font-heading">Teamwork</div>
+        <div class="rubric-cell">Struggles to collaborate; may be disruptive or disengaged in group settings</div>
+        <div class="rubric-cell">Participates in team activities; may have difficulty with conflict or shared responsibility</div>
+        <div class="rubric-cell">Works well with others, contributes meaningfully, supports team goals</div>
+        <div class="rubric-cell">Actively strengthens team dynamics; helps resolve conflicts; elevates those around them</div>
+        <div class="rubric-skill-name font-heading">Adaptability</div>
+        <div class="rubric-cell">Resistant to change; struggles when priorities shift or plans change</div>
+        <div class="rubric-cell">Adjusts when directed; may show frustration with unexpected changes</div>
+        <div class="rubric-cell">Adapts to new situations with a positive attitude; handles changing priorities well</div>
+        <div class="rubric-cell">Thrives in ambiguity; models flexibility; helps others navigate change</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ILLINOIS CTE WBL STANDARDS -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-eyebrow font-heading">State Standards</div>
+      <div class="section-title font-heading">Illinois CTE Work-Based Learning Standards</div>
+      <div class="section-sub">Illinois State Board of Education standards for Work-Based Learning programs. Alignment by bootcamp phase.</div>
+    </div>
+    <div class="section-divider"></div>
+    <div style="overflow-x:auto">
+      <table class="standards-table">
+        <thead>
+          <tr>
+            <th>Standard</th>
+            <th>Description</th>
+            <th>Phase Alignment</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="std-code font-heading">WBL 1.1</span></td>
+            <td><span class="std-desc">Students identify and articulate their career interests, aptitudes, and goals in relation to available work-based learning opportunities</span></td>
+            <td><span class="phase-badge ph1 font-heading">Ph1</span></td>
+          </tr>
+          <tr>
+            <td><span class="std-code font-heading">WBL 1.2</span></td>
+            <td><span class="std-desc">Students develop and maintain professional materials including a resume, cover letter, and professional references</span></td>
+            <td><span class="phase-badge ph1 font-heading">Ph1</span><span class="phase-badge ph2 font-heading">Ph2</span></td>
+          </tr>
+          <tr>
+            <td><span class="std-code font-heading">WBL 2.1</span></td>
+            <td><span class="std-desc">Students demonstrate professional communication skills appropriate to the workplace including verbal, written, and digital communication</span></td>
+            <td><span class="phase-badge ph1 font-heading">Ph1</span><span class="phase-badge ph2 font-heading">Ph2</span></td>
+          </tr>
+          <tr>
+            <td><span class="std-code font-heading">WBL 2.2</span></td>
+            <td><span class="std-desc">Students demonstrate the ability to conduct a job search, apply for positions, and successfully navigate a hiring process</span></td>
+            <td><span class="phase-badge ph1 font-heading">Ph1</span><span class="phase-badge ph2 font-heading">Ph2</span><span class="phase-badge ph3 font-heading">Ph3</span></td>
+          </tr>
+          <tr>
+            <td><span class="std-code font-heading">WBL 3.1</span></td>
+            <td><span class="std-desc">Students understand and apply workplace norms including professional conduct, ethical behavior, confidentiality, and attendance expectations</span></td>
+            <td><span class="phase-badge ph3 font-heading">Ph3</span></td>
+          </tr>
+          <tr>
+            <td><span class="std-code font-heading">WBL 3.2</span></td>
+            <td><span class="std-desc">Students apply the Illinois Essential Employability Skills in a supervised workplace setting and demonstrate growth across the semester</span></td>
+            <td><span class="phase-badge ph1 font-heading">Ph1</span><span class="phase-badge ph3 font-heading">Ph3</span><span style="font-size:.7rem;color:rgba(255,255,255,.3)">+ Placement</span></td>
+          </tr>
+          <tr>
+            <td><span class="std-code font-heading">WBL 4.1</span></td>
+            <td><span class="std-desc">Students set goals, develop a plan of action, and reflect on their progress and professional growth throughout the work-based learning experience</span></td>
+            <td><span class="phase-badge ph4 font-heading">Ph4</span><span style="font-size:.7rem;color:rgba(255,255,255,.3)">+ Placement</span></td>
+          </tr>
+          <tr>
+            <td><span class="std-code font-heading">WBL 4.2</span></td>
+            <td><span class="std-desc">Students complete required hours of supervised work experience and document their time, activities, and reflections as required by the program</span></td>
+            <td><span style="font-size:.7rem;color:rgba(255,255,255,.3)">60-Hour Placement</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- CCSS ELA -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-eyebrow font-heading">Cross-Curricular Alignment</div>
+      <div class="section-title font-heading">Common Core State Standards — ELA</div>
+      <div class="section-sub">Grades 11–12. Field Experience connects naturally to CCSS ELA through professional writing, oral presentation, and evidence-based reflection.</div>
+    </div>
+    <div class="section-divider"></div>
+    <div style="overflow-x:auto">
+      <table class="standards-table">
+        <thead>
+          <tr>
+            <th>Standard</th>
+            <th>Description</th>
+            <th>Activity</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="std-code font-heading">SL.11-12.4</span></td>
+            <td><span class="std-desc">Present information, findings, and supporting evidence clearly, concisely, and logically such that listeners can follow the line of reasoning</span></td>
+            <td><span class="std-phase">Elevator pitch, mock interview, capstone presentation</span></td>
+          </tr>
+          <tr>
+            <td><span class="std-code font-heading">SL.11-12.5</span></td>
+            <td><span class="std-desc">Make strategic use of digital media in presentations to enhance understanding of findings, reasoning, and evidence</span></td>
+            <td><span class="std-phase">Recorded elevator pitch, digital portfolio/capstone</span></td>
+          </tr>
+          <tr>
+            <td><span class="std-code font-heading">SL.11-12.6</span></td>
+            <td><span class="std-desc">Adapt speech to a variety of contexts and tasks, demonstrating a command of formal English when appropriate</span></td>
+            <td><span class="std-phase">Professional communication, interview prep, cold-call roleplay</span></td>
+          </tr>
+          <tr>
+            <td><span class="std-code font-heading">W.11-12.3</span></td>
+            <td><span class="std-desc">Write narratives to develop real experiences using effective technique, well-chosen details, and well-structured event sequences</span></td>
+            <td><span class="std-phase">Weekly reflections, career reflection, post-assessment</span></td>
+          </tr>
+          <tr>
+            <td><span class="std-code font-heading">W.11-12.4</span></td>
+            <td><span class="std-desc">Produce clear and coherent writing in which the development, organization, and style are appropriate to task, purpose, and audience</span></td>
+            <td><span class="std-phase">Resume, cover letter, professional email, internship plan</span></td>
+          </tr>
+          <tr>
+            <td><span class="std-code font-heading">W.11-12.7</span></td>
+            <td><span class="std-desc">Conduct research projects to answer a question or solve a problem; gather relevant information from authoritative sources</span></td>
+            <td><span class="std-phase">Employer research / scavenger hunt (Phase 1)</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</main>
+</body>
+</html>

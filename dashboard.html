@@ -314,10 +314,10 @@ const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZ
 const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 const PHASES = [
-  { phase:1, label:'Professional Identity', tasks:['p1_career_reflection','p1_professional_bio','p1_linkedin_draft','p1_email_signature','p1_digital_footprint'] },
-  { phase:2, label:'Build Your Materials',  tasks:['p2_resume_complete','p2_cover_letter','p2_elevator_pitch_script','p2_elevator_pitch_video'] },
-  { phase:3, label:'Land the Internship',   tasks:['p3_employer_research','p3_star_practice','p3_mock_interview','p3_real_interview','p3_placement_confirmed'] },
-  { phase:4, label:'Show Up Ready',         tasks:['p4_ethics_scenarios','p4_workplace_sim','p4_first_week_plan','p4_commitment'] },
+  { phase:1, label:'Professional Identity & Launch', tasks:['p1_course_overview','p1_career_reflection','p1_digital_footprint','p1_resume_complete','p1_application_submitted'] },
+  { phase:2, label:'Interview Prep',                 tasks:['p2_elevator_pitch','p2_star_practice','p2_mock_interview','p2_interview_plan'] },
+  { phase:3, label:'Workplace Readiness',            tasks:['p3_ethics_scenarios','p3_skills_simulation','p3_self_assessment','p3_placement_confirmed'] },
+  { phase:4, label:'Launch',                         tasks:['p4_goal_conference','p4_internship_plan','p4_commitment'] },
 ];
 const TOTAL_TASKS = PHASES.reduce((s,p) => s + p.tasks.length, 0);
 

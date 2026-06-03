@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Site Status — Field Experience BHS</title>
+  <link rel="icon" type="image/png" href="https://res.cloudinary.com/dsbllwpbh/image/upload/v1771966521/fieldexperience-favicon_jgdotp.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Open Sans',system-ui,sans-serif;background:#080e1a;color:#fff;min-height:100vh}
+    .font-heading{font-family:'Montserrat',system-ui,sans-serif}
+    nav{background:rgba(8,14,26,.97);backdrop-filter:blur(12px);border-bottom:2px solid rgba(251,205,7,.2);
+        position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:0 1.5rem;height:56px}
+    .back-btn{display:flex;align-items:center;gap:.4rem;font-family:'Montserrat',sans-serif;font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.4);text-decoration:none;transition:color .15s}
+    .back-btn:hover{color:#fff}
+    .nav-title{font-family:'Montserrat',sans-serif;font-weight:800;font-size:.85rem;letter-spacing:.04em;text-transform:uppercase;color:#fff}
+    .teacher-badge{background:rgba(251,205,7,.15);color:#FBCD07;font-family:'Montserrat',sans-serif;font-size:.62rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:.25rem .6rem;border-radius:999px;border:1px solid rgba(251,205,7,.3)}
+
+    main{max-width:960px;margin:0 auto;padding:2.5rem 1.5rem}
+    h1{font-family:'Montserrat',sans-serif;font-weight:900;font-size:1.75rem;letter-spacing:-.02em;margin-bottom:.375rem}
+    .page-sub{font-size:.875rem;color:rgba(255,255,255,.4);margin-bottom:2.5rem}
+
+    /* Status summary cards */
+    .summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin-bottom:2.5rem}
+    .summary-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:1.25rem}
+    .summary-num{font-family:'Montserrat',sans-serif;font-weight:900;font-size:1.75rem;line-height:1}
+    .summary-label{font-size:.72rem;color:rgba(255,255,255,.4);margin-top:.375rem;font-family:'Montserrat',sans-serif;font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+
+    /* Section */
+    .section{margin-bottom:2.5rem}
+    .section-title{font-family:'Montserrat',sans-serif;font-weight:800;font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;color:#FBCD07;margin-bottom:1rem;display:flex;align-items:center;gap:.5rem}
+    .section-title::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.07)}
+
+    /* Feature rows */
+    .feature-row{display:flex;align-items:flex-start;gap:1rem;padding:.875rem 1rem;border-radius:10px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);margin-bottom:.5rem}
+    .feature-status{width:1.5rem;height:1.5rem;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.65rem;flex-shrink:0;margin-top:.1rem}
+    .status-live{background:rgba(34,197,94,.2);color:#4ade80;border:1px solid rgba(34,197,94,.3)}
+    .status-pending{background:rgba(251,191,36,.12);color:#fbbf24;border:1px solid rgba(251,191,36,.25)}
+    .status-planned{background:rgba(255,255,255,.06);color:rgba(255,255,255,.35);border:1px solid rgba(255,255,255,.1)}
+    .feature-info{flex:1}
+    .feature-name{font-family:'Montserrat',sans-serif;font-weight:700;font-size:.85rem;color:#fff;margin-bottom:.2rem}
+    .feature-detail{font-size:.78rem;color:rgba(255,255,255,.45);line-height:1.5}
+    .feature-date{font-size:.7rem;color:rgba(255,255,255,.25);font-family:'Montserrat',sans-serif;white-space:nowrap;margin-top:.1rem}
+
+    /* SQL table */
+    .sql-block{background:rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:1rem 1.25rem;font-family:'JetBrains Mono','Courier New',monospace;font-size:.78rem;color:#a5f3fc;line-height:1.7;overflow-x:auto;margin-top:.5rem}
+    .sql-comment{color:rgba(255,255,255,.3)}
+
+    /* Pending items */
+    .pending-item{display:flex;align-items:flex-start;gap:.75rem;padding:.875rem 1rem;background:rgba(251,191,36,.06);border:1px solid rgba(251,191,36,.2);border-radius:10px;margin-bottom:.5rem}
+    .pending-dot{width:.5rem;height:.5rem;border-radius:50%;background:#fbbf24;flex-shrink:0;margin-top:.35rem}
+    .pending-text{font-size:.85rem;color:rgba(255,255,255,.75);line-height:1.5}
+    .pending-note{font-size:.75rem;color:rgba(255,255,255,.35);margin-top:.2rem}
+
+    /* Known issues */
+    .issue-item{display:flex;align-items:flex-start;gap:.75rem;padding:.875rem 1rem;background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.2);border-radius:10px;margin-bottom:.5rem}
+    .issue-dot{width:.5rem;height:.5rem;border-radius:50%;background:#f87171;flex-shrink:0;margin-top:.35rem}
+
+    .last-updated{font-size:.72rem;color:rgba(255,255,255,.2);text-align:right;margin-top:2rem;font-family:'Montserrat',sans-serif}
+  </style>
+</head>
+<body>
+<nav>
+  <div style="display:flex;align-items:center;gap:1rem">
+    <a href="teacher-hub.html" class="back-btn font-heading">
+      <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/></svg>Teacher Hub
+    </a>
+    <span style="color:rgba(255,255,255,.15)">|</span>
+    <span class="nav-title font-heading">Site Status</span>
+    <span class="teacher-badge font-heading">Teacher</span>
+  </div>
+</nav>
+
+<main>
+  <h1 class="font-heading">Site Status &amp; Change Log</h1>
+  <p class="page-sub">A full record of what's been built, what's pending, and what SQL needs to be run in Supabase.</p>
+
+  <div class="summary-grid">
+    <div class="summary-card"><div class="summary-num font-heading" style="color:#4ade80">28</div><div class="summary-label font-heading">Pages Built</div></div>
+    <div class="summary-card"><div class="summary-num font-heading" style="color:#4ade80">6</div><div class="summary-label font-heading">Supabase Tables</div></div>
+    <div class="summary-card"><div class="summary-num font-heading" style="color:#fbbf24">3</div><div class="summary-label font-heading">Pending SQL Steps</div></div>
+    <div class="summary-card"><div class="summary-num font-heading" style="color:#60a5fa">2</div><div class="summary-label font-heading">Sites (FE + WBL)</div></div>
+  </div>
+
+  <!-- STUDENT PORTAL -->
+  <div class="section">
+    <div class="section-title font-heading">Student Portal</div>
+
+    <div class="feature-row">
+      <div class="feature-status status-live">✓</div>
+      <div class="feature-info">
+        <div class="feature-name font-heading">Google OAuth Login (login.html)</div>
+        <div class="feature-detail">Students sign in with BPS101 Google accounts. Automatically routes teachers to teacher-hub.html and students to dashboard.html. Checks teachers table for role.</div>
+      </div>
+      <div class="feature-date font-heading">May 29</div>
+    </div>
+
+    <div class="feature-row">
+      <div class="feature-status status-live">✓</div>
+      <div class="feature-info">
+        <div class="feature-name font-heading">Student Dashboard (dashboard.html)</div>
+        <div class="feature-detail">Hours progress bar (of 60), bootcamp phase tracker, weekly checklist (projected schedule / actual hours / reflection), portfolio section, quick action cards.</div>
+      </div>
+      <div class="feature-date font-heading">May 29</div>
+    </div>
+
+    <div class="feature-row">
+      <div class="feature-status status-live">✓</div>
+      <div class="feature-info">
+        <div class="feature-name font-heading">Weekly Hours Log (weekly-log.html)</div>
+        <div class="feature-detail">Two-phase form: projected schedule (Sunday before) and actual hours (Sunday after). Day-by-day grid Mon–Sun with location, supervisor, expected time, actual hours. Auto-calculates totals. Saves to weekly_logs table.</div>
+      </div>
+      <div class="feature-date font-heading">May 29</div>
+    </div>
+
+    <div class="feature-row">
+      <div class="feature-status status-live">✓</div>
+      <div class="feature-info">
+        <div class="feature-name font-heading">Weekly Reflection (weekly-reflection.html)</div>
+        <div class="feature-detail">9-question form matching the original Google Form. Includes employability skill selector (all 10 skills). Saves to weekly_reflections table. Shows "already submitted" state if done this week.</div>
+      </div>
+      <div class="feature-date font-heading">May 29</div>
+    </div>
+
+    <div class="feature-row">
+      <div class="feature-status status-live">✓</div>
+      <div class="feature-info">
+        <div class="feature-name font-heading">Bootcamp (bootcamp.html)</div>
+        <div class="feature-detail">4-phase structure (Professional Identity → Interview Prep → Workplace Readiness → Launch). Each phase has expandable activity cards with in-class descriptions, deliverable submissions, and Supabase task tracking. Phase 4 generates a Launch Card.</div>
+      </div>
+      <div class="feature-date font-heading">Jun 3</div>
+    </div>
+  </div>
+
+  <!-- TEACHER HUB -->
+  <div class="section">
+    <div class="section-title font-heading">Teacher Hub</div>
+
+    <div class="feature-row">
+      <div class="feature-status status-live">✓</div>
+      <div class="feature-info">
+        <div class="feature-name font-heading">Teacher Hub (teacher-hub.html)</div>
+        <div class="feature-detail">Google OAuth protected (checks teachers table). Links to: Student Progress, Placement Directory, Email Templates, Observation Rubric, Job Descriptions, Student Submissions, Site Status, Pacing Guide, Standards.</div>
+      </div>
+      <div class="feature-date font-heading">May 29–Jun 3</div>
+    </div>
+
+    <div class="feature-row">
+      <div class="feature-status status-live">✓</div>
+      <div class="feature-info">
+        <div class="feature-name font-heading">Student Submissions Viewer (teacher-submissions.html)</div>
+        <div class="feature-detail">View all weekly hours logs and reflections. Tabs for each type. Search by student name, filter by week. Click any row to expand full details including day-by-day hours grid or all 9 reflection answers. Stats strip at top.</div>
+      </div>
+      <div class="feature-date font-heading">May 29</div>
+    </div>
+
+    <div class="feature-row">
+      <div class="feature-status status-live">✓</div>
+      <div class="feature-info">
+        <div class="feature-name font-heading">Site Status (this page)</div>
+        <div class="feature-detail">Full changelog and status of all features. Pending SQL steps. Known issues. Update manually when new features are added.</div>
+      </div>
+      <div class="feature-date font-heading">Jun 3</div>
+    </div>
+
+    <div class="feature-row">
+      <div class="feature-status status-live">✓</div>
+      <div class="feature-info">
+        <div class="feature-name font-heading">Pacing Guide (teacher-pacing.html)</div>
+        <div class="feature-detail">Bootcamp pacing for daily vs. every-other-day sections. Phase milestones, flexibility notes, interview window guidance.</div>
+      </div>
+      <div class="feature-date font-heading">Jun 3</div>
+    </div>
+
+    <div class="feature-row">
+      <div class="feature-status status-live">✓</div>
+      <div class="feature-info">
+        <div class="feature-name font-heading">Standards Document (teacher-standards.html)</div>
+        <div class="feature-detail">Illinois Essential Employability Skills, CTE WBL standards, CCSS ELA connections, NAF standard alignment.</div>
+      </div>
+      <div class="feature-date font-heading">Jun 3</div>
+    </div>
+  </div>
+
+  <!-- MAIN SITE -->
+  <div class="section">
+    <div class="section-title font-heading">Main Field Experience Site</div>
+
+    <div class="feature-row">
+      <div class="feature-status status-live">✓</div>
+      <div class="feature-info">
+        <div class="feature-name font-heading">7 Career Cluster Pages</div>
+        <div class="feature-detail">cluster-agriculture/arts/finance/health/human/it/manufacturing.html. Each has a collage hero, about section, and live job cards from Supabase (primary) + Google Apps Script (secondary). Background images hosted on Cloudinary (dikkdclum). Fixed Netlify HTML minification bug that was breaking background images.</div>
+      </div>
+      <div class="feature-date font-heading">May–Jun</div>
+    </div>
+
+    <div class="feature-row">
+      <div class="feature-status status-live">✓</div>
+      <div class="feature-info">
+        <div class="feature-name font-heading">Resources Page (resources.html)</div>
+        <div class="feature-detail">Course Expectations (Google Doc), Weekly Hours Log (→ weekly-log.html), Weekly Reflection (→ weekly-reflection.html), Class Calendar embed.</div>
+      </div>
+      <div class="feature-date font-heading">May 29</div>
+    </div>
+
+    <div class="feature-row">
+      <div class="feature-status status-live">✓</div>
+      <div class="feature-info">
+        <div class="feature-name font-heading">Positions Page (positions.html)</div>
+        <div class="feature-detail">Teacher-facing business partner review document. Pulls from Supabase job_listings (primary) + Google Apps Script (secondary). Not student-facing.</div>
+      </div>
+      <div class="feature-date font-heading">May 29</div>
+    </div>
+  </div>
+
+  <!-- SUPABASE BACKEND -->
+  <div class="section">
+    <div class="section-title font-heading">Supabase Backend</div>
+
+    <div class="feature-row">
+      <div class="feature-status status-live">✓</div>
+      <div class="feature-info">
+        <div class="feature-name font-heading">6 Tables Created</div>
+        <div class="feature-detail">teachers, students, weekly_logs, weekly_reflections, bootcamp_progress, portfolio_items. All have RLS enabled. Students see only their own rows; teachers see all.</div>
+      </div>
+      <div class="feature-date font-heading">May 29</div>
+    </div>
+
+    <div class="feature-row">
+      <div class="feature-status status-live">✓</div>
+      <div class="feature-info">
+        <div class="feature-name font-heading">handle_new_user trigger</div>
+        <div class="feature-detail">Auto-creates a row in students table when a new user signs in via Google OAuth. Fixed to use public.students with explicit schema and set search_path = public.</div>
+      </div>
+      <div class="feature-date font-heading">May 30</div>
+    </div>
+
+    <div class="feature-row">
+      <div class="feature-status status-live">✓</div>
+      <div class="feature-info">
+        <div class="feature-name font-heading">WBL job_listings table (separate project)</div>
+        <div class="feature-detail">Same Supabase project (bsgrkpykysvqcdqikcym). WBL admin form adds listings, public cards display them on workbasedlearning site. Cluster pages on FE site also pull from this table.</div>
+      </div>
+      <div class="feature-date font-heading">May 23</div>
+    </div>
+  </div>
+
+  <!-- PENDING SQL -->
+  <div class="section">
+    <div class="section-title font-heading">Pending SQL — Run in Supabase</div>
+
+    <div class="pending-item">
+      <div class="pending-dot"></div>
+      <div>
+        <div class="pending-text font-heading" style="font-weight:700">Add notes column to bootcamp_progress</div>
+        <div class="pending-note">Required for bootcamp activity submissions to save content</div>
+        <div class="sql-block"><span class="sql-comment">-- Run in Supabase SQL Editor</span>
+alter table bootcamp_progress add column if not exists notes text;
+alter table students add column if not exists semester_goal text;
+alter table students add column if not exists launch_date timestamptz;
+alter table students add column if not exists placement_name text;</div>
+      </div>
+    </div>
+
+    <div class="pending-item">
+      <div class="pending-dot"></div>
+      <div>
+        <div class="pending-text font-heading" style="font-weight:700">Add email columns to weekly_logs and weekly_reflections</div>
+        <div class="pending-note">Stores student name/email on each submission so teacher submissions viewer can display names</div>
+        <div class="sql-block">alter table weekly_logs add column if not exists student_email text;
+alter table weekly_logs add column if not exists student_name text;
+alter table weekly_reflections add column if not exists student_email text;
+alter table weekly_reflections add column if not exists student_name text;</div>
+      </div>
+    </div>
+
+    <div class="pending-item">
+      <div class="pending-dot"></div>
+      <div>
+        <div class="pending-text font-heading" style="font-weight:700">Cloudinary upload preset for WBL logo uploads</div>
+        <div class="pending-note">Go to Cloudinary dashboard (dikkdclum) → Settings → Upload → Upload presets → Create preset named "wbl_uploads" (unsigned). Without this, drag-and-drop logo upload on WBL admin form fails. URL paste still works as fallback.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- KNOWN ISSUES -->
+  <div class="section">
+    <div class="section-title font-heading">Known Issues / Notes</div>
+
+    <div class="issue-item">
+      <div class="issue-dot"></div>
+      <div>
+        <div class="pending-text font-heading" style="font-weight:700;color:#f87171">Google Apps Script must be redeployed after changes</div>
+        <div class="pending-note" style="color:rgba(255,255,255,.4)">The Apps Script web app that serves job listing data as JSON (for cluster pages fallback) must be redeployed as a new version any time the script is changed. Go to Apps Script → Deploy → Manage deployments → New version.</div>
+      </div>
+    </div>
+
+    <div class="issue-item">
+      <div class="issue-dot"></div>
+      <div>
+        <div class="pending-text font-heading" style="font-weight:700;color:#f87171">portfolio_items table not yet used</div>
+        <div class="pending-note" style="color:rgba(255,255,255,.4)">The portfolio section on the student dashboard shows a placeholder. portfolio.html has not been built yet. The table exists and is ready.</div>
+      </div>
+    </div>
+
+    <div class="issue-item">
+      <div class="issue-dot"></div>
+      <div>
+        <div class="pending-text font-heading" style="font-weight:700;color:#f87171">WBL site: middle video was broken (now fixed)</div>
+        <div class="pending-note" style="color:rgba(255,255,255,.4)">Incubator video was missing from Cloudinary. Uploaded June 3 (70MB → 18MB H.264 optimized). URL updated in index.html. Third video card (Parents) was removed — no video exists for it.</div>
+      </div>
+    </div>
+  </div>
+
+  <p class="last-updated font-heading">Last updated: June 3, 2026 · fieldexperiencebps101.net</p>
+</main>
+</body>
+</html>
