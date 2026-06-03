@@ -482,8 +482,15 @@ async function loadDashboard(user) {
 (async () => {
   const { data: { session } } = await db.auth.getSession();
   if (!session) { window.location.href = 'login.html'; return; }
+  const isPreview = new URLSearchParams(window.location.search).get('preview') === 'student';
   const { data: teacher } = await db.from('teachers').select('email').eq('email', session.user.email).maybeSingle();
-  if (teacher) { window.location.href = 'teacher-hub.html'; return; }
+  if (teacher && !isPreview) { window.location.href = 'teacher-hub.html'; return; }
+  if (teacher && isPreview) {
+    const banner = document.createElement('div');
+    banner.style.cssText = 'position:fixed;bottom:0;left:0;right:0;z-index:100;background:#FBCD07;color:#000;font-family:Montserrat,sans-serif;font-size:.75rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:.625rem 1.5rem;display:flex;align-items:center;justify-content:space-between';
+    banner.innerHTML = '<span>👁 Teacher Preview Mode — viewing as student</span><a href="teacher-hub.html" style="color:#000;text-decoration:underline;font-size:.72rem">← Back to Teacher Hub</a>';
+    document.body.appendChild(banner);
+  }
   await loadDashboard(session.user);
   document.getElementById('loading-overlay').style.display = 'none';
 })();
