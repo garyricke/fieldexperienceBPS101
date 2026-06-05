@@ -164,9 +164,10 @@ const _SB = supabase.createClient(
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJzZ3JrcHlreXN2cWNkcWlrY3ltIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk1MTE5NzUsImV4cCI6MjA5NTA4Nzk3NX0.brdA4f7v0GC89fRXPTVPZV11KIdZxXyCkLTWWsoe0o0'
 );
 
-const BPS_LOGO    = 'https://res.cloudinary.com/dikkdclum/image/upload/v1778676762/field-experience/logos/bps101.png';
-const LIB_LOGO    = 'https://res.cloudinary.com/dikkdclum/image/upload/v1778676763/field-experience/logos/batavia-library.png';
-const ORGANIC_LOGO= 'https://res.cloudinary.com/dikkdclum/image/upload/v1778676763/field-experience/logos/organic-life.png';
+const BPS_LOGO     = 'https://res.cloudinary.com/dikkdclum/image/upload/v1778676762/field-experience/logos/bps101.png';
+const LIB_LOGO     = 'https://res.cloudinary.com/dikkdclum/image/upload/v1780684358/field-experience/logos/batavia-library.svg';
+const ORGANIC_LOGO = 'https://res.cloudinary.com/dikkdclum/image/upload/v1780684360/field-experience/logos/organic-life.webp';
+const ORBIS_LOGO   = 'https://res.cloudinary.com/dikkdclum/image/upload/v1780684361/field-experience/logos/orbis-design.webp';
 
 const CLUSTER_COLORS = {
   agriculture:   { bg:'#2d6a4f', light:'#d8f3dc' },
@@ -192,17 +193,21 @@ const CLUSTER_ORDER = ['finance','health','human','it','manufacturing','agricult
 
 function esc(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') }
 
+// Known logos always take priority over any stored URL (auto-fetched URLs can expire)
 function getLogoUrl(b) {
   const n = (b.name||'').toLowerCase();
   if (n.includes('batavia public library') || n.includes('batavia library')) return LIB_LOGO;
   if (n.includes('organic life')) return ORGANIC_LOGO;
   if (n.includes('bps') || n.includes('batavia public school')) return BPS_LOGO;
-  return '';
+  if (n.includes('orbis')) return ORBIS_LOGO;
+  return b.logo || '';
 }
 
-function isBpsLogo(b) {
+function getLogoBg(b) {
   const n = (b.name||'').toLowerCase();
-  return n.includes('bps') || n.includes('batavia public school');
+  if (n.includes('bps') || n.includes('batavia public school')) return '#AC161D';
+  if (n.includes('orbis')) return '#000000';
+  return '#f9fafb';
 }
 
 function formatTasks(raw) {
@@ -238,9 +243,8 @@ function normalizeCluster(raw) {
 let allPositions = [];
 
 function buildCard(b, idx) {
-  const logoUrl = b.logo || getLogoUrl(b);
-  const isBps = isBpsLogo(b);
-  const logoBg = isBps ? '#AC161D' : '#f9fafb';
+  const logoUrl = getLogoUrl(b);
+  const logoBg  = getLogoBg(b);
   const clusterId = normalizeCluster(b.clusterId || b.sector || '');
   const colors = CLUSTER_COLORS[clusterId] || { bg:'#374151', light:'#f3f4f6' };
 
