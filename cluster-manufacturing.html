@@ -597,7 +597,7 @@
           appInstructions: (row.application_instructions || '').trim(),
           idealCandidate:  (row.ideal_candidate || '').trim(),
           otherInfo:       (row.other_info || '').trim(),
-          clusterId:       sector.split(',').map(s => CLUSTER_MAP[s.trim().toLowerCase()]).filter(Boolean),
+          clusterId:       (() => { const full = CLUSTER_MAP[sector.toLowerCase()]; if (full) return [full]; return sector.split(',').map(s => CLUSTER_MAP[s.trim().toLowerCase()]).filter(Boolean); })(),
         };
       });
       if (fresh.length > 0) { allBusinesses = fresh; renderJobs(); }
